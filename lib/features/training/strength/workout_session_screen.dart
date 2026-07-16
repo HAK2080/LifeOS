@@ -37,14 +37,17 @@ class WorkoutSessionScreen extends ConsumerWidget {
                   builder: (c) => AlertDialog(
                     title: const Text('Discard workout?'),
                     content: const Text(
-                        'This deletes the session and its sets. Nothing else is affected.'),
+                      'This deletes the session and its sets. Nothing else is affected.',
+                    ),
                     actions: [
                       TextButton(
-                          onPressed: () => Navigator.pop(c, false),
-                          child: const Text('Keep')),
+                        onPressed: () => Navigator.pop(c, false),
+                        child: const Text('Keep'),
+                      ),
                       FilledButton(
-                          onPressed: () => Navigator.pop(c, true),
-                          child: const Text('Discard')),
+                        onPressed: () => Navigator.pop(c, true),
+                        child: const Text('Discard'),
+                      ),
                     ],
                   ),
                 );
@@ -111,16 +114,24 @@ class _ExerciseCard extends ConsumerStatefulWidget {
 
 class _ExerciseCardState extends ConsumerState<_ExerciseCard> {
   LastPerformance? last;
+  PlanExercise? planExercise;
   bool lastLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    ref
-        .read(trainingRepositoryProvider)
-        .lastPerformance(widget.data.exercise.id)
-        .then((v) {
-      if (mounted) setState(() { last = v; lastLoaded = true; });
+    final repo = ref.read(trainingRepositoryProvider);
+    Future.wait<Object?>([
+      repo.lastPerformance(widget.data.exercise.id),
+      repo.planExerciseForSessionExercise(widget.data.link),
+    ]).then((values) {
+      if (mounted) {
+        setState(() {
+          last = values[0] as LastPerformance?;
+          planExercise = values[1] as PlanExercise?;
+          lastLoaded = true;
+        });
+      }
     });
   }
 
@@ -132,16 +143,23 @@ class _ExerciseCardState extends ConsumerState<_ExerciseCard> {
 
     Recommendation? hint;
     if (lastLoaded && last != null && last!.sets.isNotEmpty) {
-      hint = recommendNext(ProgressionInput(
-        lastSets: last!.sets
-            .where((s) => s.weightKg != null && s.reps != null)
-            .map((s) => SetResult(
-                weightKg: s.weightKg!,
-                reps: s.reps!,
-                rir: s.rir,
-                pain: s.pain))
-            .toList(),
-      ));
+      hint = recommendNext(
+        ProgressionInput(
+          repMin: planExercise?.repMin ?? 8,
+          repMax: planExercise?.repMax ?? 12,
+          lastSets: last!.sets
+              .where((s) => s.weightKg != null && s.reps != null)
+              .map(
+                (s) => SetResult(
+                  weightKg: s.weightKg!,
+                  reps: s.reps!,
+                  rir: s.rir,
+                  pain: s.pain,
+                ),
+              )
+              .toList(),
+        ),
+      );
     }
 
     return AppCard(
@@ -153,8 +171,10 @@ class _ExerciseCardState extends ConsumerState<_ExerciseCard> {
           Row(
             children: [
               Expanded(
-                child: Text(data.exercise.name,
-                    style: Theme.of(context).textTheme.titleMedium),
+                child: Text(
+                  data.exercise.name,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
               IconButton(
                 icon: Icon(Icons.close, size: 18, color: scheme.text2),
@@ -176,35 +196,41 @@ class _ExerciseCardState extends ConsumerState<_ExerciseCard> {
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Text(
-                'Coach: ${hint.reason}',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: AppColors.accentDeep),
+                'Progression note: ${hint.reason}',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.accentDeep),
               ),
             ),
           Row(
             children: [
               const SizedBox(width: 32),
               Expanded(
-                  child: Text('kg',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodySmall)),
+                child: Text(
+                  'kg',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
               const SizedBox(width: 8),
               Expanded(
-                  child: Text('reps',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodySmall)),
+                child: Text(
+                  'reps',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
               const SizedBox(width: 88),
             ],
           ),
           for (final set in data.sets)
             _SetRow(
-                key: ValueKey(set.id),
-                set: set,
-                lastSet: last == null || last!.sets.length < set.setNumber
-                    ? null
-                    : last!.sets[set.setNumber - 1]),
+              key: ValueKey(set.id),
+              set: set,
+              lastSet: last == null || last!.sets.length < set.setNumber
+                  ? null
+                  : last!.sets[set.setNumber - 1],
+            ),
           const SizedBox(height: 4),
           TextButton.icon(
             icon: const Icon(Icons.add, size: 18),
@@ -246,9 +272,9 @@ class _SetRowState extends ConsumerState<_SetRow> {
   void initState() {
     super.initState();
     _weight = TextEditingController(
-        text: widget.set.weightKg == null ? '' : _fmt(widget.set.weightKg!));
-    _reps = TextEditingController(
-        text: widget.set.reps?.toString() ?? '');
+      text: widget.set.weightKg == null ? '' : _fmt(widget.set.weightKg!),
+    );
+    _reps = TextEditingController(text: widget.set.reps?.toString() ?? '');
   }
 
   @override
@@ -273,27 +299,33 @@ class _SetRowState extends ConsumerState<_SetRow> {
         children: [
           SizedBox(
             width: 32,
-            child: Text('${widget.set.setNumber}',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'Serif',
-                    fontWeight: FontWeight.w600,
-                    color: scheme.text2)),
+            child: Text(
+              '${widget.set.setNumber}',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Serif',
+                fontWeight: FontWeight.w600,
+                color: scheme.text2,
+              ),
+            ),
           ),
           Expanded(
             child: TextField(
               controller: _weight,
               textAlign: TextAlign.center,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               decoration: InputDecoration(
                 isDense: true,
                 hintText: widget.lastSet?.weightKg == null
                     ? '—'
                     : _fmt(widget.lastSet!.weightKg!),
               ),
-              onChanged: (v) => repo.updateSet(widget.set.id,
-                  SessionSetsCompanion(weightKg: Value(double.tryParse(v)))),
+              onChanged: (v) => repo.updateSet(
+                widget.set.id,
+                SessionSetsCompanion(weightKg: Value(double.tryParse(v))),
+              ),
             ),
           ),
           const SizedBox(width: 8),
@@ -306,8 +338,10 @@ class _SetRowState extends ConsumerState<_SetRow> {
                 isDense: true,
                 hintText: widget.lastSet?.reps?.toString() ?? '—',
               ),
-              onChanged: (v) => repo.updateSet(widget.set.id,
-                  SessionSetsCompanion(reps: Value(int.tryParse(v)))),
+              onChanged: (v) => repo.updateSet(
+                widget.set.id,
+                SessionSetsCompanion(reps: Value(int.tryParse(v))),
+              ),
             ),
           ),
           SizedBox(
@@ -315,9 +349,7 @@ class _SetRowState extends ConsumerState<_SetRow> {
             child: IconButton(
               tooltip: 'Set options',
               icon: Icon(
-                widget.set.pain
-                    ? Icons.warning_amber
-                    : Icons.more_horiz,
+                widget.set.pain ? Icons.warning_amber : Icons.more_horiz,
                 size: 20,
                 color: widget.set.pain
                     ? Theme.of(context).colorScheme.error
@@ -336,13 +368,15 @@ class _SetRowState extends ConsumerState<_SetRow> {
               ),
               onPressed: () async {
                 if (done) {
-                  await repo.updateSet(widget.set.id,
-                      const SessionSetsCompanion(completedAt: Value(null)));
+                  await repo.updateSet(
+                    widget.set.id,
+                    const SessionSetsCompanion(completedAt: Value(null)),
+                  );
                 } else {
                   await repo.updateSet(
-                      widget.set.id,
-                      SessionSetsCompanion(
-                          completedAt: Value(DateTime.now())));
+                    widget.set.id,
+                    SessionSetsCompanion(completedAt: Value(DateTime.now())),
+                  );
                   final rest = ref.read(defaultRestProvider).value ?? 120;
                   ref.read(restTimerProvider.notifier).start(rest);
                 }
@@ -356,9 +390,9 @@ class _SetRowState extends ConsumerState<_SetRow> {
 
   Future<void> _setOptions(BuildContext context, dynamic repo) async {
     final rirController = TextEditingController(
-        text: widget.set.rir?.toString() ?? '');
-    final notesController =
-        TextEditingController(text: widget.set.notes ?? '');
+      text: widget.set.rir?.toString() ?? '',
+    );
+    final notesController = TextEditingController(text: widget.set.notes ?? '');
     var pain = widget.set.pain;
     await showModalBottomSheet<void>(
       context: context,
@@ -366,23 +400,28 @@ class _SetRowState extends ConsumerState<_SetRow> {
       builder: (c) => StatefulBuilder(
         builder: (c, setSheetState) => Padding(
           padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 20,
-              bottom: MediaQuery.of(c).viewInsets.bottom + 20),
+            left: 20,
+            right: 20,
+            top: 20,
+            bottom: MediaQuery.of(c).viewInsets.bottom + 20,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('Set ${widget.set.setNumber} options',
-                  style: Theme.of(c).textTheme.titleMedium),
+              Text(
+                'Set ${widget.set.setNumber} options',
+                style: Theme.of(c).textTheme.titleMedium,
+              ),
               const SizedBox(height: 12),
               TextField(
                 controller: rirController,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 decoration: const InputDecoration(
-                    labelText: 'RIR (reps in reserve, optional)'),
+                  labelText: 'RIR (reps in reserve, optional)',
+                ),
               ),
               const SizedBox(height: 10),
               TextField(
@@ -409,15 +448,17 @@ class _SetRowState extends ConsumerState<_SetRow> {
                   FilledButton(
                     onPressed: () async {
                       await repo.updateSet(
-                          widget.set.id,
-                          SessionSetsCompanion(
-                            rir: Value(
-                                double.tryParse(rirController.text)),
-                            notes: Value(notesController.text.trim().isEmpty
+                        widget.set.id,
+                        SessionSetsCompanion(
+                          rir: Value(double.tryParse(rirController.text)),
+                          notes: Value(
+                            notesController.text.trim().isEmpty
                                 ? null
-                                : notesController.text.trim()),
-                            pain: Value(pain),
-                          ));
+                                : notesController.text.trim(),
+                          ),
+                          pain: Value(pain),
+                        ),
+                      );
                       if (c.mounted) Navigator.pop(c);
                     },
                     child: const Text('Save'),

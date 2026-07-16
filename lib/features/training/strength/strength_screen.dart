@@ -33,11 +33,14 @@ class StrengthScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Resume ${active.title}',
-                            style: Theme.of(context).textTheme.titleMedium),
                         Text(
-                            'Started ${DateFormat.jm().format(active.startedAt)}',
-                            style: Theme.of(context).textTheme.bodySmall),
+                          'Resume ${active.title}',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        Text(
+                          'Started ${DateFormat.jm().format(active.startedAt)}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
                       ],
                     ),
                   ),
@@ -79,6 +82,18 @@ class StrengthScreen extends ConsumerWidget {
             onTap: () => context.go('/training/strength/plans'),
           ),
           _MenuTile(
+            icon: Icons.view_list_outlined,
+            title: 'Exercise Library',
+            blurb: 'Browse, filter, and add exercises for your plans',
+            onTap: () => context.go('/training/strength/exercises'),
+          ),
+          _MenuTile(
+            icon: Icons.insights_outlined,
+            title: 'Progress & Records',
+            blurb: 'Review recent volume and your best logged sets',
+            onTap: () => context.go('/training/strength/progress'),
+          ),
+          _MenuTile(
             icon: Icons.trending_up,
             title: 'Progressive Overload Method',
             blurb: 'Optional RIR-based progression with rep ranges and reviews',
@@ -103,11 +118,12 @@ class StrengthScreen extends ConsumerWidget {
 }
 
 class _MenuTile extends StatelessWidget {
-  const _MenuTile(
-      {required this.icon,
-      required this.title,
-      required this.blurb,
-      required this.onTap});
+  const _MenuTile({
+    required this.icon,
+    required this.title,
+    required this.blurb,
+    required this.onTap,
+  });
 
   final IconData icon;
   final String title;

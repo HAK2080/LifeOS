@@ -243,7 +243,8 @@ class WodSessions extends Table {
   TextColumn get description => text()();
   // coach | equipment | library | manual | kettlebell
   TextColumn get source => text().withDefault(const Constant('manual'))();
-  DateTimeColumn get completedAt => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get completedAt =>
+      dateTime().withDefault(currentDateAndTime)();
   IntColumn get durationMin => integer().nullable()();
   TextColumn get result => text().nullable()(); // time, rounds, notes
   TextColumn get feeling => text().nullable()();
@@ -280,43 +281,47 @@ class WellnessProtocolSources extends Table {
   TextColumn get sourceId => text().references(WellnessSources, #id)();
 }
 
-@DriftDatabase(tables: [
-  TaskLists,
-  Tasks,
-  Subtasks,
-  EquipmentItems,
-  CheckIns,
-  GoodDeeds,
-  FocusEntries,
-  Exercises,
-  WorkoutPlans,
-  PlanWorkouts,
-  PlanExercises,
-  WorkoutSessions,
-  SessionExercises,
-  SessionSets,
-  Zone2Sessions,
-  WodSessions,
-  WellnessProtocols,
-  WellnessSources,
-  WellnessProtocolSources,
-  Meals,
-  MealLogs,
-  WeightEntries,
-  Habits,
-  HabitLogs,
-  HabitReviews,
-  Goals,
-])
+@DriftDatabase(
+  tables: [
+    TaskLists,
+    Tasks,
+    Subtasks,
+    EquipmentItems,
+    CheckIns,
+    GoodDeeds,
+    FocusEntries,
+    Exercises,
+    WorkoutPlans,
+    PlanWorkouts,
+    PlanExercises,
+    WorkoutSessions,
+    SessionExercises,
+    SessionSets,
+    Zone2Sessions,
+    WodSessions,
+    WellnessProtocols,
+    WellnessSources,
+    WellnessProtocolSources,
+    Meals,
+    MealLogs,
+    WeightEntries,
+    Habits,
+    HabitLogs,
+    HabitReviews,
+    Goals,
+  ],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
-      : super(driftDatabase(
+    : super(
+        driftDatabase(
           name: 'life_app',
           web: DriftWebOptions(
             sqlite3Wasm: Uri.parse('sqlite3.wasm'),
             driftWorker: Uri.parse('drift_worker.js'),
           ),
-        ));
+        ),
+      );
 
   AppDatabase.forTesting(super.e);
 
@@ -347,8 +352,16 @@ class AppDatabase extends _$AppDatabase {
 
   static const seedExercises = <(String, String, String)>[
     // (name, muscleGroup, equipment)
-    ('Smith Machine Bench Press', 'chest', 'Smith machine / functional trainer'),
-    ('Smith Machine Incline Press', 'chest', 'Smith machine / functional trainer'),
+    (
+      'Smith Machine Bench Press',
+      'chest',
+      'Smith machine / functional trainer',
+    ),
+    (
+      'Smith Machine Incline Press',
+      'chest',
+      'Smith machine / functional trainer',
+    ),
     ('Dumbbell Bench Press', 'chest', 'Dumbbells'),
     ('Incline Dumbbell Press', 'chest', 'Dumbbells'),
     ('Dumbbell Fly', 'chest', 'Dumbbells'),
@@ -407,66 +420,141 @@ class AppDatabase extends _$AppDatabase {
     ('Row Sprint', 'conditioning', 'Air rower'),
     ('Air Bike Sprint', 'conditioning', 'Stationary / air bike'),
     ('Burpee', 'full body', ''),
+    ('Machine Chest Press', 'chest', 'Smith machine / functional trainer'),
+    ('Decline Dumbbell Press', 'chest', 'Dumbbells'),
+    ('Close-Grip Push-Up', 'chest', ''),
+    ('Chest-Supported Row', 'back', 'Dumbbells'),
+    ('Single-Arm Cable Row', 'back', 'Cable attachments'),
+    ('Straight-Arm Pulldown', 'back', 'Cable attachments'),
+    ('Inverted Row', 'back', 'Rings'),
+    ('Good Morning', 'hamstrings', 'Straight barbell'),
+    ('Nordic Hamstring Curl', 'hamstrings', ''),
+    ('Lying Leg Curl (band)', 'hamstrings', 'Resistance bands'),
+    ('Front Squat', 'legs', 'Straight barbell'),
+    ('Hack Squat', 'legs', 'Smith machine / functional trainer'),
+    ('Reverse Lunge', 'legs', 'Dumbbells'),
+    ('Reverse Step-Up', 'legs', 'Plyometric boxes'),
+    ('Sissy Squat', 'legs', ''),
+    ('Seated Calf Raise', 'calves', 'Dumbbells'),
+    ('Standing Calf Raise', 'calves', 'Smith machine / functional trainer'),
+    ('Arnold Press', 'shoulders', 'Dumbbells'),
+    ('Landmine Press', 'shoulders', 'Straight barbell'),
+    ('Cable Lateral Raise', 'shoulders', 'Cable attachments'),
+    ('Cable Rear Delt Fly', 'shoulders', 'Cable attachments'),
+    ('Upright Row', 'shoulders', 'Straight barbell'),
+    ('Preacher Curl', 'arms', 'EZ-curl bar'),
+    ('Incline Dumbbell Curl', 'arms', 'Dumbbells'),
+    ('Cable Curl', 'arms', 'Cable attachments'),
+    ('Close-Grip Bench Press', 'arms', 'Straight barbell'),
+    ('Dumbbell Skull Crusher', 'arms', 'Dumbbells'),
+    ('Cable Overhead Triceps Extension', 'arms', 'Cable attachments'),
+    ('Cable Kickback', 'arms', 'Cable attachments'),
+    ('Barbell Hip Thrust', 'glutes', 'Straight barbell'),
+    ('Cable Pull-Through', 'glutes', 'Cable attachments'),
+    ('Glute Bridge', 'glutes', ''),
+    ('Single-Leg Hip Thrust', 'glutes', ''),
+    ('Ab Wheel Rollout', 'core', ''),
+    ('Dead Bug', 'core', ''),
+    ('Pallof Press', 'core', 'Cable attachments'),
+    ('Side Plank', 'core', ''),
+    ('Weighted Plank', 'core', 'Plates'),
+    ('Suitcase Carry', 'core', 'Dumbbells'),
+    ('Barbell Clean', 'full body', 'Straight barbell'),
+    ('Power Clean', 'full body', 'Straight barbell'),
+    ('Push Press', 'full body', 'Straight barbell'),
+    ('Thruster', 'full body', 'Dumbbells'),
+    ('Dumbbell Snatch', 'full body', 'Dumbbells'),
+    ('Man Maker', 'full body', 'Dumbbells'),
+    ('Bear Crawl', 'full body', ''),
+    ('Sled Push', 'conditioning', ''),
+    ('Sled Pull', 'conditioning', ''),
+    ('Assault Bike', 'conditioning', 'Stationary / air bike'),
+    ('Rowing', 'conditioning', 'Air rower'),
+    ('Farmer Walk', 'conditioning', 'Dumbbells'),
   ];
 
   Future<void> _seedExercises(Batch b) async {
     b.insertAll(
       exercises,
-      seedExercises.map((e) => ExercisesCompanion.insert(
+      seedExercises.map(
+        (e) => ExercisesCompanion.insert(
+          name: e.$1,
+          muscleGroup: Value(e.$2.isEmpty ? null : e.$2),
+          equipment: Value(e.$3.isEmpty ? null : e.$3),
+        ),
+      ),
+    );
+  }
+
+  /// Adds newly shipped library entries without duplicating exercises in an
+  /// existing local database.
+  Future<void> seedMissingExercises() async {
+    final existing = await select(exercises).get();
+    final names = existing.map((e) => e.name.toLowerCase()).toSet();
+    final missing = seedExercises.where(
+      (e) => !names.contains(e.$1.toLowerCase()),
+    );
+    if (missing.isEmpty) return;
+    await batch((b) {
+      b.insertAll(
+        exercises,
+        missing.map(
+          (e) => ExercisesCompanion.insert(
             name: e.$1,
             muscleGroup: Value(e.$2.isEmpty ? null : e.$2),
             equipment: Value(e.$3.isEmpty ? null : e.$3),
-          )),
-    );
+          ),
+        ),
+      );
+    });
   }
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (m) async {
-          await m.createAll();
-          await batch((b) {
-            b.insertAll(
-              equipmentItems,
-              seedEquipment
-                  .map((e) => EquipmentItemsCompanion.insert(name: e)),
-            );
-            _seedExercises(b);
-          });
-        },
-        onUpgrade: (m, from, to) async {
-          if (from < 2) {
-            await m.createTable(exercises);
-            await m.createTable(workoutPlans);
-            await m.createTable(planWorkouts);
-            await m.createTable(planExercises);
-            await m.createTable(workoutSessions);
-            await m.createTable(sessionExercises);
-            await m.createTable(sessionSets);
-            await m.createTable(zone2Sessions);
-            await m.createTable(wodSessions);
-            await batch(_seedExercises);
-          }
-          if (from < 3) {
-            await m.createTable(meals);
-            await m.createTable(mealLogs);
-            await m.createTable(weightEntries);
-          }
-          if (from < 5) {
-            await m.createTable(wellnessProtocols);
-            await m.createTable(wellnessSources);
-            await m.createTable(wellnessProtocolSources);
-          }
-          if (from < 4) {
-            await m.createTable(habits);
-            await m.createTable(habitLogs);
-            await m.createTable(goals);
-          }
-          if (from < 5) {
-            await m.createTable(habitReviews);
-          }
-          if (from < 5 && from >= 4) {
-            await m.addColumn(habits, habits.protocolId);
-          }
-        },
-      );
+    onCreate: (m) async {
+      await m.createAll();
+      await batch((b) {
+        b.insertAll(
+          equipmentItems,
+          seedEquipment.map((e) => EquipmentItemsCompanion.insert(name: e)),
+        );
+        _seedExercises(b);
+      });
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(exercises);
+        await m.createTable(workoutPlans);
+        await m.createTable(planWorkouts);
+        await m.createTable(planExercises);
+        await m.createTable(workoutSessions);
+        await m.createTable(sessionExercises);
+        await m.createTable(sessionSets);
+        await m.createTable(zone2Sessions);
+        await m.createTable(wodSessions);
+        await batch(_seedExercises);
+      }
+      if (from < 3) {
+        await m.createTable(meals);
+        await m.createTable(mealLogs);
+        await m.createTable(weightEntries);
+      }
+      if (from < 5) {
+        await m.createTable(wellnessProtocols);
+        await m.createTable(wellnessSources);
+        await m.createTable(wellnessProtocolSources);
+      }
+      if (from < 4) {
+        await m.createTable(habits);
+        await m.createTable(habitLogs);
+        await m.createTable(goals);
+      }
+      if (from < 5) {
+        await m.createTable(habitReviews);
+      }
+      if (from < 5 && from >= 4) {
+        await m.addColumn(habits, habits.protocolId);
+      }
+    },
+  );
 }

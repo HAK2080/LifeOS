@@ -8,17 +8,23 @@ import '../../../core/database/database.dart';
 import '../training_repository.dart';
 import 'exercise_picker.dart';
 import 'plan_import.dart';
+import 'strength_content.dart';
 
 final plansProvider = StreamProvider<List<WorkoutPlan>>(
-    (ref) => ref.watch(trainingRepositoryProvider).watchPlans());
+  (ref) => ref.watch(trainingRepositoryProvider).watchPlans(),
+);
 
 final planWorkoutsProvider = StreamProvider.autoDispose
-    .family<List<PlanWorkout>, int>((ref, planId) =>
-        ref.watch(trainingRepositoryProvider).watchPlanWorkouts(planId));
+    .family<List<PlanWorkout>, int>(
+      (ref, planId) =>
+          ref.watch(trainingRepositoryProvider).watchPlanWorkouts(planId),
+    );
 
 final planExercisesProvider = StreamProvider.autoDispose
-    .family<List<(PlanExercise, Exercise)>, int>((ref, workoutId) =>
-        ref.watch(trainingRepositoryProvider).watchPlanExercises(workoutId));
+    .family<List<(PlanExercise, Exercise)>, int>(
+      (ref, workoutId) =>
+          ref.watch(trainingRepositoryProvider).watchPlanExercises(workoutId),
+    );
 
 class PlansScreen extends ConsumerWidget {
   const PlansScreen({super.key});
@@ -37,13 +43,22 @@ class PlansScreen extends ConsumerWidget {
             icon: const Icon(Icons.content_paste_go),
             onPressed: () => _importFromText(context, repo),
           ),
+          IconButton(
+            tooltip: 'Starter templates',
+            icon: const Icon(Icons.auto_awesome_outlined),
+            onPressed: () => _chooseTemplate(context, repo),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: const Icon(Icons.add),
         label: const Text('New plan'),
         onPressed: () async {
-          final name = await _askText(context, 'New plan', 'e.g. Upper / Lower');
+          final name = await _askText(
+            context,
+            'New plan',
+            'e.g. Upper / Lower',
+          );
           if (name != null && name.isNotEmpty) await repo.createPlan(name);
         },
       ),
@@ -61,15 +76,52 @@ class PlansScreen extends ConsumerWidget {
             )
           : ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
-              children: [
-                for (final plan in plans) _PlanCard(plan: plan),
-              ],
+              children: [for (final plan in plans) _PlanCard(plan: plan)],
             ),
     );
   }
 
+  Future<void> _chooseTemplate(
+    BuildContext context,
+    TrainingRepository repo,
+  ) async {
+    final template = await showModalBottomSheet<StarterTemplate>(
+      context: context,
+      showDragHandle: true,
+      builder: (c) => ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+        children: [
+          Text('Starter templates', style: Theme.of(c).textTheme.titleLarge),
+          const SizedBox(height: 4),
+          const Text(
+            'Use one as a starting point, then edit every exercise and target.',
+          ),
+          const SizedBox(height: 12),
+          for (final template in starterTemplates)
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(template.name),
+              subtitle: Text(template.description),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.pop(c, template),
+            ),
+        ],
+      ),
+    );
+    if (template == null) return;
+    await repo.createStarterTemplate(template);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${template.name} added to your plans.')),
+      );
+    }
+  }
+
   Future<void> _importFromText(
-      BuildContext context, TrainingRepository repo) async {
+    BuildContext context,
+    TrainingRepository repo,
+  ) async {
     final controller = TextEditingController();
     final nameController = TextEditingController();
     final ok = await showDialog<bool>(
@@ -91,7 +143,8 @@ class PlansScreen extends ConsumerWidget {
                 maxLines: 10,
                 style: const TextStyle(fontSize: 13),
                 decoration: const InputDecoration(
-                  hintText: 'Upper A:\nBench Press 3x8-12\nBarbell Row 3x10\n\n'
+                  hintText:
+                      'Upper A:\nBench Press 3x8-12\nBarbell Row 3x10\n\n'
                       'Lower A:\nBack Squat 4x5',
                 ),
               ),
@@ -100,11 +153,13 @@ class PlansScreen extends ConsumerWidget {
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(c, false),
-              child: const Text('Cancel')),
+            onPressed: () => Navigator.pop(c, false),
+            child: const Text('Cancel'),
+          ),
           FilledButton(
-              onPressed: () => Navigator.pop(c, true),
-              child: const Text('Import')),
+            onPressed: () => Navigator.pop(c, true),
+            child: const Text('Import'),
+          ),
         ],
       ),
     );
@@ -112,30 +167,42 @@ class PlansScreen extends ConsumerWidget {
     final parsed = parsePlanText(controller.text);
     if (parsed.isEmpty) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Nothing recognisable — try "Exercise 3x8-12" lines.')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Nothing recognisable — try "Exercise 3x8-12" lines.',
+            ),
+          ),
+        );
       }
       return;
     }
     final exercises = await repo.db.select(repo.db.exercises).get();
-    final planId = await repo.createPlan(nameController.text.trim().isEmpty
-        ? 'Imported plan'
-        : nameController.text.trim());
+    final planId = await repo.createPlan(
+      nameController.text.trim().isEmpty
+          ? 'Imported plan'
+          : nameController.text.trim(),
+    );
     for (final w in parsed) {
       final workoutId = await repo.addPlanWorkout(planId, w.name);
       for (final e in w.exercises) {
         final existing = exercises
             .where((x) => x.name.toLowerCase() == e.name.toLowerCase())
             .firstOrNull;
-        final exerciseId =
-            existing?.id ?? await repo.addCustomExercise(e.name);
-        await repo.addPlanExercise(workoutId, exerciseId,
-            targetSets: e.sets, repMin: e.repMin, repMax: e.repMax);
+        final exerciseId = existing?.id ?? await repo.addCustomExercise(e.name);
+        await repo.addPlanExercise(
+          workoutId,
+          exerciseId,
+          targetSets: e.sets,
+          repMin: e.repMin,
+          repMax: e.repMax,
+        );
       }
     }
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Imported ${parsed.length} workout(s).')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Imported ${parsed.length} workout(s).')),
+      );
     }
   }
 }
@@ -159,8 +226,10 @@ class _PlanCard extends ConsumerWidget {
           Row(
             children: [
               Expanded(
-                child: Text(plan.name,
-                    style: Theme.of(context).textTheme.titleLarge),
+                child: Text(
+                  plan.name,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
               PopupMenuButton<String>(
                 onSelected: (v) {
@@ -173,8 +242,7 @@ class _PlanCard extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 4),
-          for (final w in workouts)
-            _WorkoutTile(plan: plan, workout: w),
+          for (final w in workouts) _WorkoutTile(plan: plan, workout: w),
           Row(
             children: [
               TextButton.icon(
@@ -182,7 +250,10 @@ class _PlanCard extends ConsumerWidget {
                 label: const Text('Add workout'),
                 onPressed: () async {
                   final name = await _askText(
-                      context, 'New workout', 'e.g. Upper A');
+                    context,
+                    'New workout',
+                    'e.g. Upper A',
+                  );
                   if (name != null && name.isNotEmpty) {
                     await repo.addPlanWorkout(plan.id, name);
                   }
@@ -225,10 +296,11 @@ class _WorkoutTile extends ConsumerWidget {
     return ExpansionTile(
       tilePadding: EdgeInsets.zero,
       shape: const Border(),
-      title: Text(workout.name,
-          style: Theme.of(context).textTheme.titleMedium),
-      subtitle: Text('${exercises.length} exercise(s)',
-          style: Theme.of(context).textTheme.bodySmall),
+      title: Text(workout.name, style: Theme.of(context).textTheme.titleMedium),
+      subtitle: Text(
+        '${exercises.length} exercise(s)',
+        style: Theme.of(context).textTheme.bodySmall,
+      ),
       children: [
         for (final (pe, exercise) in exercises)
           ListTile(
@@ -280,7 +352,10 @@ class _WorkoutTile extends ConsumerWidget {
   }
 
   Future<void> _editTargets(
-      BuildContext context, TrainingRepository repo, PlanExercise pe) async {
+    BuildContext context,
+    TrainingRepository repo,
+    PlanExercise pe,
+  ) async {
     final sets = TextEditingController(text: pe.targetSets.toString());
     final repMin = TextEditingController(text: pe.repMin?.toString() ?? '');
     final repMax = TextEditingController(text: pe.repMax?.toString() ?? '');
@@ -294,34 +369,41 @@ class _WorkoutTile extends ConsumerWidget {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(children: [
-                Expanded(
+              Row(
+                children: [
+                  Expanded(
                     child: TextField(
-                        controller: sets,
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            const InputDecoration(labelText: 'Sets'))),
-                const SizedBox(width: 8),
-                Expanded(
+                      controller: sets,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(labelText: 'Sets'),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
                     child: TextField(
-                        controller: repMin,
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            const InputDecoration(labelText: 'Rep min'))),
-                const SizedBox(width: 8),
-                Expanded(
+                      controller: repMin,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(labelText: 'Rep min'),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
                     child: TextField(
-                        controller: repMax,
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            const InputDecoration(labelText: 'Rep max'))),
-              ]),
+                      controller: repMax,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(labelText: 'Rep max'),
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: 8),
               TextField(
-                  controller: rest,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                      labelText: 'Rest between sets (sec, optional)')),
+                controller: rest,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Rest between sets (sec, optional)',
+                ),
+              ),
               const SizedBox(height: 12),
               SegmentedButton<String>(
                 segments: const [
@@ -331,27 +413,27 @@ class _WorkoutTile extends ConsumerWidget {
                   ButtonSegment(value: 'progressive', label: Text('RIR')),
                 ],
                 selected: {mode},
-                onSelectionChanged: (s) =>
-                    setDialogState(() => mode = s.first),
+                onSelectionChanged: (s) => setDialogState(() => mode = s.first),
               ),
             ],
           ),
           actions: [
             TextButton(
-                onPressed: () => Navigator.pop(c),
-                child: const Text('Cancel')),
+              onPressed: () => Navigator.pop(c),
+              child: const Text('Cancel'),
+            ),
             FilledButton(
               onPressed: () async {
                 await repo.updatePlanExercise(
-                    pe.id,
-                    PlanExercisesCompanion(
-                      targetSets:
-                          Value(int.tryParse(sets.text) ?? pe.targetSets),
-                      repMin: Value(int.tryParse(repMin.text)),
-                      repMax: Value(int.tryParse(repMax.text)),
-                      restSetSec: Value(int.tryParse(rest.text)),
-                      progressionMode: Value(mode),
-                    ));
+                  pe.id,
+                  PlanExercisesCompanion(
+                    targetSets: Value(int.tryParse(sets.text) ?? pe.targetSets),
+                    repMin: Value(int.tryParse(repMin.text)),
+                    repMax: Value(int.tryParse(repMax.text)),
+                    restSetSec: Value(int.tryParse(rest.text)),
+                    progressionMode: Value(mode),
+                  ),
+                );
                 if (c.mounted) Navigator.pop(c);
               },
               child: const Text('Save'),
@@ -364,7 +446,10 @@ class _WorkoutTile extends ConsumerWidget {
 }
 
 Future<String?> _askText(
-    BuildContext context, String title, String hint) async {
+  BuildContext context,
+  String title,
+  String hint,
+) async {
   final controller = TextEditingController();
   return showDialog<String>(
     context: context,
@@ -378,10 +463,13 @@ Future<String?> _askText(
       ),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(c), child: const Text('Cancel')),
+          onPressed: () => Navigator.pop(c),
+          child: const Text('Cancel'),
+        ),
         FilledButton(
-            onPressed: () => Navigator.pop(c, controller.text.trim()),
-            child: const Text('Create')),
+          onPressed: () => Navigator.pop(c, controller.text.trim()),
+          child: const Text('Create'),
+        ),
       ],
     ),
   );

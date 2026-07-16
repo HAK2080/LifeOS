@@ -30,9 +30,12 @@ planned offline product flows implemented:
   Wellness library is now seeded from versioned JSON and stores protocols,
   sources, habit logs, and reviews separately from the UI.
 - Tasks now present user-created lists as visible Categories, with tasks nested
-  under their category in the all-tasks view. Strength includes an optional
-  RIR-based Progressive Overload method alongside manual, double, and coach
-  progression modes.
+  under their category in the all-tasks view. Strength now has an original
+  Progressive Overload feature-parity layer: 100+ exercises, searchable
+  library, editable full-body/upper-lower/push-pull-legs starter templates,
+  RIR-aware rep-range progression, rest timer, history, recent volume review,
+  and personal records. It remains an optional method alongside manual,
+  double, and coach progression modes.
 - Today keeps Ayah of the Day date-aware and lets the user dismiss it for the
   current day. The unused Quick check-in card has been removed from the Today
   surface; its legacy table remains only for backwards-compatible local data.
@@ -49,7 +52,7 @@ planned offline product flows implemented:
   and physical-device QA remain external release steps.
 
 Latest verification: code generation completed cleanly, `flutter analyze` is
-clean, and the full suite passes (63 tests). Fresh test APKs are available at
+clean, and the full suite passes (68 tests). Fresh test APKs are available at
 `build/app/outputs/flutter-apk/app-debug.apk` (debug, 235 MB) and
 `build/app/outputs/flutter-apk/app-release.apk` (local release, 84 MB). Builds
 emit only the known Flutter/Kotlin-plugin migration warnings.
@@ -158,14 +161,16 @@ Do not treat an old APK under `build/` as validation of current source.
 - [Database schema](lib/core/database/database.dart)
 - [Pure task logic](lib/features/tasks/task_logic.dart)
 - [Pure training progression](lib/features/training/progression.dart)
+- [Strength content and volume heuristics](lib/features/training/strength/strength_content.dart)
 - [Nutrition logic](lib/features/nutrition/nutrition_logic.dart)
 
 ## External project references
 
 - [Progressive Overload App](https://github.com/simmahon/progressive-overload-app)
-  is used as a public reference for the optional RP-style method. Life keeps
-  its own offline Flutter implementation and does not embed that React/Node
-  application.
+  is used as a public reference for the feature set and optional RP-style
+  method. Life develops its own offline Flutter implementation using the
+  LifeOS architecture; the external React/Node source, branding, and assets
+  are not embedded.
 - [FoodYou](https://github.com/maksimowiczm/FoodYou) is GPL-3.0 licensed and is
   implemented in Kotlin/Compose. Its local food-diary feature model informed
   Life's original searchable Food library; no FoodYou source code is copied.

@@ -13,7 +13,9 @@ import '../features/training/cardio/mobility_screen.dart';
 import '../features/training/cardio/walking_screen.dart';
 import '../features/training/cardio/zone2_screen.dart';
 import '../features/training/strength/exercise_history_screen.dart';
+import '../features/training/strength/exercise_library_screen.dart';
 import '../features/training/strength/plans_screen.dart';
+import '../features/training/strength/progress_dashboard_screen.dart';
 import '../features/training/strength/progressive_overload_screen.dart';
 import '../features/training/strength/strength_screen.dart';
 import '../features/training/strength/workout_session_screen.dart';
@@ -27,74 +29,89 @@ final appRouter = GoRouter(
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => _AppShell(shell: shell),
       branches: [
-        StatefulShellBranch(routes: [
-          GoRoute(path: '/tasks', builder: (c, s) => const TasksScreen()),
-        ]),
-        StatefulShellBranch(routes: [
-          GoRoute(path: '/today', builder: (c, s) => const TodayScreen()),
-        ]),
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: '/training',
-            builder: (c, s) => const TrainingScreen(),
-            routes: [
-              GoRoute(
-                path: 'equipment',
-                builder: (c, s) => const EquipmentScreen(),
-              ),
-              GoRoute(
-                path: 'strength',
-                builder: (c, s) => const StrengthScreen(),
-                routes: [
-                  GoRoute(
-                    path: 'session/:id',
-                    builder: (c, s) => WorkoutSessionScreen(
-                        sessionId:
-                            int.parse(s.pathParameters['id']!)),
-                  ),
-                  GoRoute(
-                    path: 'history',
-                    builder: (c, s) => const ExerciseHistoryScreen(),
-                  ),
-                  GoRoute(
-                    path: 'plans',
-                    builder: (c, s) => const PlansScreen(),
-                  ),
-                  GoRoute(
-                    path: 'progressive-overload',
-                    builder: (c, s) => const ProgressiveOverloadScreen(),
-                  ),
-                ],
-              ),
-              GoRoute(
-                path: 'wod',
-                builder: (c, s) => const WodScreen(),
-              ),
-              GoRoute(
-                path: 'kettlebell',
-                builder: (c, s) => const KettlebellScreen(),
-              ),
-              GoRoute(
-                path: 'zone2',
-                builder: (c, s) => const Zone2Screen(),
-              ),
-              GoRoute(
-                path: 'walking',
-                builder: (c, s) => const WalkingScreen(),
-              ),
-              GoRoute(
-                path: 'mobility',
-                builder: (c, s) => const MobilityScreen(),
-              ),
-            ],
-          ),
-        ]),
-        StatefulShellBranch(routes: [
-          GoRoute(path: '/nutrition', builder: (c, s) => const NutritionScreen()),
-        ]),
-        StatefulShellBranch(routes: [
-          GoRoute(path: '/growth', builder: (c, s) => const GrowthScreen()),
-        ]),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: '/tasks', builder: (c, s) => const TasksScreen()),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: '/today', builder: (c, s) => const TodayScreen()),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/training',
+              builder: (c, s) => const TrainingScreen(),
+              routes: [
+                GoRoute(
+                  path: 'equipment',
+                  builder: (c, s) => const EquipmentScreen(),
+                ),
+                GoRoute(
+                  path: 'strength',
+                  builder: (c, s) => const StrengthScreen(),
+                  routes: [
+                    GoRoute(
+                      path: 'session/:id',
+                      builder: (c, s) => WorkoutSessionScreen(
+                        sessionId: int.parse(s.pathParameters['id']!),
+                      ),
+                    ),
+                    GoRoute(
+                      path: 'history',
+                      builder: (c, s) => const ExerciseHistoryScreen(),
+                    ),
+                    GoRoute(
+                      path: 'exercises',
+                      builder: (c, s) => const ExerciseLibraryScreen(),
+                    ),
+                    GoRoute(
+                      path: 'progress',
+                      builder: (c, s) => const ProgressDashboardScreen(),
+                    ),
+                    GoRoute(
+                      path: 'plans',
+                      builder: (c, s) => const PlansScreen(),
+                    ),
+                    GoRoute(
+                      path: 'progressive-overload',
+                      builder: (c, s) => const ProgressiveOverloadScreen(),
+                    ),
+                  ],
+                ),
+                GoRoute(path: 'wod', builder: (c, s) => const WodScreen()),
+                GoRoute(
+                  path: 'kettlebell',
+                  builder: (c, s) => const KettlebellScreen(),
+                ),
+                GoRoute(path: 'zone2', builder: (c, s) => const Zone2Screen()),
+                GoRoute(
+                  path: 'walking',
+                  builder: (c, s) => const WalkingScreen(),
+                ),
+                GoRoute(
+                  path: 'mobility',
+                  builder: (c, s) => const MobilityScreen(),
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/nutrition',
+              builder: (c, s) => const NutritionScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: '/growth', builder: (c, s) => const GrowthScreen()),
+          ],
+        ),
       ],
     ),
     GoRoute(path: '/settings', builder: (c, s) => const SettingsScreen()),
@@ -135,8 +152,10 @@ class _AppShell extends StatelessWidget {
                       icon: _tabs[i].$1,
                       label: _tabs[i].$2,
                       selected: shell.currentIndex == i,
-                      onTap: () => shell.goBranch(i,
-                          initialLocation: i == shell.currentIndex),
+                      onTap: () => shell.goBranch(
+                        i,
+                        initialLocation: i == shell.currentIndex,
+                      ),
                     ),
                   ),
               ],
@@ -175,7 +194,9 @@ class _NavItem extends StatelessWidget {
           duration: const Duration(milliseconds: 180),
           margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
           decoration: BoxDecoration(
-            color: selected ? scheme.surfaceContainerHighest : Colors.transparent,
+            color: selected
+                ? scheme.surfaceContainerHighest
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -183,14 +204,16 @@ class _NavItem extends StatelessWidget {
             children: [
               Icon(icon, color: color, size: 22),
               const SizedBox(height: 4),
-              Text(label,
-                  style: TextStyle(
-                    fontFamily: 'Sans',
-                    fontSize: 10,
-                    letterSpacing: .5,
-                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                    color: color,
-                  )),
+              Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'Sans',
+                  fontSize: 10,
+                  letterSpacing: .5,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  color: color,
+                ),
+              ),
             ],
           ),
         ),
