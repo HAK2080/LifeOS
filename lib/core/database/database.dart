@@ -144,6 +144,41 @@ class Zone2Sessions extends Table {
   IntColumn get steps => integer().nullable()(); // walking only
 }
 
+// ---------- Nutrition (Phase 3) ----------
+
+class Meals extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text()();
+  RealColumn get calories => real()();
+  RealColumn get proteinG => real().withDefault(const Constant(0))();
+  RealColumn get carbsG => real().withDefault(const Constant(0))();
+  RealColumn get fatG => real().withDefault(const Constant(0))();
+  BoolColumn get pinned => boolean().withDefault(const Constant(false))();
+  BoolColumn get hidden => boolean().withDefault(const Constant(false))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+class MealLogs extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get day => text()(); // yyyy-MM-dd
+  IntColumn get mealId => integer().nullable().references(Meals, #id)();
+  TextColumn get name => text()();
+  RealColumn get portion => real().withDefault(const Constant(1.0))();
+  RealColumn get calories => real()();
+  RealColumn get proteinG => real().withDefault(const Constant(0))();
+  RealColumn get carbsG => real().withDefault(const Constant(0))();
+  RealColumn get fatG => real().withDefault(const Constant(0))();
+  DateTimeColumn get loggedAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+class WeightEntries extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get day => text()();
+  RealColumn get weightKg => real()();
+  RealColumn get waistCm => real().nullable()();
+  DateTimeColumn get loggedAt => dateTime().withDefault(currentDateAndTime)();
+}
+
 class WodSessions extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get title => text()();
@@ -173,6 +208,9 @@ class WodSessions extends Table {
   SessionSets,
   Zone2Sessions,
   WodSessions,
+  Meals,
+  MealLogs,
+  WeightEntries,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
@@ -187,7 +225,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   static const seedEquipment = [
     'Smith machine / functional trainer',
@@ -311,6 +349,11 @@ class AppDatabase extends _$AppDatabase {
             await m.createTable(zone2Sessions);
             await m.createTable(wodSessions);
             await batch(_seedExercises);
+          }
+          if (from < 3) {
+            await m.createTable(meals);
+            await m.createTable(mealLogs);
+            await m.createTable(weightEntries);
           }
         },
       );
