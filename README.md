@@ -61,6 +61,8 @@ This folder is the shared source of truth for Claude and Codex. Before coding:
 - `lib/features/<module>/`: Today, Tasks, Training, Nutrition, Growth,
   Equipment, and Settings.
 - `test/`: pure-logic, repository, asset, database, and widget tests.
+- `.github/workflows/flutter.yml`: shared CI quality gate for code generation,
+  analysis, tests, and a debug APK build.
 
 The app opens on Today. Main navigation order is Tasks, Today, Training,
 Nutrition, Growth. There is no account, cloud sync, team functionality, or
@@ -93,8 +95,8 @@ Do not treat an old APK under `build/` as validation of current source.
 2. Expand migration and widget coverage for Growth, Goals, and capture flows;
    improve contribution links beyond current kind-based counts.
 3. Complete Health Connect background sync and richer training data flows.
-4. Add replaceable AI food recognition/product lookup, CI, release signing,
-   and production QA in the order defined by `docs/BRIEF.md`.
+4. Add replaceable AI food recognition/product lookup, encrypted backup,
+   release signing, and production QA in the order defined by `docs/BRIEF.md`.
 
 ## Useful files
 
