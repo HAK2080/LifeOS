@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:drift/drift.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/database/database.dart';
 import '../../core/database/database_provider.dart';
@@ -18,6 +20,25 @@ int rotationIndex(DateTime date, int length) {
   if (length <= 0) return 0;
   return (dayOfYear(date) + date.year) % length;
 }
+
+final currentDayProvider = StreamProvider.autoDispose<String>((ref) {
+  final controller = StreamController<String>();
+  Timer? timer;
+
+  void emitAndSchedule() {
+    final now = DateTime.now();
+    controller.add(dayKey(now));
+    final next = DateTime(now.year, now.month, now.day + 1);
+    timer = Timer(next.difference(now), emitAndSchedule);
+  }
+
+  emitAndSchedule();
+  ref.onDispose(() {
+    timer?.cancel();
+    controller.close();
+  });
+  return controller.stream;
+});
 
 class Ayah {
   const Ayah({
@@ -37,12 +58,13 @@ class Ayah {
   final String source;
 }
 
-final ayahOfDayProvider = FutureProvider<Ayah>((ref) async {
+final ayahOfDayProvider = FutureProvider.autoDispose<Ayah>((ref) async {
+  final day = ref.watch(currentDayProvider).value ?? dayKey(DateTime.now());
   final raw = await rootBundle.loadString('assets/data/ayah_of_day.json');
   final data = json.decode(raw) as Map<String, dynamic>;
   final verses = data['verses'] as List;
   final v =
-      verses[rotationIndex(DateTime.now(), verses.length)] as Map<String, dynamic>;
+      verses[rotationIndex(DateTime.parse(day), verses.length)] as Map<String, dynamic>;
   return Ayah(
     surah: v['surah'] as String,
     surahNumber: v['surah_number'] as int,
@@ -52,6 +74,34 @@ final ayahOfDayProvider = FutureProvider<Ayah>((ref) async {
     source: data['source'] as String,
   );
 });
+
+final ayahDismissedProvider =
+    AsyncNotifierProvider.autoDispose<AyahDismissedNotifier, bool>(
+        AyahDismissedNotifier.new);
+
+class AyahDismissedNotifier extends AsyncNotifier<bool> {
+  String get _day =>
+      ref.read(currentDayProvider).value ?? dayKey(DateTime.now());
+
+  @override
+  Future<bool> build() async {
+    final day = ref.watch(currentDayProvider).value ?? dayKey(DateTime.now());
+    final preferences = await SharedPreferences.getInstance();
+    return preferences.getBool('ayah_dismissed_$day') ?? false;
+  }
+
+  Future<void> dismissForToday() async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setBool('ayah_dismissed_$_day', true);
+    state = const AsyncData(true);
+  }
+
+  Future<void> showForToday() async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.remove('ayah_dismissed_$_day');
+    state = const AsyncData(false);
+  }
+}
 
 const goodDeedSuggestions = [
   'صدقة ولو بسيطة',

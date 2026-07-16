@@ -148,6 +148,8 @@ class Zone2Sessions extends Table {
 
 class Habits extends Table {
   IntColumn get id => integer().autoIncrement()();
+  TextColumn get protocolId =>
+      text().nullable().references(WellnessProtocols, #id)();
   TextColumn get name => text()();
   TextColumn get purpose => text().nullable()();
   TextColumn get protocol => text().nullable()();
@@ -175,6 +177,15 @@ class HabitLogs extends Table {
   TextColumn get day => text()();
   // completed | minimum | skipped
   TextColumn get status => text()();
+}
+
+class HabitReviews extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get habitId => integer().references(Habits, #id)();
+  DateTimeColumn get reviewedAt => dateTime().withDefault(currentDateAndTime)();
+  TextColumn get outcome => text()(); // keep | adjust | pause | stop
+  BoolColumn get helped => boolean().nullable()();
+  TextColumn get notes => text().nullable()();
 }
 
 @DataClassName('LifeGoal')
@@ -238,6 +249,37 @@ class WodSessions extends Table {
   TextColumn get feeling => text().nullable()();
 }
 
+class WellnessProtocols extends Table {
+  TextColumn get id => text()();
+  IntColumn get version => integer().withDefault(const Constant(1))();
+  TextColumn get category => text()();
+  TextColumn get title => text()();
+  TextColumn get purpose => text()();
+  TextColumn get instructions => text()();
+  TextColumn get minimumVersion => text()();
+  TextColumn get standardVersion => text()();
+  TextColumn get frequency => text()();
+  IntColumn get durationMinutes => integer().nullable()();
+  TextColumn get bestTime => text()();
+  TextColumn get evidenceLevel => text()();
+  TextColumn get safetyNotes => text()();
+  IntColumn get reviewPeriodDays => integer().withDefault(const Constant(28))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+class WellnessSources extends Table {
+  TextColumn get id => text()();
+  TextColumn get title => text()();
+  TextColumn get publisher => text()();
+  TextColumn get url => text()();
+}
+
+class WellnessProtocolSources extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get protocolId => text().references(WellnessProtocols, #id)();
+  TextColumn get sourceId => text().references(WellnessSources, #id)();
+}
+
 @DriftDatabase(tables: [
   TaskLists,
   Tasks,
@@ -255,11 +297,15 @@ class WodSessions extends Table {
   SessionSets,
   Zone2Sessions,
   WodSessions,
+  WellnessProtocols,
+  WellnessSources,
+  WellnessProtocolSources,
   Meals,
   MealLogs,
   WeightEntries,
   Habits,
   HabitLogs,
+  HabitReviews,
   Goals,
 ])
 class AppDatabase extends _$AppDatabase {
@@ -275,7 +321,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   static const seedEquipment = [
     'Smith machine / functional trainer',
@@ -405,10 +451,21 @@ class AppDatabase extends _$AppDatabase {
             await m.createTable(mealLogs);
             await m.createTable(weightEntries);
           }
+          if (from < 5) {
+            await m.createTable(wellnessProtocols);
+            await m.createTable(wellnessSources);
+            await m.createTable(wellnessProtocolSources);
+          }
           if (from < 4) {
             await m.createTable(habits);
             await m.createTable(habitLogs);
             await m.createTable(goals);
+          }
+          if (from < 5) {
+            await m.createTable(habitReviews);
+          }
+          if (from < 5 && from >= 4) {
+            await m.addColumn(habits, habits.protocolId);
           }
         },
       );

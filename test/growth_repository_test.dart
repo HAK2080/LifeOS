@@ -1,14 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:drift/drift.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:life_app/core/database/database.dart';
 import 'package:life_app/features/growth/growth_repository.dart';
-import 'package:life_app/features/growth/protocols.dart';
+import 'package:life_app/features/growth/wellness_protocols.dart';
 import 'package:life_app/core/notifications/notification_service.dart';
 
 import 'helpers/test_db.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late GrowthRepository repo;
   late AppDatabase db;
 
@@ -19,12 +21,23 @@ void main() {
 
   tearDown(() => db.close());
 
+  test('seeds the versioned Wellness protocol library', () async {
+    await repo.ensureProtocolsSeeded();
+    final protocols = await db.select(db.wellnessProtocols).get();
+    final sources = await db.select(db.wellnessSources).get();
+    expect(protocols, hasLength(15));
+    expect(sources, isNotEmpty);
+    expect(protocols.map((p) => p.category), contains('Morning light'));
+  });
+
   test('adds a protocol and records one daily completion state', () async {
-    final id = await repo.addPreset(protocolPresets.first);
+    final raw = await rootBundle.loadString(
+        'assets/data/wellness_protocols_v1.json');
+    final id = await repo.addProtocol(WellnessProtocolSpec.parseSeed(raw).first);
     final habits = await db.select(db.habits).get();
     expect(habits.single.id, id);
-    expect(habits.single.name, 'Sleep');
-    expect(habits.single.scheduleType, 'weekly');
+    expect(habits.single.name, 'Sleep schedule');
+    expect(habits.single.scheduleType, 'none');
 
     await repo.setLog(habitId: id, day: '2026-07-16', status: 'minimum');
     await repo.setLog(habitId: id, day: '2026-07-16', status: 'completed');

@@ -10,7 +10,6 @@ void main() {
     await tester.pumpWidget(ProviderScope(
       overrides: [
         todayDeedsProvider.overrideWith((ref) => Stream.value(<GoodDeed>[])),
-        todayCheckInProvider.overrideWith((ref) => Stream.value(null)),
         todayFocusProvider.overrideWith((ref) => Stream.value(null)),
       ],
       child: const LifeApp(),

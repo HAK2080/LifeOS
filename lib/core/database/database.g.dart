@@ -6400,6 +6400,1457 @@ class WodSessionsCompanion extends UpdateCompanion<WodSession> {
   }
 }
 
+class $WellnessProtocolsTable extends WellnessProtocols
+    with TableInfo<$WellnessProtocolsTable, WellnessProtocol> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $WellnessProtocolsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _versionMeta = const VerificationMeta(
+    'version',
+  );
+  @override
+  late final GeneratedColumn<int> version = GeneratedColumn<int>(
+    'version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _purposeMeta = const VerificationMeta(
+    'purpose',
+  );
+  @override
+  late final GeneratedColumn<String> purpose = GeneratedColumn<String>(
+    'purpose',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _instructionsMeta = const VerificationMeta(
+    'instructions',
+  );
+  @override
+  late final GeneratedColumn<String> instructions = GeneratedColumn<String>(
+    'instructions',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _minimumVersionMeta = const VerificationMeta(
+    'minimumVersion',
+  );
+  @override
+  late final GeneratedColumn<String> minimumVersion = GeneratedColumn<String>(
+    'minimum_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _standardVersionMeta = const VerificationMeta(
+    'standardVersion',
+  );
+  @override
+  late final GeneratedColumn<String> standardVersion = GeneratedColumn<String>(
+    'standard_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _frequencyMeta = const VerificationMeta(
+    'frequency',
+  );
+  @override
+  late final GeneratedColumn<String> frequency = GeneratedColumn<String>(
+    'frequency',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _durationMinutesMeta = const VerificationMeta(
+    'durationMinutes',
+  );
+  @override
+  late final GeneratedColumn<int> durationMinutes = GeneratedColumn<int>(
+    'duration_minutes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bestTimeMeta = const VerificationMeta(
+    'bestTime',
+  );
+  @override
+  late final GeneratedColumn<String> bestTime = GeneratedColumn<String>(
+    'best_time',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _evidenceLevelMeta = const VerificationMeta(
+    'evidenceLevel',
+  );
+  @override
+  late final GeneratedColumn<String> evidenceLevel = GeneratedColumn<String>(
+    'evidence_level',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _safetyNotesMeta = const VerificationMeta(
+    'safetyNotes',
+  );
+  @override
+  late final GeneratedColumn<String> safetyNotes = GeneratedColumn<String>(
+    'safety_notes',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _reviewPeriodDaysMeta = const VerificationMeta(
+    'reviewPeriodDays',
+  );
+  @override
+  late final GeneratedColumn<int> reviewPeriodDays = GeneratedColumn<int>(
+    'review_period_days',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(28),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    version,
+    category,
+    title,
+    purpose,
+    instructions,
+    minimumVersion,
+    standardVersion,
+    frequency,
+    durationMinutes,
+    bestTime,
+    evidenceLevel,
+    safetyNotes,
+    reviewPeriodDays,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'wellness_protocols';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<WellnessProtocol> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('version')) {
+      context.handle(
+        _versionMeta,
+        version.isAcceptableOrUnknown(data['version']!, _versionMeta),
+      );
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_categoryMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('purpose')) {
+      context.handle(
+        _purposeMeta,
+        purpose.isAcceptableOrUnknown(data['purpose']!, _purposeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_purposeMeta);
+    }
+    if (data.containsKey('instructions')) {
+      context.handle(
+        _instructionsMeta,
+        instructions.isAcceptableOrUnknown(
+          data['instructions']!,
+          _instructionsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_instructionsMeta);
+    }
+    if (data.containsKey('minimum_version')) {
+      context.handle(
+        _minimumVersionMeta,
+        minimumVersion.isAcceptableOrUnknown(
+          data['minimum_version']!,
+          _minimumVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_minimumVersionMeta);
+    }
+    if (data.containsKey('standard_version')) {
+      context.handle(
+        _standardVersionMeta,
+        standardVersion.isAcceptableOrUnknown(
+          data['standard_version']!,
+          _standardVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_standardVersionMeta);
+    }
+    if (data.containsKey('frequency')) {
+      context.handle(
+        _frequencyMeta,
+        frequency.isAcceptableOrUnknown(data['frequency']!, _frequencyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_frequencyMeta);
+    }
+    if (data.containsKey('duration_minutes')) {
+      context.handle(
+        _durationMinutesMeta,
+        durationMinutes.isAcceptableOrUnknown(
+          data['duration_minutes']!,
+          _durationMinutesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('best_time')) {
+      context.handle(
+        _bestTimeMeta,
+        bestTime.isAcceptableOrUnknown(data['best_time']!, _bestTimeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_bestTimeMeta);
+    }
+    if (data.containsKey('evidence_level')) {
+      context.handle(
+        _evidenceLevelMeta,
+        evidenceLevel.isAcceptableOrUnknown(
+          data['evidence_level']!,
+          _evidenceLevelMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_evidenceLevelMeta);
+    }
+    if (data.containsKey('safety_notes')) {
+      context.handle(
+        _safetyNotesMeta,
+        safetyNotes.isAcceptableOrUnknown(
+          data['safety_notes']!,
+          _safetyNotesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_safetyNotesMeta);
+    }
+    if (data.containsKey('review_period_days')) {
+      context.handle(
+        _reviewPeriodDaysMeta,
+        reviewPeriodDays.isAcceptableOrUnknown(
+          data['review_period_days']!,
+          _reviewPeriodDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  WellnessProtocol map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return WellnessProtocol(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      version: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}version'],
+      )!,
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      purpose: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}purpose'],
+      )!,
+      instructions: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}instructions'],
+      )!,
+      minimumVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}minimum_version'],
+      )!,
+      standardVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}standard_version'],
+      )!,
+      frequency: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}frequency'],
+      )!,
+      durationMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}duration_minutes'],
+      ),
+      bestTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}best_time'],
+      )!,
+      evidenceLevel: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}evidence_level'],
+      )!,
+      safetyNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}safety_notes'],
+      )!,
+      reviewPeriodDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}review_period_days'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $WellnessProtocolsTable createAlias(String alias) {
+    return $WellnessProtocolsTable(attachedDatabase, alias);
+  }
+}
+
+class WellnessProtocol extends DataClass
+    implements Insertable<WellnessProtocol> {
+  final String id;
+  final int version;
+  final String category;
+  final String title;
+  final String purpose;
+  final String instructions;
+  final String minimumVersion;
+  final String standardVersion;
+  final String frequency;
+  final int? durationMinutes;
+  final String bestTime;
+  final String evidenceLevel;
+  final String safetyNotes;
+  final int reviewPeriodDays;
+  final DateTime createdAt;
+  const WellnessProtocol({
+    required this.id,
+    required this.version,
+    required this.category,
+    required this.title,
+    required this.purpose,
+    required this.instructions,
+    required this.minimumVersion,
+    required this.standardVersion,
+    required this.frequency,
+    this.durationMinutes,
+    required this.bestTime,
+    required this.evidenceLevel,
+    required this.safetyNotes,
+    required this.reviewPeriodDays,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['version'] = Variable<int>(version);
+    map['category'] = Variable<String>(category);
+    map['title'] = Variable<String>(title);
+    map['purpose'] = Variable<String>(purpose);
+    map['instructions'] = Variable<String>(instructions);
+    map['minimum_version'] = Variable<String>(minimumVersion);
+    map['standard_version'] = Variable<String>(standardVersion);
+    map['frequency'] = Variable<String>(frequency);
+    if (!nullToAbsent || durationMinutes != null) {
+      map['duration_minutes'] = Variable<int>(durationMinutes);
+    }
+    map['best_time'] = Variable<String>(bestTime);
+    map['evidence_level'] = Variable<String>(evidenceLevel);
+    map['safety_notes'] = Variable<String>(safetyNotes);
+    map['review_period_days'] = Variable<int>(reviewPeriodDays);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  WellnessProtocolsCompanion toCompanion(bool nullToAbsent) {
+    return WellnessProtocolsCompanion(
+      id: Value(id),
+      version: Value(version),
+      category: Value(category),
+      title: Value(title),
+      purpose: Value(purpose),
+      instructions: Value(instructions),
+      minimumVersion: Value(minimumVersion),
+      standardVersion: Value(standardVersion),
+      frequency: Value(frequency),
+      durationMinutes: durationMinutes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(durationMinutes),
+      bestTime: Value(bestTime),
+      evidenceLevel: Value(evidenceLevel),
+      safetyNotes: Value(safetyNotes),
+      reviewPeriodDays: Value(reviewPeriodDays),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory WellnessProtocol.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return WellnessProtocol(
+      id: serializer.fromJson<String>(json['id']),
+      version: serializer.fromJson<int>(json['version']),
+      category: serializer.fromJson<String>(json['category']),
+      title: serializer.fromJson<String>(json['title']),
+      purpose: serializer.fromJson<String>(json['purpose']),
+      instructions: serializer.fromJson<String>(json['instructions']),
+      minimumVersion: serializer.fromJson<String>(json['minimumVersion']),
+      standardVersion: serializer.fromJson<String>(json['standardVersion']),
+      frequency: serializer.fromJson<String>(json['frequency']),
+      durationMinutes: serializer.fromJson<int?>(json['durationMinutes']),
+      bestTime: serializer.fromJson<String>(json['bestTime']),
+      evidenceLevel: serializer.fromJson<String>(json['evidenceLevel']),
+      safetyNotes: serializer.fromJson<String>(json['safetyNotes']),
+      reviewPeriodDays: serializer.fromJson<int>(json['reviewPeriodDays']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'version': serializer.toJson<int>(version),
+      'category': serializer.toJson<String>(category),
+      'title': serializer.toJson<String>(title),
+      'purpose': serializer.toJson<String>(purpose),
+      'instructions': serializer.toJson<String>(instructions),
+      'minimumVersion': serializer.toJson<String>(minimumVersion),
+      'standardVersion': serializer.toJson<String>(standardVersion),
+      'frequency': serializer.toJson<String>(frequency),
+      'durationMinutes': serializer.toJson<int?>(durationMinutes),
+      'bestTime': serializer.toJson<String>(bestTime),
+      'evidenceLevel': serializer.toJson<String>(evidenceLevel),
+      'safetyNotes': serializer.toJson<String>(safetyNotes),
+      'reviewPeriodDays': serializer.toJson<int>(reviewPeriodDays),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  WellnessProtocol copyWith({
+    String? id,
+    int? version,
+    String? category,
+    String? title,
+    String? purpose,
+    String? instructions,
+    String? minimumVersion,
+    String? standardVersion,
+    String? frequency,
+    Value<int?> durationMinutes = const Value.absent(),
+    String? bestTime,
+    String? evidenceLevel,
+    String? safetyNotes,
+    int? reviewPeriodDays,
+    DateTime? createdAt,
+  }) => WellnessProtocol(
+    id: id ?? this.id,
+    version: version ?? this.version,
+    category: category ?? this.category,
+    title: title ?? this.title,
+    purpose: purpose ?? this.purpose,
+    instructions: instructions ?? this.instructions,
+    minimumVersion: minimumVersion ?? this.minimumVersion,
+    standardVersion: standardVersion ?? this.standardVersion,
+    frequency: frequency ?? this.frequency,
+    durationMinutes: durationMinutes.present
+        ? durationMinutes.value
+        : this.durationMinutes,
+    bestTime: bestTime ?? this.bestTime,
+    evidenceLevel: evidenceLevel ?? this.evidenceLevel,
+    safetyNotes: safetyNotes ?? this.safetyNotes,
+    reviewPeriodDays: reviewPeriodDays ?? this.reviewPeriodDays,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  WellnessProtocol copyWithCompanion(WellnessProtocolsCompanion data) {
+    return WellnessProtocol(
+      id: data.id.present ? data.id.value : this.id,
+      version: data.version.present ? data.version.value : this.version,
+      category: data.category.present ? data.category.value : this.category,
+      title: data.title.present ? data.title.value : this.title,
+      purpose: data.purpose.present ? data.purpose.value : this.purpose,
+      instructions: data.instructions.present
+          ? data.instructions.value
+          : this.instructions,
+      minimumVersion: data.minimumVersion.present
+          ? data.minimumVersion.value
+          : this.minimumVersion,
+      standardVersion: data.standardVersion.present
+          ? data.standardVersion.value
+          : this.standardVersion,
+      frequency: data.frequency.present ? data.frequency.value : this.frequency,
+      durationMinutes: data.durationMinutes.present
+          ? data.durationMinutes.value
+          : this.durationMinutes,
+      bestTime: data.bestTime.present ? data.bestTime.value : this.bestTime,
+      evidenceLevel: data.evidenceLevel.present
+          ? data.evidenceLevel.value
+          : this.evidenceLevel,
+      safetyNotes: data.safetyNotes.present
+          ? data.safetyNotes.value
+          : this.safetyNotes,
+      reviewPeriodDays: data.reviewPeriodDays.present
+          ? data.reviewPeriodDays.value
+          : this.reviewPeriodDays,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WellnessProtocol(')
+          ..write('id: $id, ')
+          ..write('version: $version, ')
+          ..write('category: $category, ')
+          ..write('title: $title, ')
+          ..write('purpose: $purpose, ')
+          ..write('instructions: $instructions, ')
+          ..write('minimumVersion: $minimumVersion, ')
+          ..write('standardVersion: $standardVersion, ')
+          ..write('frequency: $frequency, ')
+          ..write('durationMinutes: $durationMinutes, ')
+          ..write('bestTime: $bestTime, ')
+          ..write('evidenceLevel: $evidenceLevel, ')
+          ..write('safetyNotes: $safetyNotes, ')
+          ..write('reviewPeriodDays: $reviewPeriodDays, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    version,
+    category,
+    title,
+    purpose,
+    instructions,
+    minimumVersion,
+    standardVersion,
+    frequency,
+    durationMinutes,
+    bestTime,
+    evidenceLevel,
+    safetyNotes,
+    reviewPeriodDays,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is WellnessProtocol &&
+          other.id == this.id &&
+          other.version == this.version &&
+          other.category == this.category &&
+          other.title == this.title &&
+          other.purpose == this.purpose &&
+          other.instructions == this.instructions &&
+          other.minimumVersion == this.minimumVersion &&
+          other.standardVersion == this.standardVersion &&
+          other.frequency == this.frequency &&
+          other.durationMinutes == this.durationMinutes &&
+          other.bestTime == this.bestTime &&
+          other.evidenceLevel == this.evidenceLevel &&
+          other.safetyNotes == this.safetyNotes &&
+          other.reviewPeriodDays == this.reviewPeriodDays &&
+          other.createdAt == this.createdAt);
+}
+
+class WellnessProtocolsCompanion extends UpdateCompanion<WellnessProtocol> {
+  final Value<String> id;
+  final Value<int> version;
+  final Value<String> category;
+  final Value<String> title;
+  final Value<String> purpose;
+  final Value<String> instructions;
+  final Value<String> minimumVersion;
+  final Value<String> standardVersion;
+  final Value<String> frequency;
+  final Value<int?> durationMinutes;
+  final Value<String> bestTime;
+  final Value<String> evidenceLevel;
+  final Value<String> safetyNotes;
+  final Value<int> reviewPeriodDays;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const WellnessProtocolsCompanion({
+    this.id = const Value.absent(),
+    this.version = const Value.absent(),
+    this.category = const Value.absent(),
+    this.title = const Value.absent(),
+    this.purpose = const Value.absent(),
+    this.instructions = const Value.absent(),
+    this.minimumVersion = const Value.absent(),
+    this.standardVersion = const Value.absent(),
+    this.frequency = const Value.absent(),
+    this.durationMinutes = const Value.absent(),
+    this.bestTime = const Value.absent(),
+    this.evidenceLevel = const Value.absent(),
+    this.safetyNotes = const Value.absent(),
+    this.reviewPeriodDays = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  WellnessProtocolsCompanion.insert({
+    required String id,
+    this.version = const Value.absent(),
+    required String category,
+    required String title,
+    required String purpose,
+    required String instructions,
+    required String minimumVersion,
+    required String standardVersion,
+    required String frequency,
+    this.durationMinutes = const Value.absent(),
+    required String bestTime,
+    required String evidenceLevel,
+    required String safetyNotes,
+    this.reviewPeriodDays = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       category = Value(category),
+       title = Value(title),
+       purpose = Value(purpose),
+       instructions = Value(instructions),
+       minimumVersion = Value(minimumVersion),
+       standardVersion = Value(standardVersion),
+       frequency = Value(frequency),
+       bestTime = Value(bestTime),
+       evidenceLevel = Value(evidenceLevel),
+       safetyNotes = Value(safetyNotes);
+  static Insertable<WellnessProtocol> custom({
+    Expression<String>? id,
+    Expression<int>? version,
+    Expression<String>? category,
+    Expression<String>? title,
+    Expression<String>? purpose,
+    Expression<String>? instructions,
+    Expression<String>? minimumVersion,
+    Expression<String>? standardVersion,
+    Expression<String>? frequency,
+    Expression<int>? durationMinutes,
+    Expression<String>? bestTime,
+    Expression<String>? evidenceLevel,
+    Expression<String>? safetyNotes,
+    Expression<int>? reviewPeriodDays,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (version != null) 'version': version,
+      if (category != null) 'category': category,
+      if (title != null) 'title': title,
+      if (purpose != null) 'purpose': purpose,
+      if (instructions != null) 'instructions': instructions,
+      if (minimumVersion != null) 'minimum_version': minimumVersion,
+      if (standardVersion != null) 'standard_version': standardVersion,
+      if (frequency != null) 'frequency': frequency,
+      if (durationMinutes != null) 'duration_minutes': durationMinutes,
+      if (bestTime != null) 'best_time': bestTime,
+      if (evidenceLevel != null) 'evidence_level': evidenceLevel,
+      if (safetyNotes != null) 'safety_notes': safetyNotes,
+      if (reviewPeriodDays != null) 'review_period_days': reviewPeriodDays,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  WellnessProtocolsCompanion copyWith({
+    Value<String>? id,
+    Value<int>? version,
+    Value<String>? category,
+    Value<String>? title,
+    Value<String>? purpose,
+    Value<String>? instructions,
+    Value<String>? minimumVersion,
+    Value<String>? standardVersion,
+    Value<String>? frequency,
+    Value<int?>? durationMinutes,
+    Value<String>? bestTime,
+    Value<String>? evidenceLevel,
+    Value<String>? safetyNotes,
+    Value<int>? reviewPeriodDays,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return WellnessProtocolsCompanion(
+      id: id ?? this.id,
+      version: version ?? this.version,
+      category: category ?? this.category,
+      title: title ?? this.title,
+      purpose: purpose ?? this.purpose,
+      instructions: instructions ?? this.instructions,
+      minimumVersion: minimumVersion ?? this.minimumVersion,
+      standardVersion: standardVersion ?? this.standardVersion,
+      frequency: frequency ?? this.frequency,
+      durationMinutes: durationMinutes ?? this.durationMinutes,
+      bestTime: bestTime ?? this.bestTime,
+      evidenceLevel: evidenceLevel ?? this.evidenceLevel,
+      safetyNotes: safetyNotes ?? this.safetyNotes,
+      reviewPeriodDays: reviewPeriodDays ?? this.reviewPeriodDays,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (version.present) {
+      map['version'] = Variable<int>(version.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (purpose.present) {
+      map['purpose'] = Variable<String>(purpose.value);
+    }
+    if (instructions.present) {
+      map['instructions'] = Variable<String>(instructions.value);
+    }
+    if (minimumVersion.present) {
+      map['minimum_version'] = Variable<String>(minimumVersion.value);
+    }
+    if (standardVersion.present) {
+      map['standard_version'] = Variable<String>(standardVersion.value);
+    }
+    if (frequency.present) {
+      map['frequency'] = Variable<String>(frequency.value);
+    }
+    if (durationMinutes.present) {
+      map['duration_minutes'] = Variable<int>(durationMinutes.value);
+    }
+    if (bestTime.present) {
+      map['best_time'] = Variable<String>(bestTime.value);
+    }
+    if (evidenceLevel.present) {
+      map['evidence_level'] = Variable<String>(evidenceLevel.value);
+    }
+    if (safetyNotes.present) {
+      map['safety_notes'] = Variable<String>(safetyNotes.value);
+    }
+    if (reviewPeriodDays.present) {
+      map['review_period_days'] = Variable<int>(reviewPeriodDays.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WellnessProtocolsCompanion(')
+          ..write('id: $id, ')
+          ..write('version: $version, ')
+          ..write('category: $category, ')
+          ..write('title: $title, ')
+          ..write('purpose: $purpose, ')
+          ..write('instructions: $instructions, ')
+          ..write('minimumVersion: $minimumVersion, ')
+          ..write('standardVersion: $standardVersion, ')
+          ..write('frequency: $frequency, ')
+          ..write('durationMinutes: $durationMinutes, ')
+          ..write('bestTime: $bestTime, ')
+          ..write('evidenceLevel: $evidenceLevel, ')
+          ..write('safetyNotes: $safetyNotes, ')
+          ..write('reviewPeriodDays: $reviewPeriodDays, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $WellnessSourcesTable extends WellnessSources
+    with TableInfo<$WellnessSourcesTable, WellnessSource> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $WellnessSourcesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _publisherMeta = const VerificationMeta(
+    'publisher',
+  );
+  @override
+  late final GeneratedColumn<String> publisher = GeneratedColumn<String>(
+    'publisher',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _urlMeta = const VerificationMeta('url');
+  @override
+  late final GeneratedColumn<String> url = GeneratedColumn<String>(
+    'url',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, title, publisher, url];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'wellness_sources';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<WellnessSource> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('publisher')) {
+      context.handle(
+        _publisherMeta,
+        publisher.isAcceptableOrUnknown(data['publisher']!, _publisherMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_publisherMeta);
+    }
+    if (data.containsKey('url')) {
+      context.handle(
+        _urlMeta,
+        url.isAcceptableOrUnknown(data['url']!, _urlMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_urlMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  WellnessSource map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return WellnessSource(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      publisher: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}publisher'],
+      )!,
+      url: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}url'],
+      )!,
+    );
+  }
+
+  @override
+  $WellnessSourcesTable createAlias(String alias) {
+    return $WellnessSourcesTable(attachedDatabase, alias);
+  }
+}
+
+class WellnessSource extends DataClass implements Insertable<WellnessSource> {
+  final String id;
+  final String title;
+  final String publisher;
+  final String url;
+  const WellnessSource({
+    required this.id,
+    required this.title,
+    required this.publisher,
+    required this.url,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['title'] = Variable<String>(title);
+    map['publisher'] = Variable<String>(publisher);
+    map['url'] = Variable<String>(url);
+    return map;
+  }
+
+  WellnessSourcesCompanion toCompanion(bool nullToAbsent) {
+    return WellnessSourcesCompanion(
+      id: Value(id),
+      title: Value(title),
+      publisher: Value(publisher),
+      url: Value(url),
+    );
+  }
+
+  factory WellnessSource.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return WellnessSource(
+      id: serializer.fromJson<String>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      publisher: serializer.fromJson<String>(json['publisher']),
+      url: serializer.fromJson<String>(json['url']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'title': serializer.toJson<String>(title),
+      'publisher': serializer.toJson<String>(publisher),
+      'url': serializer.toJson<String>(url),
+    };
+  }
+
+  WellnessSource copyWith({
+    String? id,
+    String? title,
+    String? publisher,
+    String? url,
+  }) => WellnessSource(
+    id: id ?? this.id,
+    title: title ?? this.title,
+    publisher: publisher ?? this.publisher,
+    url: url ?? this.url,
+  );
+  WellnessSource copyWithCompanion(WellnessSourcesCompanion data) {
+    return WellnessSource(
+      id: data.id.present ? data.id.value : this.id,
+      title: data.title.present ? data.title.value : this.title,
+      publisher: data.publisher.present ? data.publisher.value : this.publisher,
+      url: data.url.present ? data.url.value : this.url,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WellnessSource(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('publisher: $publisher, ')
+          ..write('url: $url')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, title, publisher, url);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is WellnessSource &&
+          other.id == this.id &&
+          other.title == this.title &&
+          other.publisher == this.publisher &&
+          other.url == this.url);
+}
+
+class WellnessSourcesCompanion extends UpdateCompanion<WellnessSource> {
+  final Value<String> id;
+  final Value<String> title;
+  final Value<String> publisher;
+  final Value<String> url;
+  final Value<int> rowid;
+  const WellnessSourcesCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
+    this.publisher = const Value.absent(),
+    this.url = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  WellnessSourcesCompanion.insert({
+    required String id,
+    required String title,
+    required String publisher,
+    required String url,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       title = Value(title),
+       publisher = Value(publisher),
+       url = Value(url);
+  static Insertable<WellnessSource> custom({
+    Expression<String>? id,
+    Expression<String>? title,
+    Expression<String>? publisher,
+    Expression<String>? url,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (publisher != null) 'publisher': publisher,
+      if (url != null) 'url': url,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  WellnessSourcesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? title,
+    Value<String>? publisher,
+    Value<String>? url,
+    Value<int>? rowid,
+  }) {
+    return WellnessSourcesCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      publisher: publisher ?? this.publisher,
+      url: url ?? this.url,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (publisher.present) {
+      map['publisher'] = Variable<String>(publisher.value);
+    }
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WellnessSourcesCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('publisher: $publisher, ')
+          ..write('url: $url, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $WellnessProtocolSourcesTable extends WellnessProtocolSources
+    with TableInfo<$WellnessProtocolSourcesTable, WellnessProtocolSource> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $WellnessProtocolSourcesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _protocolIdMeta = const VerificationMeta(
+    'protocolId',
+  );
+  @override
+  late final GeneratedColumn<String> protocolId = GeneratedColumn<String>(
+    'protocol_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES wellness_protocols (id)',
+    ),
+  );
+  static const VerificationMeta _sourceIdMeta = const VerificationMeta(
+    'sourceId',
+  );
+  @override
+  late final GeneratedColumn<String> sourceId = GeneratedColumn<String>(
+    'source_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES wellness_sources (id)',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, protocolId, sourceId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'wellness_protocol_sources';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<WellnessProtocolSource> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('protocol_id')) {
+      context.handle(
+        _protocolIdMeta,
+        protocolId.isAcceptableOrUnknown(data['protocol_id']!, _protocolIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_protocolIdMeta);
+    }
+    if (data.containsKey('source_id')) {
+      context.handle(
+        _sourceIdMeta,
+        sourceId.isAcceptableOrUnknown(data['source_id']!, _sourceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  WellnessProtocolSource map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return WellnessProtocolSource(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      protocolId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}protocol_id'],
+      )!,
+      sourceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_id'],
+      )!,
+    );
+  }
+
+  @override
+  $WellnessProtocolSourcesTable createAlias(String alias) {
+    return $WellnessProtocolSourcesTable(attachedDatabase, alias);
+  }
+}
+
+class WellnessProtocolSource extends DataClass
+    implements Insertable<WellnessProtocolSource> {
+  final int id;
+  final String protocolId;
+  final String sourceId;
+  const WellnessProtocolSource({
+    required this.id,
+    required this.protocolId,
+    required this.sourceId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['protocol_id'] = Variable<String>(protocolId);
+    map['source_id'] = Variable<String>(sourceId);
+    return map;
+  }
+
+  WellnessProtocolSourcesCompanion toCompanion(bool nullToAbsent) {
+    return WellnessProtocolSourcesCompanion(
+      id: Value(id),
+      protocolId: Value(protocolId),
+      sourceId: Value(sourceId),
+    );
+  }
+
+  factory WellnessProtocolSource.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return WellnessProtocolSource(
+      id: serializer.fromJson<int>(json['id']),
+      protocolId: serializer.fromJson<String>(json['protocolId']),
+      sourceId: serializer.fromJson<String>(json['sourceId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'protocolId': serializer.toJson<String>(protocolId),
+      'sourceId': serializer.toJson<String>(sourceId),
+    };
+  }
+
+  WellnessProtocolSource copyWith({
+    int? id,
+    String? protocolId,
+    String? sourceId,
+  }) => WellnessProtocolSource(
+    id: id ?? this.id,
+    protocolId: protocolId ?? this.protocolId,
+    sourceId: sourceId ?? this.sourceId,
+  );
+  WellnessProtocolSource copyWithCompanion(
+    WellnessProtocolSourcesCompanion data,
+  ) {
+    return WellnessProtocolSource(
+      id: data.id.present ? data.id.value : this.id,
+      protocolId: data.protocolId.present
+          ? data.protocolId.value
+          : this.protocolId,
+      sourceId: data.sourceId.present ? data.sourceId.value : this.sourceId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WellnessProtocolSource(')
+          ..write('id: $id, ')
+          ..write('protocolId: $protocolId, ')
+          ..write('sourceId: $sourceId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, protocolId, sourceId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is WellnessProtocolSource &&
+          other.id == this.id &&
+          other.protocolId == this.protocolId &&
+          other.sourceId == this.sourceId);
+}
+
+class WellnessProtocolSourcesCompanion
+    extends UpdateCompanion<WellnessProtocolSource> {
+  final Value<int> id;
+  final Value<String> protocolId;
+  final Value<String> sourceId;
+  const WellnessProtocolSourcesCompanion({
+    this.id = const Value.absent(),
+    this.protocolId = const Value.absent(),
+    this.sourceId = const Value.absent(),
+  });
+  WellnessProtocolSourcesCompanion.insert({
+    this.id = const Value.absent(),
+    required String protocolId,
+    required String sourceId,
+  }) : protocolId = Value(protocolId),
+       sourceId = Value(sourceId);
+  static Insertable<WellnessProtocolSource> custom({
+    Expression<int>? id,
+    Expression<String>? protocolId,
+    Expression<String>? sourceId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (protocolId != null) 'protocol_id': protocolId,
+      if (sourceId != null) 'source_id': sourceId,
+    });
+  }
+
+  WellnessProtocolSourcesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? protocolId,
+    Value<String>? sourceId,
+  }) {
+    return WellnessProtocolSourcesCompanion(
+      id: id ?? this.id,
+      protocolId: protocolId ?? this.protocolId,
+      sourceId: sourceId ?? this.sourceId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (protocolId.present) {
+      map['protocol_id'] = Variable<String>(protocolId.value);
+    }
+    if (sourceId.present) {
+      map['source_id'] = Variable<String>(sourceId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WellnessProtocolSourcesCompanion(')
+          ..write('id: $id, ')
+          ..write('protocolId: $protocolId, ')
+          ..write('sourceId: $sourceId')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $MealsTable extends Meals with TableInfo<$MealsTable, Meal> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -7875,6 +9326,20 @@ class $HabitsTable extends Habits with TableInfo<$HabitsTable, Habit> {
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
+  static const VerificationMeta _protocolIdMeta = const VerificationMeta(
+    'protocolId',
+  );
+  @override
+  late final GeneratedColumn<String> protocolId = GeneratedColumn<String>(
+    'protocol_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES wellness_protocols (id)',
+    ),
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -8060,6 +9525,7 @@ class $HabitsTable extends Habits with TableInfo<$HabitsTable, Habit> {
   @override
   List<GeneratedColumn> get $columns => [
     id,
+    protocolId,
     name,
     purpose,
     protocol,
@@ -8092,6 +9558,12 @@ class $HabitsTable extends Habits with TableInfo<$HabitsTable, Habit> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('protocol_id')) {
+      context.handle(
+        _protocolIdMeta,
+        protocolId.isAcceptableOrUnknown(data['protocol_id']!, _protocolIdMeta),
+      );
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -8237,6 +9709,10 @@ class $HabitsTable extends Habits with TableInfo<$HabitsTable, Habit> {
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
+      protocolId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}protocol_id'],
+      ),
       name: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}name'],
@@ -8316,6 +9792,7 @@ class $HabitsTable extends Habits with TableInfo<$HabitsTable, Habit> {
 
 class Habit extends DataClass implements Insertable<Habit> {
   final int id;
+  final String? protocolId;
   final String name;
   final String? purpose;
   final String? protocol;
@@ -8335,6 +9812,7 @@ class Habit extends DataClass implements Insertable<Habit> {
   final DateTime createdAt;
   const Habit({
     required this.id,
+    this.protocolId,
     required this.name,
     this.purpose,
     this.protocol,
@@ -8357,6 +9835,9 @@ class Habit extends DataClass implements Insertable<Habit> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    if (!nullToAbsent || protocolId != null) {
+      map['protocol_id'] = Variable<String>(protocolId);
+    }
     map['name'] = Variable<String>(name);
     if (!nullToAbsent || purpose != null) {
       map['purpose'] = Variable<String>(purpose);
@@ -8406,6 +9887,9 @@ class Habit extends DataClass implements Insertable<Habit> {
   HabitsCompanion toCompanion(bool nullToAbsent) {
     return HabitsCompanion(
       id: Value(id),
+      protocolId: protocolId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(protocolId),
       name: Value(name),
       purpose: purpose == null && nullToAbsent
           ? const Value.absent()
@@ -8459,6 +9943,7 @@ class Habit extends DataClass implements Insertable<Habit> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Habit(
       id: serializer.fromJson<int>(json['id']),
+      protocolId: serializer.fromJson<String?>(json['protocolId']),
       name: serializer.fromJson<String>(json['name']),
       purpose: serializer.fromJson<String?>(json['purpose']),
       protocol: serializer.fromJson<String?>(json['protocol']),
@@ -8483,6 +9968,7 @@ class Habit extends DataClass implements Insertable<Habit> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'protocolId': serializer.toJson<String?>(protocolId),
       'name': serializer.toJson<String>(name),
       'purpose': serializer.toJson<String?>(purpose),
       'protocol': serializer.toJson<String?>(protocol),
@@ -8505,6 +9991,7 @@ class Habit extends DataClass implements Insertable<Habit> {
 
   Habit copyWith({
     int? id,
+    Value<String?> protocolId = const Value.absent(),
     String? name,
     Value<String?> purpose = const Value.absent(),
     Value<String?> protocol = const Value.absent(),
@@ -8524,6 +10011,7 @@ class Habit extends DataClass implements Insertable<Habit> {
     DateTime? createdAt,
   }) => Habit(
     id: id ?? this.id,
+    protocolId: protocolId.present ? protocolId.value : this.protocolId,
     name: name ?? this.name,
     purpose: purpose.present ? purpose.value : this.purpose,
     protocol: protocol.present ? protocol.value : this.protocol,
@@ -8551,6 +10039,9 @@ class Habit extends DataClass implements Insertable<Habit> {
   Habit copyWithCompanion(HabitsCompanion data) {
     return Habit(
       id: data.id.present ? data.id.value : this.id,
+      protocolId: data.protocolId.present
+          ? data.protocolId.value
+          : this.protocolId,
       name: data.name.present ? data.name.value : this.name,
       purpose: data.purpose.present ? data.purpose.value : this.purpose,
       protocol: data.protocol.present ? data.protocol.value : this.protocol,
@@ -8593,6 +10084,7 @@ class Habit extends DataClass implements Insertable<Habit> {
   String toString() {
     return (StringBuffer('Habit(')
           ..write('id: $id, ')
+          ..write('protocolId: $protocolId, ')
           ..write('name: $name, ')
           ..write('purpose: $purpose, ')
           ..write('protocol: $protocol, ')
@@ -8617,6 +10109,7 @@ class Habit extends DataClass implements Insertable<Habit> {
   @override
   int get hashCode => Object.hash(
     id,
+    protocolId,
     name,
     purpose,
     protocol,
@@ -8640,6 +10133,7 @@ class Habit extends DataClass implements Insertable<Habit> {
       identical(this, other) ||
       (other is Habit &&
           other.id == this.id &&
+          other.protocolId == this.protocolId &&
           other.name == this.name &&
           other.purpose == this.purpose &&
           other.protocol == this.protocol &&
@@ -8661,6 +10155,7 @@ class Habit extends DataClass implements Insertable<Habit> {
 
 class HabitsCompanion extends UpdateCompanion<Habit> {
   final Value<int> id;
+  final Value<String?> protocolId;
   final Value<String> name;
   final Value<String?> purpose;
   final Value<String?> protocol;
@@ -8680,6 +10175,7 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
   final Value<DateTime> createdAt;
   const HabitsCompanion({
     this.id = const Value.absent(),
+    this.protocolId = const Value.absent(),
     this.name = const Value.absent(),
     this.purpose = const Value.absent(),
     this.protocol = const Value.absent(),
@@ -8700,6 +10196,7 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
   });
   HabitsCompanion.insert({
     this.id = const Value.absent(),
+    this.protocolId = const Value.absent(),
     required String name,
     this.purpose = const Value.absent(),
     this.protocol = const Value.absent(),
@@ -8720,6 +10217,7 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
   }) : name = Value(name);
   static Insertable<Habit> custom({
     Expression<int>? id,
+    Expression<String>? protocolId,
     Expression<String>? name,
     Expression<String>? purpose,
     Expression<String>? protocol,
@@ -8740,6 +10238,7 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (protocolId != null) 'protocol_id': protocolId,
       if (name != null) 'name': name,
       if (purpose != null) 'purpose': purpose,
       if (protocol != null) 'protocol': protocol,
@@ -8762,6 +10261,7 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
 
   HabitsCompanion copyWith({
     Value<int>? id,
+    Value<String?>? protocolId,
     Value<String>? name,
     Value<String?>? purpose,
     Value<String?>? protocol,
@@ -8782,6 +10282,7 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
   }) {
     return HabitsCompanion(
       id: id ?? this.id,
+      protocolId: protocolId ?? this.protocolId,
       name: name ?? this.name,
       purpose: purpose ?? this.purpose,
       protocol: protocol ?? this.protocol,
@@ -8807,6 +10308,9 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (protocolId.present) {
+      map['protocol_id'] = Variable<String>(protocolId.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -8866,6 +10370,7 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
   String toString() {
     return (StringBuffer('HabitsCompanion(')
           ..write('id: $id, ')
+          ..write('protocolId: $protocolId, ')
           ..write('name: $name, ')
           ..write('purpose: $purpose, ')
           ..write('protocol: $protocol, ')
@@ -9178,6 +10683,410 @@ class HabitLogsCompanion extends UpdateCompanion<HabitLog> {
           ..write('habitId: $habitId, ')
           ..write('day: $day, ')
           ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $HabitReviewsTable extends HabitReviews
+    with TableInfo<$HabitReviewsTable, HabitReview> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HabitReviewsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _habitIdMeta = const VerificationMeta(
+    'habitId',
+  );
+  @override
+  late final GeneratedColumn<int> habitId = GeneratedColumn<int>(
+    'habit_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES habits (id)',
+    ),
+  );
+  static const VerificationMeta _reviewedAtMeta = const VerificationMeta(
+    'reviewedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> reviewedAt = GeneratedColumn<DateTime>(
+    'reviewed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _outcomeMeta = const VerificationMeta(
+    'outcome',
+  );
+  @override
+  late final GeneratedColumn<String> outcome = GeneratedColumn<String>(
+    'outcome',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _helpedMeta = const VerificationMeta('helped');
+  @override
+  late final GeneratedColumn<bool> helped = GeneratedColumn<bool>(
+    'helped',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("helped" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    habitId,
+    reviewedAt,
+    outcome,
+    helped,
+    notes,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'habit_reviews';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HabitReview> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('habit_id')) {
+      context.handle(
+        _habitIdMeta,
+        habitId.isAcceptableOrUnknown(data['habit_id']!, _habitIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_habitIdMeta);
+    }
+    if (data.containsKey('reviewed_at')) {
+      context.handle(
+        _reviewedAtMeta,
+        reviewedAt.isAcceptableOrUnknown(data['reviewed_at']!, _reviewedAtMeta),
+      );
+    }
+    if (data.containsKey('outcome')) {
+      context.handle(
+        _outcomeMeta,
+        outcome.isAcceptableOrUnknown(data['outcome']!, _outcomeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_outcomeMeta);
+    }
+    if (data.containsKey('helped')) {
+      context.handle(
+        _helpedMeta,
+        helped.isAcceptableOrUnknown(data['helped']!, _helpedMeta),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HabitReview map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HabitReview(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      habitId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}habit_id'],
+      )!,
+      reviewedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}reviewed_at'],
+      )!,
+      outcome: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}outcome'],
+      )!,
+      helped: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}helped'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+    );
+  }
+
+  @override
+  $HabitReviewsTable createAlias(String alias) {
+    return $HabitReviewsTable(attachedDatabase, alias);
+  }
+}
+
+class HabitReview extends DataClass implements Insertable<HabitReview> {
+  final int id;
+  final int habitId;
+  final DateTime reviewedAt;
+  final String outcome;
+  final bool? helped;
+  final String? notes;
+  const HabitReview({
+    required this.id,
+    required this.habitId,
+    required this.reviewedAt,
+    required this.outcome,
+    this.helped,
+    this.notes,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['habit_id'] = Variable<int>(habitId);
+    map['reviewed_at'] = Variable<DateTime>(reviewedAt);
+    map['outcome'] = Variable<String>(outcome);
+    if (!nullToAbsent || helped != null) {
+      map['helped'] = Variable<bool>(helped);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    return map;
+  }
+
+  HabitReviewsCompanion toCompanion(bool nullToAbsent) {
+    return HabitReviewsCompanion(
+      id: Value(id),
+      habitId: Value(habitId),
+      reviewedAt: Value(reviewedAt),
+      outcome: Value(outcome),
+      helped: helped == null && nullToAbsent
+          ? const Value.absent()
+          : Value(helped),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+    );
+  }
+
+  factory HabitReview.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HabitReview(
+      id: serializer.fromJson<int>(json['id']),
+      habitId: serializer.fromJson<int>(json['habitId']),
+      reviewedAt: serializer.fromJson<DateTime>(json['reviewedAt']),
+      outcome: serializer.fromJson<String>(json['outcome']),
+      helped: serializer.fromJson<bool?>(json['helped']),
+      notes: serializer.fromJson<String?>(json['notes']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'habitId': serializer.toJson<int>(habitId),
+      'reviewedAt': serializer.toJson<DateTime>(reviewedAt),
+      'outcome': serializer.toJson<String>(outcome),
+      'helped': serializer.toJson<bool?>(helped),
+      'notes': serializer.toJson<String?>(notes),
+    };
+  }
+
+  HabitReview copyWith({
+    int? id,
+    int? habitId,
+    DateTime? reviewedAt,
+    String? outcome,
+    Value<bool?> helped = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+  }) => HabitReview(
+    id: id ?? this.id,
+    habitId: habitId ?? this.habitId,
+    reviewedAt: reviewedAt ?? this.reviewedAt,
+    outcome: outcome ?? this.outcome,
+    helped: helped.present ? helped.value : this.helped,
+    notes: notes.present ? notes.value : this.notes,
+  );
+  HabitReview copyWithCompanion(HabitReviewsCompanion data) {
+    return HabitReview(
+      id: data.id.present ? data.id.value : this.id,
+      habitId: data.habitId.present ? data.habitId.value : this.habitId,
+      reviewedAt: data.reviewedAt.present
+          ? data.reviewedAt.value
+          : this.reviewedAt,
+      outcome: data.outcome.present ? data.outcome.value : this.outcome,
+      helped: data.helped.present ? data.helped.value : this.helped,
+      notes: data.notes.present ? data.notes.value : this.notes,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HabitReview(')
+          ..write('id: $id, ')
+          ..write('habitId: $habitId, ')
+          ..write('reviewedAt: $reviewedAt, ')
+          ..write('outcome: $outcome, ')
+          ..write('helped: $helped, ')
+          ..write('notes: $notes')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, habitId, reviewedAt, outcome, helped, notes);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HabitReview &&
+          other.id == this.id &&
+          other.habitId == this.habitId &&
+          other.reviewedAt == this.reviewedAt &&
+          other.outcome == this.outcome &&
+          other.helped == this.helped &&
+          other.notes == this.notes);
+}
+
+class HabitReviewsCompanion extends UpdateCompanion<HabitReview> {
+  final Value<int> id;
+  final Value<int> habitId;
+  final Value<DateTime> reviewedAt;
+  final Value<String> outcome;
+  final Value<bool?> helped;
+  final Value<String?> notes;
+  const HabitReviewsCompanion({
+    this.id = const Value.absent(),
+    this.habitId = const Value.absent(),
+    this.reviewedAt = const Value.absent(),
+    this.outcome = const Value.absent(),
+    this.helped = const Value.absent(),
+    this.notes = const Value.absent(),
+  });
+  HabitReviewsCompanion.insert({
+    this.id = const Value.absent(),
+    required int habitId,
+    this.reviewedAt = const Value.absent(),
+    required String outcome,
+    this.helped = const Value.absent(),
+    this.notes = const Value.absent(),
+  }) : habitId = Value(habitId),
+       outcome = Value(outcome);
+  static Insertable<HabitReview> custom({
+    Expression<int>? id,
+    Expression<int>? habitId,
+    Expression<DateTime>? reviewedAt,
+    Expression<String>? outcome,
+    Expression<bool>? helped,
+    Expression<String>? notes,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (habitId != null) 'habit_id': habitId,
+      if (reviewedAt != null) 'reviewed_at': reviewedAt,
+      if (outcome != null) 'outcome': outcome,
+      if (helped != null) 'helped': helped,
+      if (notes != null) 'notes': notes,
+    });
+  }
+
+  HabitReviewsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? habitId,
+    Value<DateTime>? reviewedAt,
+    Value<String>? outcome,
+    Value<bool?>? helped,
+    Value<String?>? notes,
+  }) {
+    return HabitReviewsCompanion(
+      id: id ?? this.id,
+      habitId: habitId ?? this.habitId,
+      reviewedAt: reviewedAt ?? this.reviewedAt,
+      outcome: outcome ?? this.outcome,
+      helped: helped ?? this.helped,
+      notes: notes ?? this.notes,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (habitId.present) {
+      map['habit_id'] = Variable<int>(habitId.value);
+    }
+    if (reviewedAt.present) {
+      map['reviewed_at'] = Variable<DateTime>(reviewedAt.value);
+    }
+    if (outcome.present) {
+      map['outcome'] = Variable<String>(outcome.value);
+    }
+    if (helped.present) {
+      map['helped'] = Variable<bool>(helped.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HabitReviewsCompanion(')
+          ..write('id: $id, ')
+          ..write('habitId: $habitId, ')
+          ..write('reviewedAt: $reviewedAt, ')
+          ..write('outcome: $outcome, ')
+          ..write('helped: $helped, ')
+          ..write('notes: $notes')
           ..write(')'))
         .toString();
   }
@@ -9696,11 +11605,19 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $SessionSetsTable sessionSets = $SessionSetsTable(this);
   late final $Zone2SessionsTable zone2Sessions = $Zone2SessionsTable(this);
   late final $WodSessionsTable wodSessions = $WodSessionsTable(this);
+  late final $WellnessProtocolsTable wellnessProtocols =
+      $WellnessProtocolsTable(this);
+  late final $WellnessSourcesTable wellnessSources = $WellnessSourcesTable(
+    this,
+  );
+  late final $WellnessProtocolSourcesTable wellnessProtocolSources =
+      $WellnessProtocolSourcesTable(this);
   late final $MealsTable meals = $MealsTable(this);
   late final $MealLogsTable mealLogs = $MealLogsTable(this);
   late final $WeightEntriesTable weightEntries = $WeightEntriesTable(this);
   late final $HabitsTable habits = $HabitsTable(this);
   late final $HabitLogsTable habitLogs = $HabitLogsTable(this);
+  late final $HabitReviewsTable habitReviews = $HabitReviewsTable(this);
   late final $GoalsTable goals = $GoalsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
@@ -9723,11 +11640,15 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     sessionSets,
     zone2Sessions,
     wodSessions,
+    wellnessProtocols,
+    wellnessSources,
+    wellnessProtocolSources,
     meals,
     mealLogs,
     weightEntries,
     habits,
     habitLogs,
+    habitReviews,
     goals,
   ];
 }
@@ -15029,6 +16950,1327 @@ typedef $$WodSessionsTableProcessedTableManager =
       WodSession,
       PrefetchHooks Function()
     >;
+typedef $$WellnessProtocolsTableCreateCompanionBuilder =
+    WellnessProtocolsCompanion Function({
+      required String id,
+      Value<int> version,
+      required String category,
+      required String title,
+      required String purpose,
+      required String instructions,
+      required String minimumVersion,
+      required String standardVersion,
+      required String frequency,
+      Value<int?> durationMinutes,
+      required String bestTime,
+      required String evidenceLevel,
+      required String safetyNotes,
+      Value<int> reviewPeriodDays,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+typedef $$WellnessProtocolsTableUpdateCompanionBuilder =
+    WellnessProtocolsCompanion Function({
+      Value<String> id,
+      Value<int> version,
+      Value<String> category,
+      Value<String> title,
+      Value<String> purpose,
+      Value<String> instructions,
+      Value<String> minimumVersion,
+      Value<String> standardVersion,
+      Value<String> frequency,
+      Value<int?> durationMinutes,
+      Value<String> bestTime,
+      Value<String> evidenceLevel,
+      Value<String> safetyNotes,
+      Value<int> reviewPeriodDays,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+final class $$WellnessProtocolsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $WellnessProtocolsTable,
+          WellnessProtocol
+        > {
+  $$WellnessProtocolsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<
+    $WellnessProtocolSourcesTable,
+    List<WellnessProtocolSource>
+  >
+  _wellnessProtocolSourcesRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.wellnessProtocolSources,
+        aliasName:
+            'wellness_protocols__id__wellness_protocol_sources__protocol_id',
+      );
+
+  $$WellnessProtocolSourcesTableProcessedTableManager
+  get wellnessProtocolSourcesRefs {
+    final manager = $$WellnessProtocolSourcesTableTableManager(
+      $_db,
+      $_db.wellnessProtocolSources,
+    ).filter((f) => f.protocolId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _wellnessProtocolSourcesRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$HabitsTable, List<Habit>> _habitsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.habits,
+    aliasName: 'wellness_protocols__id__habits__protocol_id',
+  );
+
+  $$HabitsTableProcessedTableManager get habitsRefs {
+    final manager = $$HabitsTableTableManager(
+      $_db,
+      $_db.habits,
+    ).filter((f) => f.protocolId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_habitsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$WellnessProtocolsTableFilterComposer
+    extends Composer<_$AppDatabase, $WellnessProtocolsTable> {
+  $$WellnessProtocolsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get purpose => $composableBuilder(
+    column: $table.purpose,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get instructions => $composableBuilder(
+    column: $table.instructions,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get minimumVersion => $composableBuilder(
+    column: $table.minimumVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get standardVersion => $composableBuilder(
+    column: $table.standardVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get frequency => $composableBuilder(
+    column: $table.frequency,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get durationMinutes => $composableBuilder(
+    column: $table.durationMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get bestTime => $composableBuilder(
+    column: $table.bestTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get evidenceLevel => $composableBuilder(
+    column: $table.evidenceLevel,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get safetyNotes => $composableBuilder(
+    column: $table.safetyNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get reviewPeriodDays => $composableBuilder(
+    column: $table.reviewPeriodDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> wellnessProtocolSourcesRefs(
+    Expression<bool> Function($$WellnessProtocolSourcesTableFilterComposer f) f,
+  ) {
+    final $$WellnessProtocolSourcesTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.wellnessProtocolSources,
+          getReferencedColumn: (t) => t.protocolId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$WellnessProtocolSourcesTableFilterComposer(
+                $db: $db,
+                $table: $db.wellnessProtocolSources,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<bool> habitsRefs(
+    Expression<bool> Function($$HabitsTableFilterComposer f) f,
+  ) {
+    final $$HabitsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.habits,
+      getReferencedColumn: (t) => t.protocolId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitsTableFilterComposer(
+            $db: $db,
+            $table: $db.habits,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$WellnessProtocolsTableOrderingComposer
+    extends Composer<_$AppDatabase, $WellnessProtocolsTable> {
+  $$WellnessProtocolsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get purpose => $composableBuilder(
+    column: $table.purpose,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get instructions => $composableBuilder(
+    column: $table.instructions,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get minimumVersion => $composableBuilder(
+    column: $table.minimumVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get standardVersion => $composableBuilder(
+    column: $table.standardVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get frequency => $composableBuilder(
+    column: $table.frequency,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get durationMinutes => $composableBuilder(
+    column: $table.durationMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get bestTime => $composableBuilder(
+    column: $table.bestTime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get evidenceLevel => $composableBuilder(
+    column: $table.evidenceLevel,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get safetyNotes => $composableBuilder(
+    column: $table.safetyNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get reviewPeriodDays => $composableBuilder(
+    column: $table.reviewPeriodDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$WellnessProtocolsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $WellnessProtocolsTable> {
+  $$WellnessProtocolsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get version =>
+      $composableBuilder(column: $table.version, builder: (column) => column);
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get purpose =>
+      $composableBuilder(column: $table.purpose, builder: (column) => column);
+
+  GeneratedColumn<String> get instructions => $composableBuilder(
+    column: $table.instructions,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get minimumVersion => $composableBuilder(
+    column: $table.minimumVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get standardVersion => $composableBuilder(
+    column: $table.standardVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get frequency =>
+      $composableBuilder(column: $table.frequency, builder: (column) => column);
+
+  GeneratedColumn<int> get durationMinutes => $composableBuilder(
+    column: $table.durationMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get bestTime =>
+      $composableBuilder(column: $table.bestTime, builder: (column) => column);
+
+  GeneratedColumn<String> get evidenceLevel => $composableBuilder(
+    column: $table.evidenceLevel,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get safetyNotes => $composableBuilder(
+    column: $table.safetyNotes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get reviewPeriodDays => $composableBuilder(
+    column: $table.reviewPeriodDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  Expression<T> wellnessProtocolSourcesRefs<T extends Object>(
+    Expression<T> Function($$WellnessProtocolSourcesTableAnnotationComposer a)
+    f,
+  ) {
+    final $$WellnessProtocolSourcesTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.wellnessProtocolSources,
+          getReferencedColumn: (t) => t.protocolId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$WellnessProtocolSourcesTableAnnotationComposer(
+                $db: $db,
+                $table: $db.wellnessProtocolSources,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> habitsRefs<T extends Object>(
+    Expression<T> Function($$HabitsTableAnnotationComposer a) f,
+  ) {
+    final $$HabitsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.habits,
+      getReferencedColumn: (t) => t.protocolId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.habits,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$WellnessProtocolsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $WellnessProtocolsTable,
+          WellnessProtocol,
+          $$WellnessProtocolsTableFilterComposer,
+          $$WellnessProtocolsTableOrderingComposer,
+          $$WellnessProtocolsTableAnnotationComposer,
+          $$WellnessProtocolsTableCreateCompanionBuilder,
+          $$WellnessProtocolsTableUpdateCompanionBuilder,
+          (WellnessProtocol, $$WellnessProtocolsTableReferences),
+          WellnessProtocol,
+          PrefetchHooks Function({
+            bool wellnessProtocolSourcesRefs,
+            bool habitsRefs,
+          })
+        > {
+  $$WellnessProtocolsTableTableManager(
+    _$AppDatabase db,
+    $WellnessProtocolsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$WellnessProtocolsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$WellnessProtocolsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$WellnessProtocolsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<int> version = const Value.absent(),
+                Value<String> category = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> purpose = const Value.absent(),
+                Value<String> instructions = const Value.absent(),
+                Value<String> minimumVersion = const Value.absent(),
+                Value<String> standardVersion = const Value.absent(),
+                Value<String> frequency = const Value.absent(),
+                Value<int?> durationMinutes = const Value.absent(),
+                Value<String> bestTime = const Value.absent(),
+                Value<String> evidenceLevel = const Value.absent(),
+                Value<String> safetyNotes = const Value.absent(),
+                Value<int> reviewPeriodDays = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => WellnessProtocolsCompanion(
+                id: id,
+                version: version,
+                category: category,
+                title: title,
+                purpose: purpose,
+                instructions: instructions,
+                minimumVersion: minimumVersion,
+                standardVersion: standardVersion,
+                frequency: frequency,
+                durationMinutes: durationMinutes,
+                bestTime: bestTime,
+                evidenceLevel: evidenceLevel,
+                safetyNotes: safetyNotes,
+                reviewPeriodDays: reviewPeriodDays,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                Value<int> version = const Value.absent(),
+                required String category,
+                required String title,
+                required String purpose,
+                required String instructions,
+                required String minimumVersion,
+                required String standardVersion,
+                required String frequency,
+                Value<int?> durationMinutes = const Value.absent(),
+                required String bestTime,
+                required String evidenceLevel,
+                required String safetyNotes,
+                Value<int> reviewPeriodDays = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => WellnessProtocolsCompanion.insert(
+                id: id,
+                version: version,
+                category: category,
+                title: title,
+                purpose: purpose,
+                instructions: instructions,
+                minimumVersion: minimumVersion,
+                standardVersion: standardVersion,
+                frequency: frequency,
+                durationMinutes: durationMinutes,
+                bestTime: bestTime,
+                evidenceLevel: evidenceLevel,
+                safetyNotes: safetyNotes,
+                reviewPeriodDays: reviewPeriodDays,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$WellnessProtocolsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({wellnessProtocolSourcesRefs = false, habitsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (wellnessProtocolSourcesRefs) db.wellnessProtocolSources,
+                    if (habitsRefs) db.habits,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (wellnessProtocolSourcesRefs)
+                        await $_getPrefetchedData<
+                          WellnessProtocol,
+                          $WellnessProtocolsTable,
+                          WellnessProtocolSource
+                        >(
+                          currentTable: table,
+                          referencedTable: $$WellnessProtocolsTableReferences
+                              ._wellnessProtocolSourcesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$WellnessProtocolsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).wellnessProtocolSourcesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.protocolId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (habitsRefs)
+                        await $_getPrefetchedData<
+                          WellnessProtocol,
+                          $WellnessProtocolsTable,
+                          Habit
+                        >(
+                          currentTable: table,
+                          referencedTable: $$WellnessProtocolsTableReferences
+                              ._habitsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$WellnessProtocolsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).habitsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.protocolId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$WellnessProtocolsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $WellnessProtocolsTable,
+      WellnessProtocol,
+      $$WellnessProtocolsTableFilterComposer,
+      $$WellnessProtocolsTableOrderingComposer,
+      $$WellnessProtocolsTableAnnotationComposer,
+      $$WellnessProtocolsTableCreateCompanionBuilder,
+      $$WellnessProtocolsTableUpdateCompanionBuilder,
+      (WellnessProtocol, $$WellnessProtocolsTableReferences),
+      WellnessProtocol,
+      PrefetchHooks Function({
+        bool wellnessProtocolSourcesRefs,
+        bool habitsRefs,
+      })
+    >;
+typedef $$WellnessSourcesTableCreateCompanionBuilder =
+    WellnessSourcesCompanion Function({
+      required String id,
+      required String title,
+      required String publisher,
+      required String url,
+      Value<int> rowid,
+    });
+typedef $$WellnessSourcesTableUpdateCompanionBuilder =
+    WellnessSourcesCompanion Function({
+      Value<String> id,
+      Value<String> title,
+      Value<String> publisher,
+      Value<String> url,
+      Value<int> rowid,
+    });
+
+final class $$WellnessSourcesTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $WellnessSourcesTable, WellnessSource> {
+  $$WellnessSourcesTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<
+    $WellnessProtocolSourcesTable,
+    List<WellnessProtocolSource>
+  >
+  _wellnessProtocolSourcesRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.wellnessProtocolSources,
+        aliasName: 'wellness_sources__id__wellness_protocol_sources__source_id',
+      );
+
+  $$WellnessProtocolSourcesTableProcessedTableManager
+  get wellnessProtocolSourcesRefs {
+    final manager = $$WellnessProtocolSourcesTableTableManager(
+      $_db,
+      $_db.wellnessProtocolSources,
+    ).filter((f) => f.sourceId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _wellnessProtocolSourcesRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$WellnessSourcesTableFilterComposer
+    extends Composer<_$AppDatabase, $WellnessSourcesTable> {
+  $$WellnessSourcesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get publisher => $composableBuilder(
+    column: $table.publisher,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get url => $composableBuilder(
+    column: $table.url,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> wellnessProtocolSourcesRefs(
+    Expression<bool> Function($$WellnessProtocolSourcesTableFilterComposer f) f,
+  ) {
+    final $$WellnessProtocolSourcesTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.wellnessProtocolSources,
+          getReferencedColumn: (t) => t.sourceId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$WellnessProtocolSourcesTableFilterComposer(
+                $db: $db,
+                $table: $db.wellnessProtocolSources,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$WellnessSourcesTableOrderingComposer
+    extends Composer<_$AppDatabase, $WellnessSourcesTable> {
+  $$WellnessSourcesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get publisher => $composableBuilder(
+    column: $table.publisher,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get url => $composableBuilder(
+    column: $table.url,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$WellnessSourcesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $WellnessSourcesTable> {
+  $$WellnessSourcesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get publisher =>
+      $composableBuilder(column: $table.publisher, builder: (column) => column);
+
+  GeneratedColumn<String> get url =>
+      $composableBuilder(column: $table.url, builder: (column) => column);
+
+  Expression<T> wellnessProtocolSourcesRefs<T extends Object>(
+    Expression<T> Function($$WellnessProtocolSourcesTableAnnotationComposer a)
+    f,
+  ) {
+    final $$WellnessProtocolSourcesTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.wellnessProtocolSources,
+          getReferencedColumn: (t) => t.sourceId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$WellnessProtocolSourcesTableAnnotationComposer(
+                $db: $db,
+                $table: $db.wellnessProtocolSources,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$WellnessSourcesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $WellnessSourcesTable,
+          WellnessSource,
+          $$WellnessSourcesTableFilterComposer,
+          $$WellnessSourcesTableOrderingComposer,
+          $$WellnessSourcesTableAnnotationComposer,
+          $$WellnessSourcesTableCreateCompanionBuilder,
+          $$WellnessSourcesTableUpdateCompanionBuilder,
+          (WellnessSource, $$WellnessSourcesTableReferences),
+          WellnessSource,
+          PrefetchHooks Function({bool wellnessProtocolSourcesRefs})
+        > {
+  $$WellnessSourcesTableTableManager(
+    _$AppDatabase db,
+    $WellnessSourcesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$WellnessSourcesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$WellnessSourcesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$WellnessSourcesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> publisher = const Value.absent(),
+                Value<String> url = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => WellnessSourcesCompanion(
+                id: id,
+                title: title,
+                publisher: publisher,
+                url: url,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String title,
+                required String publisher,
+                required String url,
+                Value<int> rowid = const Value.absent(),
+              }) => WellnessSourcesCompanion.insert(
+                id: id,
+                title: title,
+                publisher: publisher,
+                url: url,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$WellnessSourcesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({wellnessProtocolSourcesRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (wellnessProtocolSourcesRefs) db.wellnessProtocolSources,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (wellnessProtocolSourcesRefs)
+                    await $_getPrefetchedData<
+                      WellnessSource,
+                      $WellnessSourcesTable,
+                      WellnessProtocolSource
+                    >(
+                      currentTable: table,
+                      referencedTable: $$WellnessSourcesTableReferences
+                          ._wellnessProtocolSourcesRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$WellnessSourcesTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).wellnessProtocolSourcesRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.sourceId == item.id),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$WellnessSourcesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $WellnessSourcesTable,
+      WellnessSource,
+      $$WellnessSourcesTableFilterComposer,
+      $$WellnessSourcesTableOrderingComposer,
+      $$WellnessSourcesTableAnnotationComposer,
+      $$WellnessSourcesTableCreateCompanionBuilder,
+      $$WellnessSourcesTableUpdateCompanionBuilder,
+      (WellnessSource, $$WellnessSourcesTableReferences),
+      WellnessSource,
+      PrefetchHooks Function({bool wellnessProtocolSourcesRefs})
+    >;
+typedef $$WellnessProtocolSourcesTableCreateCompanionBuilder =
+    WellnessProtocolSourcesCompanion Function({
+      Value<int> id,
+      required String protocolId,
+      required String sourceId,
+    });
+typedef $$WellnessProtocolSourcesTableUpdateCompanionBuilder =
+    WellnessProtocolSourcesCompanion Function({
+      Value<int> id,
+      Value<String> protocolId,
+      Value<String> sourceId,
+    });
+
+final class $$WellnessProtocolSourcesTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $WellnessProtocolSourcesTable,
+          WellnessProtocolSource
+        > {
+  $$WellnessProtocolSourcesTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $WellnessProtocolsTable _protocolIdTable(_$AppDatabase db) =>
+      db.wellnessProtocols.createAlias(
+        'wellness_protocol_sources__protocol_id__wellness_protocols__id',
+      );
+
+  $$WellnessProtocolsTableProcessedTableManager get protocolId {
+    final $_column = $_itemColumn<String>('protocol_id')!;
+
+    final manager = $$WellnessProtocolsTableTableManager(
+      $_db,
+      $_db.wellnessProtocols,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_protocolIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $WellnessSourcesTable _sourceIdTable(_$AppDatabase db) =>
+      db.wellnessSources.createAlias(
+        'wellness_protocol_sources__source_id__wellness_sources__id',
+      );
+
+  $$WellnessSourcesTableProcessedTableManager get sourceId {
+    final $_column = $_itemColumn<String>('source_id')!;
+
+    final manager = $$WellnessSourcesTableTableManager(
+      $_db,
+      $_db.wellnessSources,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_sourceIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$WellnessProtocolSourcesTableFilterComposer
+    extends Composer<_$AppDatabase, $WellnessProtocolSourcesTable> {
+  $$WellnessProtocolSourcesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$WellnessProtocolsTableFilterComposer get protocolId {
+    final $$WellnessProtocolsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.protocolId,
+      referencedTable: $db.wellnessProtocols,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$WellnessProtocolsTableFilterComposer(
+            $db: $db,
+            $table: $db.wellnessProtocols,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$WellnessSourcesTableFilterComposer get sourceId {
+    final $$WellnessSourcesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourceId,
+      referencedTable: $db.wellnessSources,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$WellnessSourcesTableFilterComposer(
+            $db: $db,
+            $table: $db.wellnessSources,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$WellnessProtocolSourcesTableOrderingComposer
+    extends Composer<_$AppDatabase, $WellnessProtocolSourcesTable> {
+  $$WellnessProtocolSourcesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$WellnessProtocolsTableOrderingComposer get protocolId {
+    final $$WellnessProtocolsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.protocolId,
+      referencedTable: $db.wellnessProtocols,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$WellnessProtocolsTableOrderingComposer(
+            $db: $db,
+            $table: $db.wellnessProtocols,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$WellnessSourcesTableOrderingComposer get sourceId {
+    final $$WellnessSourcesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourceId,
+      referencedTable: $db.wellnessSources,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$WellnessSourcesTableOrderingComposer(
+            $db: $db,
+            $table: $db.wellnessSources,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$WellnessProtocolSourcesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $WellnessProtocolSourcesTable> {
+  $$WellnessProtocolSourcesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  $$WellnessProtocolsTableAnnotationComposer get protocolId {
+    final $$WellnessProtocolsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.protocolId,
+          referencedTable: $db.wellnessProtocols,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$WellnessProtocolsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.wellnessProtocols,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
+  $$WellnessSourcesTableAnnotationComposer get sourceId {
+    final $$WellnessSourcesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourceId,
+      referencedTable: $db.wellnessSources,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$WellnessSourcesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.wellnessSources,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$WellnessProtocolSourcesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $WellnessProtocolSourcesTable,
+          WellnessProtocolSource,
+          $$WellnessProtocolSourcesTableFilterComposer,
+          $$WellnessProtocolSourcesTableOrderingComposer,
+          $$WellnessProtocolSourcesTableAnnotationComposer,
+          $$WellnessProtocolSourcesTableCreateCompanionBuilder,
+          $$WellnessProtocolSourcesTableUpdateCompanionBuilder,
+          (WellnessProtocolSource, $$WellnessProtocolSourcesTableReferences),
+          WellnessProtocolSource,
+          PrefetchHooks Function({bool protocolId, bool sourceId})
+        > {
+  $$WellnessProtocolSourcesTableTableManager(
+    _$AppDatabase db,
+    $WellnessProtocolSourcesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$WellnessProtocolSourcesTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$WellnessProtocolSourcesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$WellnessProtocolSourcesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> protocolId = const Value.absent(),
+                Value<String> sourceId = const Value.absent(),
+              }) => WellnessProtocolSourcesCompanion(
+                id: id,
+                protocolId: protocolId,
+                sourceId: sourceId,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String protocolId,
+                required String sourceId,
+              }) => WellnessProtocolSourcesCompanion.insert(
+                id: id,
+                protocolId: protocolId,
+                sourceId: sourceId,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$WellnessProtocolSourcesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({protocolId = false, sourceId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (protocolId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.protocolId,
+                                referencedTable:
+                                    $$WellnessProtocolSourcesTableReferences
+                                        ._protocolIdTable(db),
+                                referencedColumn:
+                                    $$WellnessProtocolSourcesTableReferences
+                                        ._protocolIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (sourceId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.sourceId,
+                                referencedTable:
+                                    $$WellnessProtocolSourcesTableReferences
+                                        ._sourceIdTable(db),
+                                referencedColumn:
+                                    $$WellnessProtocolSourcesTableReferences
+                                        ._sourceIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$WellnessProtocolSourcesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $WellnessProtocolSourcesTable,
+      WellnessProtocolSource,
+      $$WellnessProtocolSourcesTableFilterComposer,
+      $$WellnessProtocolSourcesTableOrderingComposer,
+      $$WellnessProtocolSourcesTableAnnotationComposer,
+      $$WellnessProtocolSourcesTableCreateCompanionBuilder,
+      $$WellnessProtocolSourcesTableUpdateCompanionBuilder,
+      (WellnessProtocolSource, $$WellnessProtocolSourcesTableReferences),
+      WellnessProtocolSource,
+      PrefetchHooks Function({bool protocolId, bool sourceId})
+    >;
 typedef $$MealsTableCreateCompanionBuilder =
     MealsCompanion Function({
       Value<int> id,
@@ -15993,6 +19235,7 @@ typedef $$WeightEntriesTableProcessedTableManager =
 typedef $$HabitsTableCreateCompanionBuilder =
     HabitsCompanion Function({
       Value<int> id,
+      Value<String?> protocolId,
       required String name,
       Value<String?> purpose,
       Value<String?> protocol,
@@ -16014,6 +19257,7 @@ typedef $$HabitsTableCreateCompanionBuilder =
 typedef $$HabitsTableUpdateCompanionBuilder =
     HabitsCompanion Function({
       Value<int> id,
+      Value<String?> protocolId,
       Value<String> name,
       Value<String?> purpose,
       Value<String?> protocol,
@@ -16037,6 +19281,24 @@ final class $$HabitsTableReferences
     extends BaseReferences<_$AppDatabase, $HabitsTable, Habit> {
   $$HabitsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
+  static $WellnessProtocolsTable _protocolIdTable(_$AppDatabase db) => db
+      .wellnessProtocols
+      .createAlias('habits__protocol_id__wellness_protocols__id');
+
+  $$WellnessProtocolsTableProcessedTableManager? get protocolId {
+    final $_column = $_itemColumn<String>('protocol_id');
+    if ($_column == null) return null;
+    final manager = $$WellnessProtocolsTableTableManager(
+      $_db,
+      $_db.wellnessProtocols,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_protocolIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
   static MultiTypedResultKey<$HabitLogsTable, List<HabitLog>>
   _habitLogsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.habitLogs,
@@ -16050,6 +19312,24 @@ final class $$HabitsTableReferences
     ).filter((f) => f.habitId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_habitLogsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$HabitReviewsTable, List<HabitReview>>
+  _habitReviewsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.habitReviews,
+    aliasName: 'habits__id__habit_reviews__habit_id',
+  );
+
+  $$HabitReviewsTableProcessedTableManager get habitReviewsRefs {
+    final manager = $$HabitReviewsTableTableManager(
+      $_db,
+      $_db.habitReviews,
+    ).filter((f) => f.habitId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_habitReviewsRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -16155,6 +19435,29 @@ class $$HabitsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  $$WellnessProtocolsTableFilterComposer get protocolId {
+    final $$WellnessProtocolsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.protocolId,
+      referencedTable: $db.wellnessProtocols,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$WellnessProtocolsTableFilterComposer(
+            $db: $db,
+            $table: $db.wellnessProtocols,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
   Expression<bool> habitLogsRefs(
     Expression<bool> Function($$HabitLogsTableFilterComposer f) f,
   ) {
@@ -16171,6 +19474,31 @@ class $$HabitsTableFilterComposer
           }) => $$HabitLogsTableFilterComposer(
             $db: $db,
             $table: $db.habitLogs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> habitReviewsRefs(
+    Expression<bool> Function($$HabitReviewsTableFilterComposer f) f,
+  ) {
+    final $$HabitReviewsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.habitReviews,
+      getReferencedColumn: (t) => t.habitId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitReviewsTableFilterComposer(
+            $db: $db,
+            $table: $db.habitReviews,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -16279,6 +19607,29 @@ class $$HabitsTableOrderingComposer
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$WellnessProtocolsTableOrderingComposer get protocolId {
+    final $$WellnessProtocolsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.protocolId,
+      referencedTable: $db.wellnessProtocols,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$WellnessProtocolsTableOrderingComposer(
+            $db: $db,
+            $table: $db.wellnessProtocols,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$HabitsTableAnnotationComposer
@@ -16362,6 +19713,30 @@ class $$HabitsTableAnnotationComposer
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
+  $$WellnessProtocolsTableAnnotationComposer get protocolId {
+    final $$WellnessProtocolsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.protocolId,
+          referencedTable: $db.wellnessProtocols,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$WellnessProtocolsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.wellnessProtocols,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
   Expression<T> habitLogsRefs<T extends Object>(
     Expression<T> Function($$HabitLogsTableAnnotationComposer a) f,
   ) {
@@ -16386,6 +19761,31 @@ class $$HabitsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> habitReviewsRefs<T extends Object>(
+    Expression<T> Function($$HabitReviewsTableAnnotationComposer a) f,
+  ) {
+    final $$HabitReviewsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.habitReviews,
+      getReferencedColumn: (t) => t.habitId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitReviewsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.habitReviews,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$HabitsTableTableManager
@@ -16401,7 +19801,11 @@ class $$HabitsTableTableManager
           $$HabitsTableUpdateCompanionBuilder,
           (Habit, $$HabitsTableReferences),
           Habit,
-          PrefetchHooks Function({bool habitLogsRefs})
+          PrefetchHooks Function({
+            bool protocolId,
+            bool habitLogsRefs,
+            bool habitReviewsRefs,
+          })
         > {
   $$HabitsTableTableManager(_$AppDatabase db, $HabitsTable table)
     : super(
@@ -16417,6 +19821,7 @@ class $$HabitsTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                Value<String?> protocolId = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String?> purpose = const Value.absent(),
                 Value<String?> protocol = const Value.absent(),
@@ -16436,6 +19841,7 @@ class $$HabitsTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
               }) => HabitsCompanion(
                 id: id,
+                protocolId: protocolId,
                 name: name,
                 purpose: purpose,
                 protocol: protocol,
@@ -16457,6 +19863,7 @@ class $$HabitsTableTableManager
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                Value<String?> protocolId = const Value.absent(),
                 required String name,
                 Value<String?> purpose = const Value.absent(),
                 Value<String?> protocol = const Value.absent(),
@@ -16476,6 +19883,7 @@ class $$HabitsTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
               }) => HabitsCompanion.insert(
                 id: id,
+                protocolId: protocolId,
                 name: name,
                 purpose: purpose,
                 protocol: protocol,
@@ -16500,28 +19908,98 @@ class $$HabitsTableTableManager
                     (e.readTable(table), $$HabitsTableReferences(db, table, e)),
               )
               .toList(),
-          prefetchHooksCallback: ({habitLogsRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [if (habitLogsRefs) db.habitLogs],
-              addJoins: null,
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (habitLogsRefs)
-                    await $_getPrefetchedData<Habit, $HabitsTable, HabitLog>(
-                      currentTable: table,
-                      referencedTable: $$HabitsTableReferences
-                          ._habitLogsRefsTable(db),
-                      managerFromTypedResult: (p0) =>
-                          $$HabitsTableReferences(db, table, p0).habitLogsRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.habitId == item.id),
-                      typedResults: items,
-                    ),
-                ];
+          prefetchHooksCallback:
+              ({
+                protocolId = false,
+                habitLogsRefs = false,
+                habitReviewsRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (habitLogsRefs) db.habitLogs,
+                    if (habitReviewsRefs) db.habitReviews,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (protocolId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.protocolId,
+                                    referencedTable: $$HabitsTableReferences
+                                        ._protocolIdTable(db),
+                                    referencedColumn: $$HabitsTableReferences
+                                        ._protocolIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (habitLogsRefs)
+                        await $_getPrefetchedData<
+                          Habit,
+                          $HabitsTable,
+                          HabitLog
+                        >(
+                          currentTable: table,
+                          referencedTable: $$HabitsTableReferences
+                              ._habitLogsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$HabitsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).habitLogsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.habitId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (habitReviewsRefs)
+                        await $_getPrefetchedData<
+                          Habit,
+                          $HabitsTable,
+                          HabitReview
+                        >(
+                          currentTable: table,
+                          referencedTable: $$HabitsTableReferences
+                              ._habitReviewsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$HabitsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).habitReviewsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.habitId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -16538,7 +20016,11 @@ typedef $$HabitsTableProcessedTableManager =
       $$HabitsTableUpdateCompanionBuilder,
       (Habit, $$HabitsTableReferences),
       Habit,
-      PrefetchHooks Function({bool habitLogsRefs})
+      PrefetchHooks Function({
+        bool protocolId,
+        bool habitLogsRefs,
+        bool habitReviewsRefs,
+      })
     >;
 typedef $$HabitLogsTableCreateCompanionBuilder =
     HabitLogsCompanion Function({
@@ -16832,6 +20314,338 @@ typedef $$HabitLogsTableProcessedTableManager =
       HabitLog,
       PrefetchHooks Function({bool habitId})
     >;
+typedef $$HabitReviewsTableCreateCompanionBuilder =
+    HabitReviewsCompanion Function({
+      Value<int> id,
+      required int habitId,
+      Value<DateTime> reviewedAt,
+      required String outcome,
+      Value<bool?> helped,
+      Value<String?> notes,
+    });
+typedef $$HabitReviewsTableUpdateCompanionBuilder =
+    HabitReviewsCompanion Function({
+      Value<int> id,
+      Value<int> habitId,
+      Value<DateTime> reviewedAt,
+      Value<String> outcome,
+      Value<bool?> helped,
+      Value<String?> notes,
+    });
+
+final class $$HabitReviewsTableReferences
+    extends BaseReferences<_$AppDatabase, $HabitReviewsTable, HabitReview> {
+  $$HabitReviewsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $HabitsTable _habitIdTable(_$AppDatabase db) =>
+      db.habits.createAlias('habit_reviews__habit_id__habits__id');
+
+  $$HabitsTableProcessedTableManager get habitId {
+    final $_column = $_itemColumn<int>('habit_id')!;
+
+    final manager = $$HabitsTableTableManager(
+      $_db,
+      $_db.habits,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_habitIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$HabitReviewsTableFilterComposer
+    extends Composer<_$AppDatabase, $HabitReviewsTable> {
+  $$HabitReviewsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get reviewedAt => $composableBuilder(
+    column: $table.reviewedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get outcome => $composableBuilder(
+    column: $table.outcome,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get helped => $composableBuilder(
+    column: $table.helped,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$HabitsTableFilterComposer get habitId {
+    final $$HabitsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.habitId,
+      referencedTable: $db.habits,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitsTableFilterComposer(
+            $db: $db,
+            $table: $db.habits,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$HabitReviewsTableOrderingComposer
+    extends Composer<_$AppDatabase, $HabitReviewsTable> {
+  $$HabitReviewsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get reviewedAt => $composableBuilder(
+    column: $table.reviewedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get outcome => $composableBuilder(
+    column: $table.outcome,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get helped => $composableBuilder(
+    column: $table.helped,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$HabitsTableOrderingComposer get habitId {
+    final $$HabitsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.habitId,
+      referencedTable: $db.habits,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitsTableOrderingComposer(
+            $db: $db,
+            $table: $db.habits,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$HabitReviewsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HabitReviewsTable> {
+  $$HabitReviewsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get reviewedAt => $composableBuilder(
+    column: $table.reviewedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get outcome =>
+      $composableBuilder(column: $table.outcome, builder: (column) => column);
+
+  GeneratedColumn<bool> get helped =>
+      $composableBuilder(column: $table.helped, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  $$HabitsTableAnnotationComposer get habitId {
+    final $$HabitsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.habitId,
+      referencedTable: $db.habits,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.habits,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$HabitReviewsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HabitReviewsTable,
+          HabitReview,
+          $$HabitReviewsTableFilterComposer,
+          $$HabitReviewsTableOrderingComposer,
+          $$HabitReviewsTableAnnotationComposer,
+          $$HabitReviewsTableCreateCompanionBuilder,
+          $$HabitReviewsTableUpdateCompanionBuilder,
+          (HabitReview, $$HabitReviewsTableReferences),
+          HabitReview,
+          PrefetchHooks Function({bool habitId})
+        > {
+  $$HabitReviewsTableTableManager(_$AppDatabase db, $HabitReviewsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HabitReviewsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HabitReviewsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HabitReviewsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> habitId = const Value.absent(),
+                Value<DateTime> reviewedAt = const Value.absent(),
+                Value<String> outcome = const Value.absent(),
+                Value<bool?> helped = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+              }) => HabitReviewsCompanion(
+                id: id,
+                habitId: habitId,
+                reviewedAt: reviewedAt,
+                outcome: outcome,
+                helped: helped,
+                notes: notes,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int habitId,
+                Value<DateTime> reviewedAt = const Value.absent(),
+                required String outcome,
+                Value<bool?> helped = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+              }) => HabitReviewsCompanion.insert(
+                id: id,
+                habitId: habitId,
+                reviewedAt: reviewedAt,
+                outcome: outcome,
+                helped: helped,
+                notes: notes,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$HabitReviewsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({habitId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (habitId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.habitId,
+                                referencedTable: $$HabitReviewsTableReferences
+                                    ._habitIdTable(db),
+                                referencedColumn: $$HabitReviewsTableReferences
+                                    ._habitIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$HabitReviewsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HabitReviewsTable,
+      HabitReview,
+      $$HabitReviewsTableFilterComposer,
+      $$HabitReviewsTableOrderingComposer,
+      $$HabitReviewsTableAnnotationComposer,
+      $$HabitReviewsTableCreateCompanionBuilder,
+      $$HabitReviewsTableUpdateCompanionBuilder,
+      (HabitReview, $$HabitReviewsTableReferences),
+      HabitReview,
+      PrefetchHooks Function({bool habitId})
+    >;
 typedef $$GoalsTableCreateCompanionBuilder =
     GoalsCompanion Function({
       Value<int> id,
@@ -17112,6 +20926,15 @@ class $AppDatabaseManager {
       $$Zone2SessionsTableTableManager(_db, _db.zone2Sessions);
   $$WodSessionsTableTableManager get wodSessions =>
       $$WodSessionsTableTableManager(_db, _db.wodSessions);
+  $$WellnessProtocolsTableTableManager get wellnessProtocols =>
+      $$WellnessProtocolsTableTableManager(_db, _db.wellnessProtocols);
+  $$WellnessSourcesTableTableManager get wellnessSources =>
+      $$WellnessSourcesTableTableManager(_db, _db.wellnessSources);
+  $$WellnessProtocolSourcesTableTableManager get wellnessProtocolSources =>
+      $$WellnessProtocolSourcesTableTableManager(
+        _db,
+        _db.wellnessProtocolSources,
+      );
   $$MealsTableTableManager get meals =>
       $$MealsTableTableManager(_db, _db.meals);
   $$MealLogsTableTableManager get mealLogs =>
@@ -17122,6 +20945,8 @@ class $AppDatabaseManager {
       $$HabitsTableTableManager(_db, _db.habits);
   $$HabitLogsTableTableManager get habitLogs =>
       $$HabitLogsTableTableManager(_db, _db.habitLogs);
+  $$HabitReviewsTableTableManager get habitReviews =>
+      $$HabitReviewsTableTableManager(_db, _db.habitReviews);
   $$GoalsTableTableManager get goals =>
       $$GoalsTableTableManager(_db, _db.goals);
 }

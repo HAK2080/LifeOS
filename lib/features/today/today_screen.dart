@@ -27,8 +27,6 @@ class TodayScreen extends ConsumerWidget {
           SizedBox(height: 14),
           _GoodDeedCard(),
           SizedBox(height: 14),
-          _CheckInCard(),
-          SizedBox(height: 14),
           _FocusCard(),
         ],
       ),
@@ -49,7 +47,24 @@ class _AyahCardState extends ConsumerState<_AyahCard> {
   @override
   Widget build(BuildContext context) {
     final ayah = ref.watch(ayahOfDayProvider);
+    final dismissed = ref.watch(ayahDismissedProvider).value ?? false;
     final scheme = Theme.of(context).colorScheme;
+    if (dismissed) {
+      return AppCard(
+        child: Row(
+          children: [
+            const Icon(Icons.visibility_off_outlined),
+            const SizedBox(width: 10),
+            const Expanded(child: Text('Ayah of the Day hidden for today.')),
+            TextButton(
+              onPressed: () =>
+                  ref.read(ayahDismissedProvider.notifier).showForToday(),
+              child: const Text('Show'),
+            ),
+          ],
+        ),
+      );
+    }
     return AppCard(
       tinted: true,
       child: ayah.when(
@@ -59,10 +74,27 @@ class _AyahCardState extends ConsumerState<_AyahCard> {
         data: (a) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Row(
+              children: [
+                const Expanded(
+                  child: Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: SectionTitle('ط¢ظٹط© ط§ظ„ظٹظˆظ…', arabic: true),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => ref
+                      .read(ayahDismissedProvider.notifier)
+                      .dismissForToday(),
+                  child: const Text('Dismiss'),
+                ),
+              ],
+            ),
+            /*
             const Align(
               alignment: AlignmentDirectional.centerEnd,
               child: SectionTitle('آية اليوم', arabic: true),
-            ),
+            ),*/
             const SizedBox(height: 14),
             Text(
               a.text,
@@ -223,6 +255,9 @@ class _GoodDeedCard extends ConsumerWidget {
   }
 }
 
+// Legacy data remains available for older local backups; the card is no
+// longer part of the Today surface.
+// ignore: unused_element
 class _CheckInCard extends ConsumerWidget {
   const _CheckInCard();
 

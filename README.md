@@ -26,7 +26,19 @@ planned offline product flows implemented:
   paused/resumed, and logged as completed, minimum, or skipped without streak
   pressure. Lightweight Goals can be created and moved between active,
   paused, and completed. Fixed-day/flexible scheduling, optional reminders,
-  review dates, and basic automatic contribution counts are now wired.
+  review dates, and basic automatic contribution counts are now wired. The
+  Wellness library is now seeded from versioned JSON and stores protocols,
+  sources, habit logs, and reviews separately from the UI.
+- Tasks now present user-created lists as visible Categories, with tasks nested
+  under their category in the all-tasks view. Strength includes an optional
+  RIR-based Progressive Overload method alongside manual, double, and coach
+  progression modes.
+- Today keeps Ayah of the Day date-aware and lets the user dismiss it for the
+  current day. The unused Quick check-in card has been removed from the Today
+  surface; its legacy table remains only for backwards-compatible local data.
+- Nutrition includes a searchable local Food library over saved foods. This is
+  an original Flutter implementation informed by FoodYou's feature model; the
+  FoodYou GPL-3.0 source is not embedded in this project.
   Goal contribution links cover habit, training, nutrition, and cardio counts;
   richer custom linking remains optional follow-up work.
 - Phase 5 production hardening is substantially implemented: photo/voice/barcode capture,
@@ -43,6 +55,8 @@ clean, and the full suite passes (63 tests). Fresh test APKs are available at
 emit only the known Flutter/Kotlin-plugin migration warnings.
 
 The product brief and non-negotiable principles are in [docs/BRIEF.md](docs/BRIEF.md).
+The Wellness schema, safety policy, seed shape, and implementation plan are in
+[docs/WELLNESS_DESIGN.md](docs/WELLNESS_DESIGN.md).
 Keep manual entry working, avoid guilt mechanics, remain offline-first, and
 keep AI optional and replaceable.
 
@@ -75,6 +89,7 @@ This folder is the shared source of truth for Claude and Codex. Before coding:
   analysis, tests, a debug APK build, and downloadable APK artifact.
 - [Privacy policy](docs/PRIVACY.md)
 - [Release and device QA checklist](docs/RELEASE_CHECKLIST.md)
+- [Wellness design and safety policy](docs/WELLNESS_DESIGN.md)
 
 ## UI/UX direction
 
@@ -144,3 +159,13 @@ Do not treat an old APK under `build/` as validation of current source.
 - [Pure task logic](lib/features/tasks/task_logic.dart)
 - [Pure training progression](lib/features/training/progression.dart)
 - [Nutrition logic](lib/features/nutrition/nutrition_logic.dart)
+
+## External project references
+
+- [Progressive Overload App](https://github.com/simmahon/progressive-overload-app)
+  is used as a public reference for the optional RP-style method. Life keeps
+  its own offline Flutter implementation and does not embed that React/Node
+  application.
+- [FoodYou](https://github.com/maksimowiczm/FoodYou) is GPL-3.0 licensed and is
+  implemented in Kotlin/Compose. Its local food-diary feature model informed
+  Life's original searchable Food library; no FoodYou source code is copied.

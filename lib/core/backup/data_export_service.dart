@@ -34,11 +34,17 @@ class DataExportService {
       'sessionSets': await _rows(database.select(database.sessionSets)),
       'zone2Sessions': await _rows(database.select(database.zone2Sessions)),
       'wodSessions': await _rows(database.select(database.wodSessions)),
+      'wellnessProtocols':
+          await _rows(database.select(database.wellnessProtocols)),
+      'wellnessSources': await _rows(database.select(database.wellnessSources)),
+      'wellnessProtocolSources':
+          await _rows(database.select(database.wellnessProtocolSources)),
       'meals': await _rows(database.select(database.meals)),
       'mealLogs': await _rows(database.select(database.mealLogs)),
       'weightEntries': await _rows(database.select(database.weightEntries)),
       'habits': await _rows(database.select(database.habits)),
       'habitLogs': await _rows(database.select(database.habitLogs)),
+      'habitReviews': await _rows(database.select(database.habitReviews)),
       'goals': await _rows(database.select(database.goals)),
     };
 
@@ -115,7 +121,9 @@ class DataExportService {
       'good_deeds', 'focus_entries', 'exercises', 'workout_plans',
       'plan_workouts', 'plan_exercises', 'workout_sessions',
       'session_exercises', 'session_sets', 'zone2_sessions', 'wod_sessions',
-      'meals', 'meal_logs', 'weight_entries', 'habits', 'habit_logs', 'goals',
+      'wellness_protocols', 'wellness_sources', 'wellness_protocol_sources',
+      'meals', 'meal_logs', 'weight_entries', 'habits', 'habit_logs',
+      'habit_reviews', 'goals',
     ];
     await database.transaction(() async {
       for (final table in orderedTables.reversed) {

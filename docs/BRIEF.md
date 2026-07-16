@@ -36,9 +36,6 @@ Start the day positively without pressure. In order:
 - Rotating Arabic suggestions: صدقة ولو بسيطة، صلة رحم، مساعدة شخص، قراءة شيء من القرآن، الدعاء لشخص، إدخال السرور على شخص
 - User can add their own good deed and mark it complete.
 
-### Daily check-in
-Three optional quick inputs: Mood, Energy, Physical condition.
-
 ### Today's Focus
 - Suggest one useful action; accept, replace, choose manually or skip.
 - Keep visible as completed until the next day.

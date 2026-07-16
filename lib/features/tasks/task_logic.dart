@@ -34,6 +34,17 @@ List<Task> displayOrder(List<Task> all, DateTime now) {
   return [...open, ...done];
 }
 
+/// Groups tasks into visual categories while preserving the task ordering
+/// rules within each category. A null key is the uncategorized section.
+Map<int?, List<Task>> groupTasksByCategory(
+    List<Task> all, DateTime now) {
+  final groups = <int?, List<Task>>{};
+  for (final task in displayOrder(all, now)) {
+    groups.putIfAbsent(task.listId, () => []).add(task);
+  }
+  return groups;
+}
+
 /// New manual position when dropping between [before] and [after]
 /// (either may be null at list edges).
 double manualPositionBetween(Task? before, Task? after) {

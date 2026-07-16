@@ -5,28 +5,34 @@ import 'package:drift/drift.dart' hide Column;
 import '../../app/style.dart';
 import '../../core/database/database.dart';
 import 'growth_repository.dart';
-import 'protocols.dart';
+import 'wellness_protocols.dart';
+
+IconData _iconForCategory(String category) => switch (category) {
+      'Sleep' => Icons.bedtime_outlined,
+      'Morning light' => Icons.wb_sunny_outlined,
+      'Caffeine' => Icons.coffee_outlined,
+      'Zone 2' => Icons.monitor_heart_outlined,
+      'Strength' => Icons.fitness_center_outlined,
+      'Walking' => Icons.directions_walk,
+      'Breathing' => Icons.air,
+      'Meditation' => Icons.self_improvement,
+      'Sauna' => Icons.hot_tub_outlined,
+      'Cold exposure' => Icons.ac_unit,
+      'Nutrition habits' => Icons.restaurant_outlined,
+      'Reading' => Icons.menu_book_outlined,
+      'Social connection' => Icons.people_outline,
+      'Focus' => Icons.center_focus_strong_outlined,
+      'Mobility' => Icons.accessibility_new_outlined,
+      _ => Icons.spa_outlined,
+    };
 
 class GrowthScreen extends ConsumerWidget {
   const GrowthScreen({super.key});
 
-  static const _tiles = [
-    (Icons.bedtime_outlined, 'Sleep', 'sleep'),
-    (Icons.psychology_outlined, 'Memory', 'memory'),
-    (Icons.center_focus_strong_outlined, 'Focus', 'focus'),
-    (Icons.spa_outlined, 'Stress', 'stress'),
-    (Icons.air, 'Breathing', 'breathing'),
-    (Icons.hot_tub_outlined, 'Sauna', 'sauna'),
-    (Icons.ac_unit, 'Cold exposure', 'cold'),
-    (Icons.light_mode_outlined, 'Red-light therapy', 'redlight'),
-    (Icons.menu_book_outlined, 'Reading', 'reading'),
-    (Icons.accessibility_new_outlined, 'Mobility', 'mobility'),
-    (Icons.favorite_outline, 'Mental wellbeing', 'wellbeing'),
-  ];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final habits = ref.watch(growthHabitsProvider).value ?? [];
+    final protocols = ref.watch(growthProtocolsProvider).value ?? [];
     final logs = ref.watch(growthLogsProvider).value ?? [];
     final goals = ref.watch(growthGoalsProvider).value ?? [];
     final logByHabit = {for (final log in logs) log.habitId: log.status};
@@ -89,7 +95,10 @@ class GrowthScreen extends ConsumerWidget {
           const SizedBox(height: 16),
           const SectionTitle('Start with a protocol'),
           const SizedBox(height: 8),
-          GridView.count(
+          if (protocols.isEmpty)
+            const Center(child: CircularProgressIndicator())
+          else
+            GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -97,20 +106,20 @@ class GrowthScreen extends ConsumerWidget {
             crossAxisSpacing: 12,
             childAspectRatio: 1.35,
             children: [
-              for (final (icon, title, id) in _tiles)
+              for (final protocol in protocols)
                 AppCard(
                   padding: const EdgeInsets.all(16),
                   onTap: () {
-                    final preset = protocolPresets.firstWhere((p) => p.id == id);
-                    _protocolDetails(context, repo, preset);
+                    _protocolDetails(context, repo, protocol);
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(icon, color: AppColors.accent),
+                      Icon(_iconForCategory(protocol.category),
+                          color: AppColors.accent),
                       const SizedBox(height: 8),
-                      Text(title,
+                      Text(protocol.title,
                           style: Theme.of(context).textTheme.titleMedium),
                     ],
                   ),
@@ -126,14 +135,14 @@ class GrowthScreen extends ConsumerWidget {
   }
 
   Future<void> _protocolDetails(BuildContext context, GrowthRepository repo,
-      ProtocolPreset preset) async {
+      WellnessProtocolSpec preset) async {
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       builder: (sheetContext) => _ProtocolSheet(
         preset: preset,
         onAdd: () async {
-          await repo.addPreset(preset);
+          await repo.addProtocol(preset);
           if (sheetContext.mounted) Navigator.pop(sheetContext);
         },
       ),
@@ -201,11 +210,11 @@ class GrowthScreen extends ConsumerWidget {
               if (_reviewDue(habit))
                 OutlinedButton.icon(
                   onPressed: () async {
-                    await repo.markReviewed(habit.id);
                     if (sheetContext.mounted) Navigator.pop(sheetContext);
+                    await _reviewHabit(context, repo, habit);
                   },
                   icon: const Icon(Icons.rate_review_outlined),
-                  label: const Text('Mark review complete'),
+                  label: const Text('Review this practice'),
                 ),
               Row(
                 children: [
@@ -265,6 +274,70 @@ class GrowthScreen extends ConsumerWidget {
     if (habit.reviewAfterDays == null) return false;
     final last = habit.lastReviewAt ?? habit.createdAt;
     return DateTime.now().isAfter(last.add(Duration(days: habit.reviewAfterDays!)));
+  }
+
+  Future<void> _reviewHabit(
+      BuildContext context, GrowthRepository repo, Habit habit) async {
+    final notes = TextEditingController();
+    var outcome = 'keep';
+    bool? helped;
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (c, setDialogState) => AlertDialog(
+          title: Text('Review ${habit.name}'),
+          content: SingleChildScrollView(
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              DropdownButtonFormField<String>(
+                initialValue: outcome,
+                decoration: const InputDecoration(labelText: 'Decision'),
+                items: const [
+                  DropdownMenuItem(value: 'keep', child: Text('Keep')),
+                  DropdownMenuItem(value: 'adjust', child: Text('Adjust')),
+                  DropdownMenuItem(value: 'pause', child: Text('Pause')),
+                  DropdownMenuItem(value: 'stop', child: Text('Stop')),
+                ],
+                onChanged: (value) =>
+                    setDialogState(() => outcome = value ?? 'keep'),
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<bool?>(
+                initialValue: helped,
+                decoration: const InputDecoration(labelText: 'Did it help?'),
+                items: const [
+                  DropdownMenuItem(value: true, child: Text('Yes')),
+                  DropdownMenuItem(value: false, child: Text('Not yet')),
+                ],
+                onChanged: (value) => setDialogState(() => helped = value),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: notes,
+                maxLines: 3,
+                decoration: const InputDecoration(labelText: 'Notes (optional)'),
+              ),
+            ]),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(dialogContext, false),
+                child: const Text('Cancel')),
+            FilledButton(
+                onPressed: () => Navigator.pop(dialogContext, true),
+                child: const Text('Save review')),
+          ],
+        ),
+      ),
+    );
+    if (saved == true) {
+      await repo.addReview(
+        habitId: habit.id,
+        outcome: outcome,
+        helped: helped,
+        notes: notes.text.trim().isEmpty ? null : notes.text.trim(),
+      );
+    }
+    notes.dispose();
   }
 
   Future<void> _editSchedule(
@@ -407,7 +480,7 @@ class GrowthScreen extends ConsumerWidget {
 class _ProtocolSheet extends StatelessWidget {
   const _ProtocolSheet({required this.preset, required this.onAdd});
 
-  final ProtocolPreset preset;
+  final WellnessProtocolSpec preset;
   final VoidCallback onAdd;
 
   @override
@@ -418,14 +491,24 @@ class _ProtocolSheet extends StatelessWidget {
         child: Wrap(
           runSpacing: 10,
           children: [
-            Text(preset.name, style: Theme.of(context).textTheme.titleLarge),
+            Text(preset.title, style: Theme.of(context).textTheme.titleLarge),
+            Text(preset.category,
+                style: Theme.of(context).textTheme.labelLarge),
             Text(preset.purpose),
-            Text(preset.explanation),
-            Text(preset.protocol),
+            Text(preset.instructions),
             Text('Minimum version: ${preset.minimumVersion}'),
+            Text('Standard version: ${preset.standardVersion}'),
+            Text('Frequency: ${preset.frequency} · Best time: ${preset.bestTime}'),
+            if (preset.durationMinutes != null)
+              Text('Duration: ${preset.durationMinutes} minutes'),
             Text('Evidence: ${preset.evidenceLevel}'),
-            if (preset.safetyNotes != null) Text('Safety: ${preset.safetyNotes!}'),
-            Text('Source: ${preset.source}', style: Theme.of(context).textTheme.bodySmall),
+            Text('Safety: ${preset.safetyNotes}'),
+            if (preset.sources.isNotEmpty) ...[
+              const Text('Sources'),
+              for (final source in preset.sources)
+                Text('${source.title} · ${source.publisher}',
+                    style: Theme.of(context).textTheme.bodySmall),
+            ],
             FilledButton.icon(
                 onPressed: onAdd,
                 icon: const Icon(Icons.add),

@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "protocols": [
+    {
+      "id": "sleep-schedule",
+      "version": 1,
+      "category": "Sleep",
+      "title": "Sleep schedule",
+      "purpose": "Give sleep and wake time a steady anchor.",
+      "instructions": "Choose a realistic wake time and keep it broadly consistent. Let bedtime move earlier or later with actual sleepiness rather than forcing time awake in bed.",
+      "minimum_version": "Keep tomorrow's wake time within one hour of today's.",
+      "standard_version": "Keep wake time within about 30 minutes on most days and protect enough time for sleep.",
+      "frequency": "Daily",
+      "duration_minutes": null,
+      "best_time": "Wake time",
+      "evidence_level": "Strong",
+      "safety_notes": "Persistent insomnia, breathing pauses, severe daytime sleepiness, or unusual sleep changes deserve clinical evaluation.",
+      "review_period_days": 28,
+      "sources": [
+        {"id": "aasm-sleep-duration", "title": "Recommended amount of sleep for a healthy adult", "publisher": "American Academy of Sleep Medicine", "url": "https://jcsm.aasm.org/doi/10.5664/jcsm.4758"},
+        {"id": "sleep-foundation-circadian", "title": "Circadian rhythm", "publisher": "Sleep Foundation", "url": "https://www.sleepfoundation.org/circadian-rhythm"}
+      ]
+    },
+    {
+      "id": "morning-light",
+      "version": 1,
+      "category": "Morning light",
+      "title": "Morning light",
+      "purpose": "Give the body clock a consistent daytime signal.",
+      "instructions": "Spend time outdoors soon after waking. Use ordinary daylight and keep looking naturally around the environment; do not stare at the sun.",
+      "minimum_version": "Step outside for 5 minutes.",
+      "standard_version": "Spend 10–20 minutes outdoors within about an hour of waking, adjusting for weather and season.",
+      "frequency": "Most days",
+      "duration_minutes": 15,
+      "best_time": "Morning",
+      "evidence_level": "Moderate",
+      "safety_notes": "Never look directly at the sun. Follow local advice for extreme heat, glare, or poor air quality.",
+      "review_period_days": 28,
+      "sources": [
+        {"id": "nih-light-circadian", "title": "Light, sleep, and circadian rhythms", "publisher": "National Institute of General Medical Sciences", "url": "https://www.nigms.nih.gov/education/fact-sheets/Pages/circadian-rhythms.aspx"}
+      ]
+    },
+    {
+      "id": "caffeine-timing",
+      "version": 1,
+      "category": "Caffeine",
+      "title": "Caffeine timing",
+      "purpose": "Keep useful alertness while protecting sleep opportunity.",
+      "instructions": "Notice your usual bedtime and set a personal caffeine cutoff early enough that it does not disturb sleep. Count coffee, tea, energy drinks, and pre-workout.",
+      "minimum_version": "Move the last caffeinated drink one hour earlier today.",
+      "standard_version": "Avoid caffeine for roughly 8 hours before planned sleep, adjusting for sensitivity.",
+      "frequency": "Daily",
+      "duration_minutes": null,
+      "best_time": "Morning to early afternoon",
+      "evidence_level": "Strong",
+      "safety_notes": "Caffeine affects people differently. Consider pregnancy, anxiety, heart rhythm problems, medication interactions, and total dose with a clinician.",
+      "review_period_days": 21,
+      "sources": [
+        {"id": "sleep-medicine-caffeine", "title": "Caffeine effects on sleep when consumed before bedtime", "publisher": "Journal of Clinical Sleep Medicine", "url": "https://jcsm.aasm.org/doi/10.5664/jcsm.4758"}
+      ]
+    },
+    {
+      "id": "zone-2",
+      "version": 1,
+      "category": "Zone 2",
+      "title": "Zone 2 aerobic work",
+      "purpose": "Build repeatable aerobic capacity with manageable fatigue.",
+      "instructions": "Choose a low-impact activity and keep the effort conversational but purposeful. Use the talk test rather than chasing a perfect heart-rate number.",
+      "minimum_version": "Walk or cycle easily for 10 minutes.",
+      "standard_version": "Accumulate 30–45 minutes at a conversational effort two to four times per week.",
+      "frequency": "2–4 times per week",
+      "duration_minutes": 40,
+      "best_time": "Any sustainable time",
+      "evidence_level": "Moderate",
+      "safety_notes": "Stop for chest pain, faintness, unusual breathlessness, or acute pain. Build gradually if currently inactive.",
+      "review_period_days": 42,
+      "sources": [
+        {"id": "who-physical-activity", "title": "WHO guidelines on physical activity", "publisher": "World Health Organization", "url": "https://www.who.int/news-room/fact-sheets/detail/physical-activity"}
+      ]
+    },
+    {
+      "id": "strength",
+      "version": 1,
+      "category": "Strength",
+      "title": "Strength practice",
+      "purpose": "Maintain or build strength through repeatable resistance training.",
+      "instructions": "Use controlled exercises, leave a little effort in reserve, and record sets, reps, load, and pain. Add work only when recovery and technique support it.",
+      "minimum_version": "Complete one controlled working set of a safe movement.",
+      "standard_version": "Train the major movement patterns two or three times weekly with a plan that can be repeated.",
+      "frequency": "2–3 times per week",
+      "duration_minutes": 45,
+      "best_time": "When alert and able to recover",
+      "evidence_level": "Strong",
+      "safety_notes": "Use appropriate technique and equipment. Pain, injury, or a medical condition may require professional guidance.",
+      "review_period_days": 42,
+      "sources": [
+        {"id": "acsm-resistance-training", "title": "Progression models in resistance training", "publisher": "American College of Sports Medicine", "url": "https://pubmed.ncbi.nlm.nih.gov/19204579/"}
+      ]
+    },
+    {
+      "id": "walking",
+      "version": 1,
+      "category": "Walking",
+      "title": "Walking",
+      "purpose": "Add low-friction movement that supports health and mood.",
+      "instructions": "Take a comfortable walk outside or indoors. Use short walks after meals or between work blocks when that makes consistency easier.",
+      "minimum_version": "Walk for 5 minutes.",
+      "standard_version": "Accumulate 20–30 minutes on most days, in one walk or several small walks.",
+      "frequency": "Most days",
+      "duration_minutes": 25,
+      "best_time": "After a meal or during a work break",
+      "evidence_level": "Strong",
+      "safety_notes": "Choose a safe route and pace. Stop for new severe pain, dizziness, or concerning symptoms.",
+      "review_period_days": 28,
+      "sources": [
+        {"id": "who-physical-activity", "title": "WHO guidelines on physical activity", "publisher": "World Health Organization", "url": "https://www.who.int/news-room/fact-sheets/detail/physical-activity"}
+      ]
+    },
+    {
+      "id": "breathing",
+      "version": 1,
+      "category": "Breathing",
+      "title": "Slow breathing",
+      "purpose": "Create a short, practical downshift during stress.",
+      "instructions": "Breathe comfortably and make the exhale slightly longer than the inhale for a few minutes. Stop if you feel light-headed.",
+      "minimum_version": "Take five comfortable slow breaths.",
+      "standard_version": "Practice 5 minutes at a relaxed pace once or twice daily.",
+      "frequency": "Daily or as needed",
+      "duration_minutes": 5,
+      "best_time": "Before a stressful task or at a transition",
+      "evidence_level": "Moderate",
+      "safety_notes": "Do not force breath holds or deep breathing. Return to normal breathing if uncomfortable.",
+      "review_period_days": 21,
+      "sources": [
+        {"id": "stanford-cyclic-sighing", "title": "Brief structured respiration practices enhance mood and reduce physiological arousal", "publisher": "Cell Reports Medicine", "url": "https://www.cell.com/cell-reports-medicine/fulltext/S2666-3791(22)00426-0"}
+      ]
+    },
+    {
+      "id": "meditation",
+      "version": 1,
+      "category": "Meditation",
+      "title": "Simple meditation",
+      "purpose": "Practice returning attention without needing a perfect mind.",
+      "instructions": "Sit comfortably, choose a neutral anchor such as breath or sound, and gently return attention whenever you notice it wandered.",
+      "minimum_version": "Sit for two minutes and notice three breaths.",
+      "standard_version": "Practice 10 minutes, five days per week.",
+      "frequency": "3–7 times per week",
+      "duration_minutes": 10,
+      "best_time": "A predictable quiet transition",
+      "evidence_level": "Moderate",
+      "safety_notes": "Meditation is not a substitute for mental-health care. Stop and seek support if practice consistently worsens distress.",
+      "review_period_days": 28,
+      "sources": [
+        {"id": "apa-mindfulness", "title": "Mindfulness meditation: a research overview", "publisher": "American Psychological Association", "url": "https://www.apa.org/topics/mindfulness/meditation"}
+      ]
+    },
+    {
+      "id": "sauna",
+      "version": 1,
+      "category": "Sauna",
+      "title": "Sauna session",
+      "purpose": "Use heat as a controlled relaxation and recovery practice.",
+      "instructions": "Use a familiar sauna for a short comfortable round, hydrate, and leave before feeling unwell. Recovery matters more than a target temperature.",
+      "minimum_version": "One comfortable 5–10 minute round.",
+      "standard_version": "Use 10–20 minute rounds one to three times per week if tolerated.",
+      "frequency": "1–3 times per week",
+      "duration_minutes": 20,
+      "best_time": "A time with hydration and recovery afterward",
+      "evidence_level": "Limited to moderate",
+      "safety_notes": "Avoid alcohol and dehydration. Extra caution is needed with pregnancy, low blood pressure, heart conditions, or medications that affect heat tolerance; ask a clinician.",
+      "review_period_days": 42,
+      "sources": [
+        {"id": "sauna-cohort", "title": "Sauna bathing and cardiovascular health", "publisher": "Mayo Clinic Proceedings", "url": "https://pubmed.ncbi.nlm.nih.gov/30077204/"}
+      ]
+    },
+    {
+      "id": "cold-exposure",
+      "version": 1,
+      "category": "Cold exposure",
+      "title": "Gentle cold exposure",
+      "purpose": "Experiment with a brief alerting stimulus without turning discomfort into a test of worth.",
+      "instructions": "Finish a normal shower with a brief cool period and return to warmth. Keep breathing normally and use a controlled environment.",
+      "minimum_version": "10 seconds of cool water at the end of a shower.",
+      "standard_version": "Build toward 30–60 seconds one to three times per week if comfortable.",
+      "frequency": "1–3 times per week",
+      "duration_minutes": 1,
+      "best_time": "A time when you can warm up safely afterward",
+      "evidence_level": "Limited",
+      "safety_notes": "Do not use open water alone. Avoid if cold exposure is medically unsafe; stop for chest pain, severe shivering, numbness, or breathing difficulty.",
+      "review_period_days": 21,
+      "sources": [
+        {"id": "cold-immersion-review", "title": "Cold-water immersion: a review of health and performance evidence", "publisher": "International Journal of Circumpolar Health", "url": "https://pubmed.ncbi.nlm.nih.gov/36223947/"}
+      ]
+    },
+    {
+      "id": "protein",
+      "version": 1,
+      "category": "Nutrition habits",
+      "title": "Protein at meals",
+      "purpose": "Make adequate protein easier through ordinary meals.",
+      "instructions": "Include a clear protein source in one or more meals, using foods that fit your preferences, budget, culture, and dietary needs.",
+      "minimum_version": "Add one protein-containing food to one meal.",
+      "standard_version": "Include a protein source at two or three meals and review energy, digestion, and preference.",
+      "frequency": "Most days",
+      "duration_minutes": null,
+      "best_time": "Meals",
+      "evidence_level": "Moderate",
+      "safety_notes": "Individual needs vary. Kidney disease, allergies, pregnancy, or a medically prescribed diet warrant professional advice before changing intake substantially.",
+      "review_period_days": 28,
+      "sources": [
+        {"id": "issn-protein", "title": "International Society of Sports Nutrition position stand: protein and exercise", "publisher": "Journal of the International Society of Sports Nutrition", "url": "https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8"}
+      ]
+    },
+    {
+      "id": "reading",
+      "version": 1,
+      "category": "Reading",
+      "title": "Reading time",
+      "purpose": "Create a calmer path to learning or winding down.",
+      "instructions": "Keep one book visible and read without multitasking. Paper or e-ink can be useful near bedtime if it does not delay sleep.",
+      "minimum_version": "Read one page.",
+      "standard_version": "Read for 15–20 minutes on most days.",
+      "frequency": "Most days",
+      "duration_minutes": 20,
+      "best_time": "A consistent evening or transition",
+      "evidence_level": "Personal experiment",
+      "safety_notes": "Choose content and lighting that do not increase distress or interfere with sleep.",
+      "review_period_days": 28,
+      "sources": [
+        {"id": "habit-formation-review", "title": "How are habits formed: modelling habit formation in the real world", "publisher": "European Journal of Social Psychology", "url": "https://onlinelibrary.wiley.com/doi/10.1002/ejsp.674"}
+      ]
+    },
+    {
+      "id": "social-connection",
+      "version": 1,
+      "category": "Social connection",
+      "title": "Social connection",
+      "purpose": "Protect regular contact with people who matter.",
+      "instructions": "Send a thoughtful message, make a call, share a meal, or spend unhurried time with someone. Depth matters more than a score.",
+      "minimum_version": "Send one genuine check-in message.",
+      "standard_version": "Make two or three meaningful contacts each week.",
+      "frequency": "2–3 times per week",
+      "duration_minutes": 20,
+      "best_time": "A mutually workable time",
+      "evidence_level": "Moderate",
+      "safety_notes": "Respect boundaries and personal safety. Connection should not require staying in harmful relationships.",
+      "review_period_days": 28,
+      "sources": [
+        {"id": "surgeon-general-connection", "title": "Our epidemic of loneliness and isolation", "publisher": "U.S. Surgeon General", "url": "https://www.hhs.gov/sites/default/files/surgeon-general-social-connection-advisory.pdf"}
+      ]
+    },
+    {
+      "id": "focus-block",
+      "version": 1,
+      "category": "Focus",
+      "title": "Single-task focus block",
+      "purpose": "Make one meaningful task easier to start and finish.",
+      "instructions": "Choose one visible outcome, remove the phone from reach, set a modest timer, and stop or take a real break when it ends.",
+      "minimum_version": "Work on one task for 10 minutes.",
+      "standard_version": "Complete one 25–50 minute single-task block on workdays.",
+      "frequency": "Most workdays",
+      "duration_minutes": 25,
+      "best_time": "Your most reliable alert period",
+      "evidence_level": "Personal experiment",
+      "safety_notes": "Take breaks for eyes, posture, hydration, and movement. Do not use focus blocks to ignore urgent health or safety needs.",
+      "review_period_days": 21,
+      "sources": [
+        {"id": "apa-attention", "title": "Attention and multitasking overview", "publisher": "American Psychological Association", "url": "https://www.apa.org/research/action/multitask"}
+      ]
+    },
+    {
+      "id": "mobility",
+      "version": 1,
+      "category": "Mobility",
+      "title": "Mobility break",
+      "purpose": "Interrupt long sitting and practice comfortable range of motion.",
+      "instructions": "Move slowly through comfortable hip, ankle, shoulder, or upper-back positions. Use breathing and control rather than forcing range.",
+      "minimum_version": "Move for two minutes.",
+      "standard_version": "Practice 10 minutes five days per week or use short movement breaks throughout the day.",
+      "frequency": "Most days",
+      "duration_minutes": 10,
+      "best_time": "Between long sitting periods or before training",
+      "evidence_level": "Moderate",
+      "safety_notes": "Stay within a comfortable range and stop for sharp, radiating, or worsening pain.",
+      "review_period_days": 28,
+      "sources": [
+        {"id": "who-sedentary", "title": "Physical activity and sedentary behaviour guidelines", "publisher": "World Health Organization", "url": "https://www.who.int/publications/i/item/9789240015128"}
+      ]
+    }
+  ]
+}

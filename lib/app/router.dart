@@ -14,6 +14,7 @@ import '../features/training/cardio/walking_screen.dart';
 import '../features/training/cardio/zone2_screen.dart';
 import '../features/training/strength/exercise_history_screen.dart';
 import '../features/training/strength/plans_screen.dart';
+import '../features/training/strength/progressive_overload_screen.dart';
 import '../features/training/strength/strength_screen.dart';
 import '../features/training/strength/workout_session_screen.dart';
 import '../features/training/training_screen.dart';
@@ -58,6 +59,10 @@ final appRouter = GoRouter(
                   GoRoute(
                     path: 'plans',
                     builder: (c, s) => const PlansScreen(),
+                  ),
+                  GoRoute(
+                    path: 'progressive-overload',
+                    builder: (c, s) => const ProgressiveOverloadScreen(),
                   ),
                 ],
               ),

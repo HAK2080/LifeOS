@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import '../../core/database/database.dart';
 import '../../core/database/database_provider.dart';
@@ -21,20 +22,107 @@ class GrowthRepository {
   Stream<List<HabitLog>> watchLogs(String day) =>
       (db.select(db.habitLogs)..where((l) => l.day.equals(day))).watch();
 
-  Future<int> addPreset(ProtocolPreset preset) => db.into(db.habits).insert(
+  Future<void> ensureProtocolsSeeded() async {
+    if ((await db.select(db.wellnessProtocols).get()).isNotEmpty) return;
+    final raw = await rootBundle.loadString(
+        'assets/data/wellness_protocols_v1.json');
+    final protocols = WellnessProtocolSpec.parseSeed(raw);
+    await db.transaction(() async {
+      final sourceIds = <String>{};
+      for (final protocol in protocols) {
+        await db.into(db.wellnessProtocols).insert(
+              WellnessProtocolsCompanion.insert(
+                id: protocol.id,
+                version: Value(protocol.version),
+                category: protocol.category,
+                title: protocol.title,
+                purpose: protocol.purpose,
+                instructions: protocol.instructions,
+                minimumVersion: protocol.minimumVersion,
+                standardVersion: protocol.standardVersion,
+                frequency: protocol.frequency,
+                durationMinutes: Value(protocol.durationMinutes),
+                bestTime: protocol.bestTime,
+                evidenceLevel: protocol.evidenceLevel,
+                safetyNotes: protocol.safetyNotes,
+                reviewPeriodDays: Value(protocol.reviewPeriodDays),
+              ),
+            );
+        for (final source in protocol.sources) {
+          if (sourceIds.add(source.id)) {
+            await db.into(db.wellnessSources).insert(
+                  WellnessSourcesCompanion.insert(
+                    id: source.id,
+                    title: source.title,
+                    publisher: source.publisher,
+                    url: source.url,
+                  ),
+                );
+          }
+          await db.into(db.wellnessProtocolSources).insert(
+                WellnessProtocolSourcesCompanion.insert(
+                  protocolId: protocol.id,
+                  sourceId: source.id,
+                ),
+              );
+        }
+      }
+    });
+  }
+
+  Stream<List<WellnessProtocolSpec>> watchProtocols() async* {
+    await ensureProtocolsSeeded();
+    final rows = await db.select(db.wellnessProtocols).get();
+    final sources = await db.select(db.wellnessSources).get();
+    final links = await db.select(db.wellnessProtocolSources).get();
+    final sourcesById = {for (final source in sources) source.id: source};
+    WellnessProtocolSpec toProtocol(WellnessProtocol row) {
+      final sourceIds = links
+          .where((link) => link.protocolId == row.id)
+          .map((link) => link.sourceId);
+      return WellnessProtocolSpec(
+        id: row.id,
+        version: row.version,
+        category: row.category,
+        title: row.title,
+        purpose: row.purpose,
+        instructions: row.instructions,
+        minimumVersion: row.minimumVersion,
+        standardVersion: row.standardVersion,
+        frequency: row.frequency,
+        durationMinutes: row.durationMinutes,
+        bestTime: row.bestTime,
+        evidenceLevel: row.evidenceLevel,
+        safetyNotes: row.safetyNotes,
+        reviewPeriodDays: row.reviewPeriodDays,
+        sources: sourceIds
+            .map((id) => sourcesById[id])
+            .whereType<WellnessSource>()
+            .map((source) => WellnessSourceSpec(
+                  id: source.id,
+                  title: source.title,
+                  publisher: source.publisher,
+                  url: source.url,
+                ))
+            .toList(growable: false),
+      );
+    }
+    yield rows.map(toProtocol).toList(growable: false);
+  }
+
+  Future<int> addProtocol(WellnessProtocolSpec protocol) => db.into(db.habits).insert(
         HabitsCompanion.insert(
-          name: preset.name,
-          purpose: Value(preset.purpose),
-          protocol: Value(preset.protocol),
-          scheduleType: Value(
-              preset.suggestedWeeklyTarget == null ? 'none' : 'weekly'),
-          weeklyTarget: Value(preset.suggestedWeeklyTarget),
-          durationMin: Value(preset.durationMin),
-          minimumVersion: Value(preset.minimumVersion),
-          evidenceLevel: Value(preset.evidenceLevel),
-          safetyNotes: Value(preset.safetyNotes),
-          source: Value(preset.source),
-          reviewAfterDays: Value(preset.reviewAfterDays),
+          protocolId: Value(protocol.id),
+          name: protocol.title,
+          purpose: Value(protocol.purpose),
+          protocol: Value(protocol.instructions),
+          scheduleType: const Value('none'),
+          durationMin: Value(protocol.durationMinutes),
+          minimumVersion: Value(protocol.minimumVersion),
+          evidenceLevel: Value(protocol.evidenceLevel),
+          safetyNotes: Value(protocol.safetyNotes),
+          source: Value(protocol.sources.map((s) => s.title).join('; ')),
+          reviewAfterDays: Value(protocol.reviewPeriodDays),
         ),
       );
 
@@ -104,8 +192,32 @@ class GrowthRepository {
     if (habit?.reminderTime != null) {
       await notifications.cancelHabitReminder(id);
     }
+    await (db.delete(db.habitReviews)..where((r) => r.habitId.equals(id))).go();
     await (db.delete(db.habitLogs)..where((l) => l.habitId.equals(id))).go();
     await (db.delete(db.habits)..where((h) => h.id.equals(id))).go();
+  }
+
+  Future<void> addReview({
+    required int habitId,
+    required String outcome,
+    bool? helped,
+    String? notes,
+  }) async {
+    await db.into(db.habitReviews).insert(HabitReviewsCompanion.insert(
+          habitId: habitId,
+          outcome: outcome,
+          helped: Value(helped),
+          notes: Value(notes),
+        ));
+    final status = switch (outcome) {
+      'pause' => 'paused',
+      'stop' => 'stopped',
+      _ => 'active',
+    };
+    await updateHabit(habitId, HabitsCompanion(
+      status: Value(status),
+      lastReviewAt: Value(DateTime.now()),
+    ));
   }
 
   Future<void> setLog({
@@ -191,6 +303,9 @@ final growthRepositoryProvider = Provider<GrowthRepository>(
 
 final growthHabitsProvider = StreamProvider<List<Habit>>(
     (ref) => ref.watch(growthRepositoryProvider).watchHabits());
+
+final growthProtocolsProvider = StreamProvider<List<WellnessProtocolSpec>>(
+    (ref) => ref.watch(growthRepositoryProvider).watchProtocols());
 
 final growthLogsProvider = StreamProvider<List<HabitLog>>((ref) => ref
     .watch(growthRepositoryProvider)

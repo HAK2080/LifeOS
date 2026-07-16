@@ -328,6 +328,7 @@ class _WorkoutTile extends ConsumerWidget {
                   ButtonSegment(value: 'manual', label: Text('Manual')),
                   ButtonSegment(value: 'double', label: Text('Double')),
                   ButtonSegment(value: 'coach', label: Text('Coach')),
+                  ButtonSegment(value: 'progressive', label: Text('RIR')),
                 ],
                 selected: {mode},
                 onSelectionChanged: (s) =>

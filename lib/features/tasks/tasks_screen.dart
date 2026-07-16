@@ -39,7 +39,16 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
     final repo = ref.read(taskRepositoryProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Tasks')),
+      appBar: AppBar(
+        title: const Text('Tasks'),
+        actions: [
+          IconButton(
+            tooltip: 'New category',
+            icon: const Icon(Icons.create_new_folder_outlined),
+            onPressed: () => _addCategory(context, repo),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(
@@ -121,6 +130,29 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                         style: Theme.of(context).textTheme.bodyMedium),
                   );
                 }
+                if (_filterListId == null && lists.isNotEmpty) {
+                  final groups = groupTasksByCategory(all, DateTime.now());
+                  return ListView(
+                    padding: const EdgeInsets.only(bottom: 96),
+                    children: [
+                      for (final category in lists)
+                        if (groups[category.id]?.isNotEmpty ?? false)
+                          _CategorySection(
+                            title: category.name,
+                            tasks: groups[category.id]!,
+                            repo: repo,
+                            onOpen: _openDetails,
+                          ),
+                      if (groups[null]?.isNotEmpty ?? false)
+                        _CategorySection(
+                          title: 'Uncategorized',
+                          tasks: groups[null]!,
+                          repo: repo,
+                          onOpen: _openDetails,
+                        ),
+                    ],
+                  );
+                }
                 return ReorderableListView.builder(
                   padding: const EdgeInsets.only(bottom: 96),
                   itemCount: ordered.length,
@@ -147,6 +179,35 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _addCategory(
+      BuildContext context, TaskRepository repo) async {
+    final controller = TextEditingController();
+    final name = await showDialog<String>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: const Text('New category'),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: const InputDecoration(hintText: 'e.g. Work, Home, Health'),
+          onSubmitted: (value) => Navigator.pop(c, value),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(c),
+              child: const Text('Cancel')),
+          FilledButton(
+              onPressed: () => Navigator.pop(c, controller.text),
+              child: const Text('Create')),
+        ],
+      ),
+    );
+    if (name != null && name.trim().isNotEmpty) {
+      await repo.addList(name.trim());
+    }
+    controller.dispose();
   }
 
   void _quickAdd() {
@@ -178,6 +239,54 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) => TaskDetailsSheet(taskId: task.id),
+    );
+  }
+}
+
+class _CategorySection extends StatelessWidget {
+  const _CategorySection({
+    required this.title,
+    required this.tasks,
+    required this.repo,
+    required this.onOpen,
+  });
+
+  final String title;
+  final List<Task> tasks;
+  final TaskRepository repo;
+  final void Function(BuildContext, Task) onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 16, 4),
+          child: Row(
+            children: [
+              Icon(Icons.folder_open_outlined,
+                  size: 18, color: Theme.of(context).colorScheme.primary),
+              const SizedBox(width: 8),
+              Text(title, style: Theme.of(context).textTheme.titleMedium),
+              const Spacer(),
+              Text('${tasks.length}',
+                  style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+        ),
+        for (final task in tasks)
+          _TaskTile(
+            key: ValueKey('category-${task.id}'),
+            task: task,
+            index: 0,
+            draggable: false,
+            onToggle: () => repo.setCompleted(
+                task.id, task.completedAt == null),
+            onTap: () => onOpen(context, task),
+            onDelete: () => repo.deleteTask(task.id),
+          ),
+      ],
     );
   }
 }
@@ -358,12 +467,12 @@ class _TaskDetailsSheetState extends ConsumerState<TaskDetailsSheet> {
                   context,
                   icon: Icons.label_outline,
                   label: task.listId == null
-                      ? 'List'
+                      ? 'Category'
                       : (lists
                               .where((l) => l.id == task.listId)
                               .firstOrNull
                               ?.name ??
-                          'List'),
+                          'Category'),
                   selected: task.listId != null,
                   onTap: () => _pickList(context, repo, task, lists),
                   onClear: task.listId == null
@@ -419,8 +528,8 @@ class _TaskDetailsSheetState extends ConsumerState<TaskDetailsSheet> {
               leading: const Icon(Icons.add),
               title: TextField(
                 controller: controller,
-                decoration:
-                    const InputDecoration(hintText: 'New list (e.g. Work)'),
+                decoration: const InputDecoration(
+                    hintText: 'New category (e.g. Work)'),
                 onSubmitted: (v) async {
                   if (v.trim().isEmpty) return;
                   final id = await repo.addList(v.trim());

@@ -38,6 +38,11 @@ class NutritionScreen extends ConsumerWidget {
         title: const Text('Nutrition'),
         actions: [
           IconButton(
+            tooltip: 'Food library',
+            icon: const Icon(Icons.search),
+            onPressed: () => _foodLibrarySheet(context, ref),
+          ),
+          IconButton(
             tooltip: 'Goals',
             icon: const Icon(Icons.flag_outlined),
             onPressed: () => _goalsSheet(context, ref),
@@ -361,6 +366,15 @@ class NutritionScreen extends ConsumerWidget {
   }
 
   // ----- Saved meals -----
+
+  void _foodLibrarySheet(BuildContext context, WidgetRef ref) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => const _FoodLibrarySheet(),
+    );
+  }
 
   void _savedMealsSheet(BuildContext context, WidgetRef ref) {
     showModalBottomSheet<void>(
@@ -785,6 +799,87 @@ class NutritionScreen extends ConsumerWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _FoodLibrarySheet extends ConsumerStatefulWidget {
+  const _FoodLibrarySheet();
+
+  @override
+  ConsumerState<_FoodLibrarySheet> createState() => _FoodLibrarySheetState();
+}
+
+class _FoodLibrarySheetState extends ConsumerState<_FoodLibrarySheet> {
+  final _search = TextEditingController();
+  String _query = '';
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final meals = ref.watch(savedMealsProvider).value ?? [];
+    final normalized = _query.trim().toLowerCase();
+    final filtered = normalized.isEmpty
+        ? meals
+        : meals
+            .where((m) => m.name.toLowerCase().contains(normalized))
+            .toList();
+    final repo = ref.read(nutritionRepositoryProvider);
+
+    return DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.8,
+      builder: (c, scroll) => ListView(
+        controller: scroll,
+        padding: const EdgeInsets.all(20),
+        children: [
+          Text('Food library', style: Theme.of(c).textTheme.titleLarge),
+          const SizedBox(height: 4),
+          Text('Search your saved foods and log them locally. Nothing requires an account.',
+              style: Theme.of(c).textTheme.bodySmall),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _search,
+            autofocus: true,
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Search saved foods',
+            ),
+            onChanged: (value) => setState(() => _query = value),
+          ),
+          const SizedBox(height: 12),
+          if (filtered.isEmpty)
+            const Padding(
+              padding: EdgeInsets.all(24),
+              child: Text('No saved foods match. Log a meal and choose Save for reuse.'),
+            ),
+          for (final meal in filtered)
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(meal.name),
+              subtitle: Text(
+                  '${meal.calories.round()} kcal · P ${meal.proteinG.round()} · C ${meal.carbsG.round()} · F ${meal.fatG.round()}'),
+              trailing: IconButton(
+                tooltip: 'Log today',
+                icon: const Icon(Icons.add_circle_outline),
+                onPressed: () => repo.logMeal(
+                  day: dayKey(DateTime.now()),
+                  name: meal.name,
+                  calories: meal.calories,
+                  proteinG: meal.proteinG,
+                  carbsG: meal.carbsG,
+                  fatG: meal.fatG,
+                  mealId: meal.id,
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

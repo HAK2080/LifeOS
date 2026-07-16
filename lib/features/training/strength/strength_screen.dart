@@ -79,6 +79,12 @@ class StrengthScreen extends ConsumerWidget {
             onTap: () => context.go('/training/strength/plans'),
           ),
           _MenuTile(
+            icon: Icons.trending_up,
+            title: 'Progressive Overload Method',
+            blurb: 'Optional RIR-based progression with rep ranges and reviews',
+            onTap: () => context.go('/training/strength/progressive-overload'),
+          ),
+          _MenuTile(
             icon: Icons.edit_note_outlined,
             title: 'Create / Edit Training Plan',
             blurb: 'Your plans, your structure — nothing forced',
