@@ -9,11 +9,16 @@ import '../features/nutrition/nutrition_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/tasks/tasks_screen.dart';
 import '../features/today/today_screen.dart';
+import '../features/training/cardio/mobility_screen.dart';
+import '../features/training/cardio/walking_screen.dart';
+import '../features/training/cardio/zone2_screen.dart';
 import '../features/training/strength/exercise_history_screen.dart';
 import '../features/training/strength/plans_screen.dart';
 import '../features/training/strength/strength_screen.dart';
 import '../features/training/strength/workout_session_screen.dart';
 import '../features/training/training_screen.dart';
+import '../features/training/wod/kettlebell_screen.dart';
+import '../features/training/wod/wod_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/today',
@@ -55,6 +60,26 @@ final appRouter = GoRouter(
                     builder: (c, s) => const PlansScreen(),
                   ),
                 ],
+              ),
+              GoRoute(
+                path: 'wod',
+                builder: (c, s) => const WodScreen(),
+              ),
+              GoRoute(
+                path: 'kettlebell',
+                builder: (c, s) => const KettlebellScreen(),
+              ),
+              GoRoute(
+                path: 'zone2',
+                builder: (c, s) => const Zone2Screen(),
+              ),
+              GoRoute(
+                path: 'walking',
+                builder: (c, s) => const WalkingScreen(),
+              ),
+              GoRoute(
+                path: 'mobility',
+                builder: (c, s) => const MobilityScreen(),
               ),
             ],
           ),

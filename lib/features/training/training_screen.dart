@@ -109,16 +109,14 @@ class TrainingScreen extends ConsumerWidget {
                   child: AppCard(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 16),
-                    onTap: () {
-                      if (t.id == 'strength') {
-                        context.go('/training/strength');
-                      } else {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (_) => _ComingSoonSheet(tile: t),
-                        );
-                      }
-                    },
+                    onTap: () => context.go(switch (t.id) {
+                      'strength' => '/training/strength',
+                      'wod' => '/training/wod',
+                      'kettlebell' => '/training/kettlebell',
+                      'zone2' => '/training/zone2',
+                      'walking' => '/training/walking',
+                      _ => '/training/mobility',
+                    }),
                     child: Row(
                       children: [
                         Icon(t.icon, size: 28, color: AppColors.accent),
@@ -153,46 +151,6 @@ class TrainingScreen extends ConsumerWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ComingSoonSheet extends StatelessWidget {
-  const _ComingSoonSheet({required this.tile});
-
-  final TrainingTile tile;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(tile.icon, color: AppColors.accent),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(tile.title,
-                      style: Theme.of(context).textTheme.titleLarge),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text(tile.blurb),
-            const SizedBox(height: 8),
-            Text(
-              'This module arrives in Phase 2 — logging, plans, rest timers '
-              'and coach-assisted progression. The tile order you set here '
-              'is already saved.',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
-        ),
       ),
     );
   }
