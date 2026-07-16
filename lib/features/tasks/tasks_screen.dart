@@ -39,7 +39,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
     final repo = ref.read(taskRepositoryProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Tasks')),
+      appBar: AppBar(title: const Text('TASKS')),
       body: Column(
         children: [
           Padding(

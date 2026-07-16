@@ -22,8 +22,9 @@ void main() {
     expect(find.text('Training'), findsOneWidget);
     expect(find.text('Nutrition'), findsOneWidget);
     expect(find.text('Growth'), findsOneWidget);
-    // "Today" appears in both the tab bar and the app bar → opened on Today.
-    expect(find.text('Today'), findsNWidgets(2));
+    // Tab label plus the app bar title → opened on Today.
+    expect(find.text('Today'), findsOneWidget);
+    expect(find.text('TODAY'), findsOneWidget);
     // Today content is visible, including the real ayah from the asset.
     expect(find.text('آية اليوم'), findsOneWidget);
     expect(find.text('عمل الخير اليوم'), findsOneWidget);

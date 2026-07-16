@@ -20,8 +20,8 @@ class LifeApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Life',
       debugShowCheckedModeBanner: false,
-      theme: buildTheme(Brightness.light),
-      darkTheme: buildTheme(Brightness.dark),
+      theme: buildTheme(Brightness.dark),
+      themeMode: ThemeMode.dark,
       routerConfig: appRouter,
     );
   }

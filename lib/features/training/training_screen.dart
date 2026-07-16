@@ -3,28 +3,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../app/neon.dart';
+
 class TrainingTile {
-  const TrainingTile(this.id, this.title, this.icon, this.blurb);
+  const TrainingTile(this.id, this.title, this.icon, this.blurb, this.accent);
 
   final String id;
   final String title;
   final IconData icon;
   final String blurb;
+  final Color accent;
 }
 
 const _allTiles = [
-  TrainingTile('strength', 'Strength / Hypertrophy', Icons.fitness_center,
-      'Log sets, follow your plan at your own pace.'),
-  TrainingTile('wod', 'WOD / Conditioning', Icons.timer_outlined,
-      'Coach-designed or equipment-led conditioning.'),
-  TrainingTile('kettlebell', 'Kettlebell', Icons.sports_gymnastics,
-      'Complexes, EMOM, AMRAP, technique.'),
-  TrainingTile('zone2', 'Zone 2', Icons.monitor_heart_outlined,
-      'Easy aerobic work — weekly minutes across activities.'),
-  TrainingTile('walking', 'Walking', Icons.directions_walk,
-      'Steps, treadmill and rucking.'),
-  TrainingTile('mobility', 'Mobility / Recovery', Icons.self_improvement,
-      'Stretching, foam rolling, breathing.'),
+  TrainingTile('strength', 'STRENGTH / HYPERTROPHY', Icons.fitness_center,
+      'Log sets, follow your plan at your own pace.', Neon.ember),
+  TrainingTile('wod', 'WOD / CONDITIONING', Icons.timer_outlined,
+      'Coach-designed or equipment-led conditioning.', Neon.magenta),
+  TrainingTile('kettlebell', 'KETTLEBELL', Icons.sports_gymnastics,
+      'Complexes, EMOM, AMRAP, technique.', Neon.gold),
+  TrainingTile('zone2', 'ZONE 2', Icons.monitor_heart_outlined,
+      'Easy aerobic work — weekly minutes across activities.', Neon.cyan),
+  TrainingTile('walking', 'WALKING', Icons.directions_walk,
+      'Steps, treadmill and rucking.', Neon.lime),
+  TrainingTile('mobility', 'MOBILITY / RECOVERY', Icons.self_improvement,
+      'Stretching, foam rolling, breathing.', Neon.violet),
 ];
 
 final tileOrderProvider =
@@ -72,7 +75,7 @@ class TrainingScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Training'),
+        title: const Text('TRAINING'),
         actions: [
           IconButton(
             tooltip: 'Equipment library',
@@ -85,36 +88,66 @@ class TrainingScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
             child: Text('What do you feel like doing today?',
-                style: Theme.of(context).textTheme.titleLarge),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontSize: 22)),
           ),
           Expanded(
             child: ReorderableListView.builder(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
               itemCount: tiles.length,
+              proxyDecorator: (child, index, animation) => child,
               onReorderItem: (o, n) =>
                   ref.read(tileOrderProvider.notifier).move(o, n),
               itemBuilder: (context, i) {
                 final t = tiles[i];
-                return Card(
+                return Padding(
                   key: ValueKey(t.id),
-                  margin: const EdgeInsets.only(bottom: 12),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 8),
-                    leading: Icon(t.icon,
-                        size: 32, color: Theme.of(context).colorScheme.primary),
-                    title: Text(t.title,
-                        style: Theme.of(context).textTheme.titleMedium),
-                    subtitle: Text(t.blurb),
-                    trailing: ReorderableDragStartListener(
-                      index: i,
-                      child: const Icon(Icons.drag_handle),
-                    ),
+                  padding: const EdgeInsets.only(bottom: 14),
+                  child: NeonCard(
+                    accent: t.accent,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 16),
                     onTap: () => showModalBottomSheet(
                       context: context,
                       builder: (_) => _ComingSoonSheet(tile: t),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(t.icon, size: 32, color: t.accent, shadows: [
+                          Shadow(
+                              color: t.accent.withValues(alpha: 0.8),
+                              blurRadius: 16),
+                        ]),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(t.title,
+                                  style: TextStyle(
+                                    fontFamily: 'Orbitron',
+                                    fontSize: 13.5,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.2,
+                                    color: t.accent,
+                                  )),
+                              const SizedBox(height: 4),
+                              Text(t.blurb,
+                                  style:
+                                      Theme.of(context).textTheme.bodySmall),
+                            ],
+                          ),
+                        ),
+                        ReorderableDragStartListener(
+                          index: i,
+                          child: const Icon(Icons.drag_handle,
+                              color: Neon.dim),
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -143,10 +176,17 @@ class _ComingSoonSheet extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(tile.icon, color: Theme.of(context).colorScheme.primary),
+                Icon(tile.icon, color: tile.accent),
                 const SizedBox(width: 12),
-                Text(tile.title,
-                    style: Theme.of(context).textTheme.titleLarge),
+                Expanded(
+                  child: Text(tile.title,
+                      style: TextStyle(
+                          fontFamily: 'Orbitron',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.2,
+                          color: tile.accent)),
+                ),
               ],
             ),
             const SizedBox(height: 12),
