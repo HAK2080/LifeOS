@@ -1,188 +1,225 @@
 import 'package:flutter/material.dart';
 
-import 'neon.dart';
+import 'style.dart';
 
-/// Neon gaming theme: near-black arena, glowing accents, techno type.
-/// Still calm — glow instead of noise, and never a red warning.
+/// Claude-inspired theme: warm neutrals, one terracotta accent,
+/// serif headings, quiet borders. Errors stay amber — never red.
 ThemeData buildTheme(Brightness brightness) {
-  final scheme = ColorScheme.dark(
-    primary: Neon.cyan,
-    onPrimary: Colors.black,
-    secondary: Neon.magenta,
-    onSecondary: Colors.black,
-    tertiary: Neon.lime,
-    surface: Neon.bg,
-    onSurface: Neon.ice,
-    surfaceContainerLow: Neon.surface,
-    surfaceContainerHighest: Neon.surfaceHi,
-    onSurfaceVariant: Neon.dim,
-    outline: Neon.dim,
-    error: Neon.gold, // errors stay quiet — amber, never red
-    onError: Colors.black,
+  final dark = brightness == Brightness.dark;
+
+  final scheme = ColorScheme(
+    brightness: brightness,
+    primary: AppColors.accent,
+    onPrimary: Colors.white,
+    secondary: AppColors.accentDeep,
+    onSecondary: Colors.white,
+    tertiary: dark ? AppColors.darkText2 : AppColors.lightText2,
+    onTertiary: dark ? AppColors.darkBg : AppColors.lightBg,
+    surface: dark ? AppColors.darkBg : AppColors.lightBg,
+    onSurface: dark ? AppColors.darkText : AppColors.lightText,
+    surfaceContainerLow: dark ? AppColors.darkSurface : AppColors.lightSurface,
+    surfaceContainerHighest: dark ? AppColors.darkPanel : AppColors.lightPanel,
+    onSurfaceVariant: dark ? AppColors.darkText2 : AppColors.lightText2,
+    outline: dark ? AppColors.darkBorder : AppColors.lightBorder,
+    error: const Color(0xFFB8860B), // quiet amber
+    onError: Colors.white,
   );
 
-  const body = 'Rajdhani';
-  const display = 'Orbitron';
-  // Arabic falls back to Tajawal wherever Orbitron/Rajdhani lack glyphs.
-  const arabicFallback = ['Tajawal'];
+  const sans = 'Sans';
+  const serif = 'Serif';
+  const arabicFallback = ['Naskh'];
 
-  final textTheme = Typography.whiteMountainView
+  final base = dark ? Typography.whiteMountainView : Typography.blackMountainView;
+  final textTheme = base
       .apply(
-        bodyColor: Neon.ice,
-        displayColor: Neon.ice,
-        fontFamily: body,
+        bodyColor: scheme.onSurface,
+        displayColor: scheme.onSurface,
+        fontFamily: sans,
         fontFamilyFallback: arabicFallback,
       )
       .copyWith(
-        headlineSmall: const TextStyle(
-            fontFamily: body,
+        headlineSmall: TextStyle(
+            fontFamily: serif,
             fontFamilyFallback: arabicFallback,
             fontWeight: FontWeight.w600,
-            fontSize: 26,
-            color: Neon.ice),
-        titleLarge: const TextStyle(
-            fontFamily: display,
+            fontSize: 24,
+            height: 1.3,
+            color: scheme.onSurface),
+        titleLarge: TextStyle(
+            fontFamily: serif,
             fontFamilyFallback: arabicFallback,
-            fontWeight: FontWeight.w700,
-            fontSize: 18,
-            letterSpacing: 1.2,
-            color: Neon.ice),
-        titleMedium: const TextStyle(
-            fontFamily: body,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            color: scheme.onSurface),
+        titleMedium: TextStyle(
+            fontFamily: sans,
             fontFamilyFallback: arabicFallback,
-            fontWeight: FontWeight.w700,
-            fontSize: 18,
-            letterSpacing: 0.5,
-            color: Neon.ice),
-        bodyLarge: const TextStyle(
-            fontFamily: body,
+            fontWeight: FontWeight.w600,
+            fontSize: 16.5,
+            color: scheme.onSurface),
+        bodyLarge: TextStyle(
+            fontFamily: sans,
             fontFamilyFallback: arabicFallback,
-            fontSize: 17,
+            fontSize: 16.5,
+            height: 1.5,
+            color: scheme.onSurface),
+        bodyMedium: TextStyle(
+            fontFamily: sans,
+            fontFamilyFallback: arabicFallback,
+            fontSize: 15,
+            height: 1.5,
+            color: scheme.onSurface),
+        bodySmall: TextStyle(
+            fontFamily: sans,
+            fontFamilyFallback: arabicFallback,
+            fontSize: 13,
             height: 1.4,
-            color: Neon.ice),
-        bodyMedium: const TextStyle(
-            fontFamily: body,
+            color: scheme.onSurfaceVariant),
+        labelLarge: TextStyle(
+            fontFamily: sans,
             fontFamilyFallback: arabicFallback,
-            fontSize: 15.5,
-            height: 1.4,
-            color: Neon.ice),
-        bodySmall: const TextStyle(
-            fontFamily: body,
-            fontFamilyFallback: arabicFallback,
-            fontSize: 13.5,
-            color: Neon.dim),
+            fontWeight: FontWeight.w600,
+            fontSize: 15,
+            color: scheme.onSurface),
       );
 
   return ThemeData(
     colorScheme: scheme,
     useMaterial3: true,
-    scaffoldBackgroundColor: Neon.bg,
+    scaffoldBackgroundColor: scheme.surface,
     textTheme: textTheme,
     appBarTheme: AppBarTheme(
       centerTitle: false,
-      backgroundColor: Neon.bg,
+      backgroundColor: scheme.surface,
       elevation: 0,
+      scrolledUnderElevation: 0,
       titleTextStyle: TextStyle(
-        fontFamily: display,
-        fontSize: 20,
-        fontWeight: FontWeight.w800,
-        letterSpacing: 3,
-        color: Neon.ice,
-        shadows: [
-          Shadow(color: Neon.cyan.withValues(alpha: 0.8), blurRadius: 16),
-        ],
+        fontFamily: serif,
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        color: scheme.onSurface,
       ),
-      iconTheme: const IconThemeData(color: Neon.ice),
+      iconTheme: IconThemeData(color: scheme.onSurfaceVariant),
     ),
     cardTheme: CardThemeData(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: Neon.cyan.withValues(alpha: 0.35)),
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: scheme.outline),
       ),
-      color: Neon.surface,
+      color: scheme.surfaceContainerLow,
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Neon.cyan.withValues(alpha: 0.35)),
+        borderSide: BorderSide(color: scheme.outline),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Neon.cyan.withValues(alpha: 0.3)),
+        borderSide: BorderSide(color: scheme.outline),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Neon.cyan, width: 1.4),
+        borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
       ),
       filled: true,
-      fillColor: Neon.surface,
-      hintStyle: const TextStyle(color: Neon.dim, fontFamily: body),
+      fillColor: scheme.surfaceContainerLow,
+      hintStyle: TextStyle(color: scheme.onSurfaceVariant, fontFamily: sans),
     ),
     checkboxTheme: CheckboxThemeData(
-      side: BorderSide(color: Neon.cyan.withValues(alpha: 0.7), width: 1.6),
+      side: BorderSide(color: scheme.onSurfaceVariant, width: 1.5),
       fillColor: WidgetStateProperty.resolveWith((states) =>
           states.contains(WidgetState.selected)
-              ? Neon.cyan
+              ? AppColors.accent
               : Colors.transparent),
-      checkColor: const WidgetStatePropertyAll(Colors.black),
+      checkColor: const WidgetStatePropertyAll(Colors.white),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
     ),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) =>
-          states.contains(WidgetState.selected) ? Neon.cyan : Neon.dim),
+          states.contains(WidgetState.selected)
+              ? Colors.white
+              : scheme.onSurfaceVariant),
       trackColor: WidgetStateProperty.resolveWith((states) =>
           states.contains(WidgetState.selected)
-              ? Neon.cyan.withValues(alpha: 0.3)
-              : Neon.surfaceHi),
+              ? AppColors.accent
+              : scheme.surfaceContainerHighest),
     ),
     chipTheme: ChipThemeData(
-      backgroundColor: Neon.surfaceHi,
-      side: BorderSide(color: Neon.cyan.withValues(alpha: 0.35)),
-      labelStyle: const TextStyle(
-          fontFamily: body,
+      backgroundColor: scheme.surfaceContainerLow,
+      side: BorderSide(color: scheme.outline),
+      labelStyle: TextStyle(
+          fontFamily: sans,
           fontFamilyFallback: arabicFallback,
-          color: Neon.ice,
-          fontWeight: FontWeight.w600),
+          color: scheme.onSurface,
+          fontWeight: FontWeight.w500),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ),
-    dialogTheme: DialogThemeData(
-      backgroundColor: Neon.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: Neon.cyan.withValues(alpha: 0.4)),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: AppColors.accent,
+        foregroundColor: Colors.white,
+        textStyle: const TextStyle(
+            fontFamily: sans, fontWeight: FontWeight.w600, fontSize: 15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       ),
     ),
-    bottomSheetTheme: BottomSheetThemeData(
-      backgroundColor: Neon.surface,
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: scheme.onSurface,
+        side: BorderSide(color: scheme.outline),
+        textStyle: const TextStyle(
+            fontFamily: sans, fontWeight: FontWeight.w600, fontSize: 15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.accentDeep,
+        textStyle: const TextStyle(
+            fontFamily: sans, fontWeight: FontWeight.w600, fontSize: 14),
+      ),
+    ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: scheme.surfaceContainerLow,
       shape: RoundedRectangleBorder(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        side: BorderSide(color: Neon.cyan.withValues(alpha: 0.4)),
+        borderRadius: BorderRadius.circular(18),
+        side: BorderSide(color: scheme.outline),
+      ),
+      titleTextStyle: TextStyle(
+          fontFamily: serif,
+          fontFamilyFallback: arabicFallback,
+          fontSize: 19,
+          fontWeight: FontWeight.w600,
+          color: scheme.onSurface),
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: scheme.surfaceContainerLow,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
     ),
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: Neon.surfaceHi,
-      contentTextStyle: const TextStyle(fontFamily: body, color: Neon.ice),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Neon.violet.withValues(alpha: 0.5)),
-      ),
+      backgroundColor: dark ? AppColors.darkPanel : AppColors.lightText,
+      contentTextStyle: TextStyle(
+          fontFamily: sans,
+          color: dark ? AppColors.darkText : Colors.white),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       behavior: SnackBarBehavior.floating,
     ),
-    dividerTheme: DividerThemeData(
-      color: Neon.cyan.withValues(alpha: 0.15),
+    dividerTheme: DividerThemeData(color: scheme.outline),
+    listTileTheme: ListTileThemeData(
+      textColor: scheme.onSurface,
+      iconColor: scheme.onSurfaceVariant,
     ),
-    listTileTheme: const ListTileThemeData(
-      textColor: Neon.ice,
-      iconColor: Neon.dim,
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: AppColors.accent,
+      foregroundColor: Colors.white,
+      elevation: 2,
     ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Neon.cyan.withValues(alpha: 0.18),
-      foregroundColor: Neon.cyan,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: Neon.cyan),
-      ),
-    ),
+    progressIndicatorTheme:
+        const ProgressIndicatorThemeData(color: AppColors.accent),
   );
 }

@@ -3,31 +3,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../app/neon.dart';
+import '../../app/style.dart';
 
 class TrainingTile {
-  const TrainingTile(this.id, this.title, this.icon, this.blurb, this.accent);
+  const TrainingTile(this.id, this.title, this.icon, this.blurb);
 
   final String id;
   final String title;
   final IconData icon;
   final String blurb;
-  final Color accent;
 }
 
 const _allTiles = [
-  TrainingTile('strength', 'STRENGTH / HYPERTROPHY', Icons.fitness_center,
-      'Log sets, follow your plan at your own pace.', Neon.ember),
-  TrainingTile('wod', 'WOD / CONDITIONING', Icons.timer_outlined,
-      'Coach-designed or equipment-led conditioning.', Neon.magenta),
-  TrainingTile('kettlebell', 'KETTLEBELL', Icons.sports_gymnastics,
-      'Complexes, EMOM, AMRAP, technique.', Neon.gold),
-  TrainingTile('zone2', 'ZONE 2', Icons.monitor_heart_outlined,
-      'Easy aerobic work — weekly minutes across activities.', Neon.cyan),
-  TrainingTile('walking', 'WALKING', Icons.directions_walk,
-      'Steps, treadmill and rucking.', Neon.lime),
-  TrainingTile('mobility', 'MOBILITY / RECOVERY', Icons.self_improvement,
-      'Stretching, foam rolling, breathing.', Neon.violet),
+  TrainingTile('strength', 'Strength / Hypertrophy', Icons.fitness_center,
+      'Log sets, follow your plan at your own pace.'),
+  TrainingTile('wod', 'WOD / Conditioning', Icons.timer_outlined,
+      'Coach-designed or equipment-led conditioning.'),
+  TrainingTile('kettlebell', 'Kettlebell', Icons.sports_gymnastics,
+      'Complexes, EMOM, AMRAP, technique.'),
+  TrainingTile('zone2', 'Zone 2', Icons.monitor_heart_outlined,
+      'Easy aerobic work — weekly minutes across activities.'),
+  TrainingTile('walking', 'Walking', Icons.directions_walk,
+      'Steps, treadmill and rucking.'),
+  TrainingTile('mobility', 'Mobility / Recovery', Icons.self_improvement,
+      'Stretching, foam rolling, breathing.'),
 ];
 
 final tileOrderProvider =
@@ -75,7 +74,7 @@ class TrainingScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TRAINING'),
+        title: const Text('Training'),
         actions: [
           IconButton(
             tooltip: 'Equipment library',
@@ -106,9 +105,8 @@ class TrainingScreen extends ConsumerWidget {
                 final t = tiles[i];
                 return Padding(
                   key: ValueKey(t.id),
-                  padding: const EdgeInsets.only(bottom: 14),
-                  child: NeonCard(
-                    accent: t.accent,
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: AppCard(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 16),
                     onTap: () => showModalBottomSheet(
@@ -117,25 +115,17 @@ class TrainingScreen extends ConsumerWidget {
                     ),
                     child: Row(
                       children: [
-                        Icon(t.icon, size: 32, color: t.accent, shadows: [
-                          Shadow(
-                              color: t.accent.withValues(alpha: 0.8),
-                              blurRadius: 16),
-                        ]),
+                        Icon(t.icon, size: 28, color: AppColors.accent),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(t.title,
-                                  style: TextStyle(
-                                    fontFamily: 'Orbitron',
-                                    fontSize: 13.5,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 1.2,
-                                    color: t.accent,
-                                  )),
-                              const SizedBox(height: 4),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium),
+                              const SizedBox(height: 3),
                               Text(t.blurb,
                                   style:
                                       Theme.of(context).textTheme.bodySmall),
@@ -144,8 +134,10 @@ class TrainingScreen extends ConsumerWidget {
                         ),
                         ReorderableDragStartListener(
                           index: i,
-                          child: const Icon(Icons.drag_handle,
-                              color: Neon.dim),
+                          child: Icon(Icons.drag_handle,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant),
                         ),
                       ],
                     ),
@@ -176,16 +168,11 @@ class _ComingSoonSheet extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(tile.icon, color: tile.accent),
+                Icon(tile.icon, color: AppColors.accent),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(tile.title,
-                      style: TextStyle(
-                          fontFamily: 'Orbitron',
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.2,
-                          color: tile.accent)),
+                      style: Theme.of(context).textTheme.titleLarge),
                 ),
               ],
             ),

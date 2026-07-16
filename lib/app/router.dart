@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'neon.dart';
+import 'style.dart';
 
 import '../features/equipment/equipment_screen.dart';
 import '../features/growth/growth_screen.dart';
@@ -53,27 +53,26 @@ class _AppShell extends StatelessWidget {
   final StatefulNavigationShell shell;
 
   static const _tabs = [
-    (Icons.check_circle_outline, 'Tasks', Neon.cyan),
-    (Icons.wb_sunny_outlined, 'Today', Neon.gold),
-    (Icons.fitness_center_outlined, 'Training', Neon.ember),
-    (Icons.restaurant_outlined, 'Nutrition', Neon.lime),
-    (Icons.spa_outlined, 'Growth', Neon.violet),
+    (Icons.check_circle_outline, 'Tasks'),
+    (Icons.wb_sunny_outlined, 'Today'),
+    (Icons.fitness_center_outlined, 'Training'),
+    (Icons.restaurant_outlined, 'Nutrition'),
+    (Icons.spa_outlined, 'Growth'),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
       body: shell,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Neon.surface,
-          border: Border(
-            top: BorderSide(color: Neon.cyan.withValues(alpha: 0.25)),
-          ),
+          color: scheme.surfaceContainerLow,
+          border: Border(top: BorderSide(color: scheme.outline)),
         ),
         child: SafeArea(
           child: SizedBox(
-            height: 68,
+            height: 64,
             child: Row(
               children: [
                 for (var i = 0; i < _tabs.length; i++)
@@ -81,7 +80,6 @@ class _AppShell extends StatelessWidget {
                     child: _NavItem(
                       icon: _tabs[i].$1,
                       label: _tabs[i].$2,
-                      accent: _tabs[i].$3,
                       selected: shell.currentIndex == i,
                       onTap: () => shell.goBranch(i,
                           initialLocation: i == shell.currentIndex),
@@ -100,20 +98,19 @@ class _NavItem extends StatelessWidget {
   const _NavItem({
     required this.icon,
     required this.label,
-    required this.accent,
     required this.selected,
     required this.onTap,
   });
 
   final IconData icon;
   final String label;
-  final Color accent;
   final bool selected;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? accent : Neon.dim;
+    final scheme = Theme.of(context).colorScheme;
+    final color = selected ? AppColors.accent : scheme.onSurfaceVariant;
     return Semantics(
       selected: selected,
       button: true,
@@ -123,29 +120,14 @@ class _NavItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.all(6),
-              decoration: selected
-                  ? BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                            color: accent.withValues(alpha: 0.55),
-                            blurRadius: 18),
-                      ],
-                    )
-                  : null,
-              child: Icon(icon, color: color, size: 24),
-            ),
-            const SizedBox(height: 2),
+            Icon(icon, color: color, size: 24),
+            const SizedBox(height: 3),
             Text(
               label,
               style: TextStyle(
-                fontFamily: 'Rajdhani',
-                fontSize: 12,
-                letterSpacing: 1,
-                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                fontFamily: 'Sans',
+                fontSize: 11.5,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                 color: color,
               ),
             ),

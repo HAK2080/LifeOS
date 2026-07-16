@@ -74,25 +74,23 @@ flutter:
     - assets/data/
 
   fonts:
-    - family: Orbitron
+    - family: Serif
       fonts:
-        - asset: assets/fonts/Orbitron.ttf
-    - family: Rajdhani
-      fonts:
-        - asset: assets/fonts/Rajdhani-Regular.ttf
-        - asset: assets/fonts/Rajdhani-Medium.ttf
+        - asset: assets/fonts/Gelasio-Regular.ttf
+        - asset: assets/fonts/Gelasio-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Rajdhani-SemiBold.ttf
+        - asset: assets/fonts/Gelasio-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/Rajdhani-Bold.ttf
-          weight: 700
-    - family: Tajawal
+    - family: Sans
       fonts:
-        - asset: assets/fonts/Tajawal-Regular.ttf
-        - asset: assets/fonts/Tajawal-Medium.ttf
+        - asset: assets/fonts/IBMPlexSans-Regular.ttf
+        - asset: assets/fonts/IBMPlexSans-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Tajawal-Bold.ttf
-          weight: 700
+        - asset: assets/fonts/IBMPlexSans-SemiBold.ttf
+          weight: 600
+    - family: Naskh
+      fonts:
+        - asset: assets/fonts/NotoNaskhArabic.ttf
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

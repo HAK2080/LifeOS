@@ -64,7 +64,7 @@ class SettingsScreen extends ConsumerWidget {
     final notifs = ref.watch(notificationsEnabledProvider).value ?? true;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('SETTINGS')),
+      appBar: AppBar(title: const Text('Settings')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

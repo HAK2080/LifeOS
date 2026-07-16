@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../app/neon.dart';
+import '../../app/style.dart';
 
 class GrowthScreen extends StatelessWidget {
   const GrowthScreen({super.key});
@@ -23,17 +23,14 @@ class GrowthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('GROWTH')),
+      appBar: AppBar(title: const Text('Growth')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
             child: Text('What do you want to improve?',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontSize: 22)),
+                style: Theme.of(context).textTheme.headlineSmall),
           ),
           Expanded(
             child: GridView.count(
@@ -44,8 +41,7 @@ class GrowthScreen extends StatelessWidget {
               childAspectRatio: 1.6,
               children: [
                 for (final (icon, title) in _tiles)
-                  NeonCard(
-                    accent: Neon.violet,
+                  AppCard(
                     padding: const EdgeInsets.all(16),
                     onTap: () => ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -56,19 +52,10 @@ class GrowthScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(icon, color: Neon.violet, shadows: [
-                          Shadow(
-                              color: Neon.violet.withValues(alpha: 0.8),
-                              blurRadius: 14),
-                        ]),
+                        Icon(icon, color: AppColors.accent),
                         const SizedBox(height: 8),
                         Text(title,
-                            style: const TextStyle(
-                                fontFamily: 'Rajdhani',
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                                letterSpacing: 0.5,
-                                color: Neon.ice)),
+                            style: Theme.of(context).textTheme.titleMedium),
                       ],
                     ),
                   ),

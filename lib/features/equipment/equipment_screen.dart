@@ -21,7 +21,7 @@ class EquipmentScreen extends ConsumerWidget {
     final items = ref.watch(equipmentProvider).value ?? [];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('EQUIPMENT')),
+      appBar: AppBar(title: const Text('Equipment')),
       floatingActionButton: FloatingActionButton.extended(
         icon: const Icon(Icons.add),
         label: const Text('Add'),
