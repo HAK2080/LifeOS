@@ -109,10 +109,16 @@ class TrainingScreen extends ConsumerWidget {
                   child: AppCard(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 16),
-                    onTap: () => showModalBottomSheet(
-                      context: context,
-                      builder: (_) => _ComingSoonSheet(tile: t),
-                    ),
+                    onTap: () {
+                      if (t.id == 'strength') {
+                        context.go('/training/strength');
+                      } else {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (_) => _ComingSoonSheet(tile: t),
+                        );
+                      }
+                    },
                     child: Row(
                       children: [
                         Icon(t.icon, size: 28, color: AppColors.accent),

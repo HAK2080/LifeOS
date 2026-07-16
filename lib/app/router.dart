@@ -9,6 +9,10 @@ import '../features/nutrition/nutrition_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/tasks/tasks_screen.dart';
 import '../features/today/today_screen.dart';
+import '../features/training/strength/exercise_history_screen.dart';
+import '../features/training/strength/plans_screen.dart';
+import '../features/training/strength/strength_screen.dart';
+import '../features/training/strength/workout_session_screen.dart';
 import '../features/training/training_screen.dart';
 
 final appRouter = GoRouter(
@@ -31,6 +35,26 @@ final appRouter = GoRouter(
               GoRoute(
                 path: 'equipment',
                 builder: (c, s) => const EquipmentScreen(),
+              ),
+              GoRoute(
+                path: 'strength',
+                builder: (c, s) => const StrengthScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'session/:id',
+                    builder: (c, s) => WorkoutSessionScreen(
+                        sessionId:
+                            int.parse(s.pathParameters['id']!)),
+                  ),
+                  GoRoute(
+                    path: 'history',
+                    builder: (c, s) => const ExerciseHistoryScreen(),
+                  ),
+                  GoRoute(
+                    path: 'plans',
+                    builder: (c, s) => const PlansScreen(),
+                  ),
+                ],
               ),
             ],
           ),

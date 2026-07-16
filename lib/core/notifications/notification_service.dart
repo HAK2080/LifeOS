@@ -59,6 +59,40 @@ class NotificationService {
     if (kIsWeb) return;
     await _plugin.cancel(id: taskId);
   }
+
+  static const _restTimerId = 900001;
+
+  /// Fires when the rest timer ends, even with the screen locked.
+  Future<void> scheduleRestDone(DateTime when) async {
+    if (kIsWeb) return;
+    await init();
+    if (when.isBefore(DateTime.now())) return;
+    await _plugin.zonedSchedule(
+      id: _restTimerId,
+      title: 'Rest over — next set',
+      body: null,
+      scheduledDate: tz.TZDateTime.from(when, tz.local),
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'rest_timer',
+          'Rest timer',
+          channelDescription: 'Fires when your rest period ends',
+          importance: Importance.max,
+          priority: Priority.high,
+          category: AndroidNotificationCategory.alarm,
+          enableVibration: true,
+          playSound: true,
+          audioAttributesUsage: AudioAttributesUsage.alarm,
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
+  }
+
+  Future<void> cancelRestDone() async {
+    if (kIsWeb) return;
+    await _plugin.cancel(id: _restTimerId);
+  }
 }
 
 final notificationServiceProvider =
