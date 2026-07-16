@@ -8,6 +8,35 @@ class HeartRateSample {
   final DateTime at;
 }
 
+class HeartRateSummary {
+  const HeartRateSummary({required this.averageBpm, required this.inZoneMin});
+
+  final int averageBpm;
+  final int inZoneMin;
+}
+
+HeartRateSummary summarizeHeartRate(
+  List<HeartRateSample> samples, {
+  required int lowBpm,
+  required int highBpm,
+}) {
+  if (samples.isEmpty) return const HeartRateSummary(averageBpm: 0, inZoneMin: 0);
+  final ordered = [...samples]..sort((a, b) => a.at.compareTo(b.at));
+  final average = (ordered.map((s) => s.bpm).reduce((a, b) => a + b) /
+          ordered.length)
+      .round();
+  var inZoneSeconds = 0;
+  for (var i = 0; i < ordered.length - 1; i++) {
+    final seconds = ordered[i + 1].at.difference(ordered[i].at).inSeconds;
+    if (seconds > 0 && seconds <= 120 &&
+        ordered[i].bpm >= lowBpm && ordered[i].bpm <= highBpm) {
+      inZoneSeconds += seconds;
+    }
+  }
+  return HeartRateSummary(
+      averageBpm: average, inZoneMin: (inZoneSeconds / 60).round());
+}
+
 abstract interface class HealthGateway {
   Future<bool> requestReadPermissions();
   Future<int?> readTodaySteps();

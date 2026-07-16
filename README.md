@@ -13,8 +13,9 @@ As of 2026-07-16, the repository is a functional internal alpha:
 - Phase 2 is substantially implemented: strength logging, exercises, plans
   and text import, history/prefill, progression, rest timer, WODs, kettlebell,
   Zone 2 manual sessions, walking, mobility, and a Health Connect adapter for
-  permission-gated steps and recorded heart-rate samples. Wearable-specific
-  background sync and richer time-in-zone analytics remain.
+  permission-gated steps and recorded heart-rate samples. Live sessions now
+  summarize average heart rate and time in the 120–150 bpm target range;
+  wearable-specific background sync remains device/provider dependent.
 - Phase 3 has a manual nutrition foundation: meals, saved meals, Quick Log,
   portions, approved targets, weight logging, trend logic, and working photo,
   voice, and barcode capture paths that return to editable manual logging.

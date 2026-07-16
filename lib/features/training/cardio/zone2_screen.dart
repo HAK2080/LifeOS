@@ -246,6 +246,7 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
   bool running = false;
   bool started = false;
   int? averageHr;
+  int inZoneMin = 0;
   Timer? _ticker;
 
   @override
@@ -344,6 +345,10 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
                   ? 'Average HR: not synced'
                   : 'Average HR: $averageHr bpm'),
             ),
+            if (averageHr != null)
+              Center(
+                child: Text('In target range (120–150 bpm): $inZoneMin min'),
+              ),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -375,10 +380,15 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
                       final samples = await gateway.readHeartRate(
                           now.subtract(Duration(seconds: elapsedSec)), now);
                       if (samples.isNotEmpty && mounted) {
-                        setState(() => averageHr = (samples
-                                .map((sample) => sample.bpm)
-                                .reduce((a, b) => a + b) /
-                            samples.length).round());
+                        final summary = summarizeHeartRate(
+                          samples,
+                          lowBpm: 120,
+                          highBpm: 150,
+                        );
+                        setState(() {
+                          averageHr = summary.averageBpm;
+                          inZoneMin = summary.inZoneMin;
+                        });
                       }
                     } catch (_) {
                       if (!context.mounted) return;
@@ -399,6 +409,7 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
                             kind: 'zone2',
                             activity: activity,
                             durationMin: mins,
+                            inZoneMin: inZoneMin,
                             avgHr: averageHr,
                           );
                       await ref.read(zone2PrefsProvider.notifier).save(
