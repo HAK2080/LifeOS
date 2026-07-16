@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -26,7 +27,8 @@ class NutritionScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final logs = ref.watch(todayLogsProvider).value ?? [];
+    final selectedDay = ref.watch(nutritionDayProvider);
+    final logs = ref.watch(nutritionLogsProvider(selectedDay)).value ?? [];
     final repo = ref.read(nutritionRepositoryProvider);
     final totals = repo.totals(logs);
     final targets =
@@ -40,7 +42,12 @@ class NutritionScreen extends ConsumerWidget {
           IconButton(
             tooltip: 'Food library',
             icon: const Icon(Icons.search),
-            onPressed: () => _foodLibrarySheet(context, ref),
+            onPressed: () => context.go('/nutrition/foods'),
+          ),
+          IconButton(
+            tooltip: 'Recipes',
+            icon: const Icon(Icons.receipt_long_outlined),
+            onPressed: () => context.go('/nutrition/recipes'),
           ),
           IconButton(
             tooltip: 'Goals',
@@ -65,36 +72,43 @@ class NutritionScreen extends ConsumerWidget {
                 const SectionTitle("Today's intake"),
                 const SizedBox(height: 12),
                 _MacroRow(
-                    label: 'Calories',
-                    value: totals.calories,
-                    target: targets.calories?.toDouble(),
-                    unit: 'kcal'),
+                  label: 'Calories',
+                  value: totals.calories,
+                  target: targets.calories?.toDouble(),
+                  unit: 'kcal',
+                ),
                 _MacroRow(
-                    label: 'Protein',
-                    value: totals.proteinG,
-                    target: targets.proteinG?.toDouble(),
-                    unit: 'g'),
+                  label: 'Protein',
+                  value: totals.proteinG,
+                  target: targets.proteinG?.toDouble(),
+                  unit: 'g',
+                ),
                 _MacroRow(
-                    label: 'Carbs',
-                    value: totals.carbsG,
-                    target: targets.carbsG?.toDouble(),
-                    unit: 'g'),
+                  label: 'Carbs',
+                  value: totals.carbsG,
+                  target: targets.carbsG?.toDouble(),
+                  unit: 'g',
+                ),
                 _MacroRow(
-                    label: 'Fat',
-                    value: totals.fatG,
-                    target: targets.fatG?.toDouble(),
-                    unit: 'g'),
+                  label: 'Fat',
+                  value: totals.fatG,
+                  target: targets.fatG?.toDouble(),
+                  unit: 'g',
+                ),
                 if (!targets.isSet)
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                        'No targets set — tap the flag to see a suggestion. '
-                        'Nothing is ever applied without your approval.',
-                        style: Theme.of(context).textTheme.bodySmall),
+                      'No targets set — tap the flag to see a suggestion. '
+                      'Nothing is ever applied without your approval.',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ),
               ],
             ),
           ),
+          const SizedBox(height: 10),
+          _DiaryDaySelector(day: selectedDay),
           const SizedBox(height: 14),
           Row(
             children: [
@@ -148,12 +162,15 @@ class NutritionScreen extends ConsumerWidget {
                 for (final m in frequent)
                   ActionChip(
                     avatar: m.pinned
-                        ? const Icon(Icons.push_pin,
-                            size: 16, color: AppColors.accentDeep)
+                        ? const Icon(
+                            Icons.push_pin,
+                            size: 16,
+                            color: AppColors.accentDeep,
+                          )
                         : null,
                     label: Text('${m.name} · ${m.calories.round()} kcal'),
                     onPressed: () => repo.logMeal(
-                      day: dayKey(DateTime.now()),
+                      day: selectedDay,
                       name: m.name,
                       calories: m.calories,
                       proteinG: m.proteinG,
@@ -178,10 +195,12 @@ class NutritionScreen extends ConsumerWidget {
             for (final l in logs)
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text(l.name +
-                    (l.portion != 1.0
-                        ? ' (${(l.portion * 100).round()}%)'
-                        : '')),
+                title: Text(
+                  l.name +
+                      (l.portion != 1.0
+                          ? ' (${(l.portion * 100).round()}%)'
+                          : ''),
+                ),
                 subtitle: Text(
                   '${l.calories.round()} kcal · P ${l.proteinG.round()} · '
                   'C ${l.carbsG.round()} · F ${l.fatG.round()}',
@@ -200,8 +219,11 @@ class NutritionScreen extends ConsumerWidget {
 
   // ----- Log meal (manual) -----
 
-  Future<void> _logMealDialog(BuildContext context, WidgetRef ref,
-      {String initialName = ''}) async {
+  Future<void> _logMealDialog(
+    BuildContext context,
+    WidgetRef ref, {
+    String initialName = '',
+  }) async {
     final name = TextEditingController(text: initialName);
     final cal = TextEditingController();
     final protein = TextEditingController();
@@ -218,39 +240,44 @@ class NutritionScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
-                    controller: name,
-                    autofocus: true,
-                    decoration:
-                        const InputDecoration(labelText: 'What was it?')),
+                  controller: name,
+                  autofocus: true,
+                  decoration: const InputDecoration(labelText: 'What was it?'),
+                ),
                 const SizedBox(height: 8),
                 TextField(
-                    controller: cal,
-                    keyboardType: TextInputType.number,
-                    decoration:
-                        const InputDecoration(labelText: 'Calories')),
+                  controller: cal,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(labelText: 'Calories'),
+                ),
                 const SizedBox(height: 8),
-                Row(children: [
-                  Expanded(
+                Row(
+                  children: [
+                    Expanded(
                       child: TextField(
-                          controller: protein,
-                          keyboardType: TextInputType.number,
-                          decoration:
-                              const InputDecoration(labelText: 'P (g)'))),
-                  const SizedBox(width: 8),
-                  Expanded(
+                        controller: protein,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(labelText: 'P (g)'),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
                       child: TextField(
-                          controller: carbs,
-                          keyboardType: TextInputType.number,
-                          decoration:
-                              const InputDecoration(labelText: 'C (g)'))),
-                  const SizedBox(width: 8),
-                  Expanded(
+                        controller: carbs,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(labelText: 'C (g)'),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
                       child: TextField(
-                          controller: fat,
-                          keyboardType: TextInputType.number,
-                          decoration:
-                              const InputDecoration(labelText: 'F (g)'))),
-                ]),
+                        controller: fat,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(labelText: 'F (g)'),
+                      ),
+                    ),
+                  ],
+                ),
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Save for reuse'),
@@ -262,17 +289,20 @@ class NutritionScreen extends ConsumerWidget {
           ),
           actions: [
             TextButton(
-                onPressed: () => Navigator.pop(c, false),
-                child: const Text('Cancel')),
+              onPressed: () => Navigator.pop(c, false),
+              child: const Text('Cancel'),
+            ),
             FilledButton(
-                onPressed: () => Navigator.pop(c, true),
-                child: const Text('Log')),
+              onPressed: () => Navigator.pop(c, true),
+              child: const Text('Log'),
+            ),
           ],
         ),
       ),
     );
     if (ok != true || name.text.trim().isEmpty) return;
     final repo = ref.read(nutritionRepositoryProvider);
+    final selectedDay = ref.read(nutritionDayProvider);
     final calories = double.tryParse(cal.text) ?? 0;
     final p = double.tryParse(protein.text) ?? 0;
     final cb = double.tryParse(carbs.text) ?? 0;
@@ -280,14 +310,15 @@ class NutritionScreen extends ConsumerWidget {
     int? mealId;
     if (save) {
       mealId = await repo.saveMeal(
-          name: name.text.trim(),
-          calories: calories,
-          proteinG: p,
-          carbsG: cb,
-          fatG: f);
+        name: name.text.trim(),
+        calories: calories,
+        proteinG: p,
+        carbsG: cb,
+        fatG: f,
+      );
     }
     await repo.logMeal(
-      day: dayKey(DateTime.now()),
+      day: selectedDay,
       name: name.text.trim(),
       calories: calories,
       proteinG: p,
@@ -302,11 +333,15 @@ class NutritionScreen extends ConsumerWidget {
     final photo = await picker.pickImage(source: ImageSource.camera);
     if (photo == null) return;
     try {
-      final estimate = await ref.read(foodRecognitionServiceProvider)
+      final estimate = await ref
+          .read(foodRecognitionServiceProvider)
           .estimateFromImage(photo.path);
       if (context.mounted) {
-        await _logMealDialog(context, ref,
-            initialName: estimate?.name ?? 'Photo estimate - edit this meal');
+        await _logMealDialog(
+          context,
+          ref,
+          initialName: estimate?.name ?? 'Photo estimate - edit this meal',
+        );
       }
     } finally {
       // Keep no user image after the editable estimate step.
@@ -322,8 +357,9 @@ class NutritionScreen extends ConsumerWidget {
     final speech = SpeechToText();
     if (!await speech.initialize()) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Speech recognition is unavailable.')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Speech recognition is unavailable.')),
+        );
       }
       return;
     }
@@ -358,15 +394,21 @@ class NutritionScreen extends ConsumerWidget {
       ),
     );
     if (code != null && context.mounted) {
-      final product = await ref.read(barcodeProductServiceProvider).lookup(code);
+      final product = await ref
+          .read(barcodeProductServiceProvider)
+          .lookup(code);
       if (!context.mounted) return;
-      await _logMealDialog(context, ref,
-          initialName: product?.name ?? 'Barcode $code');
+      await _logMealDialog(
+        context,
+        ref,
+        initialName: product?.name ?? 'Barcode $code',
+      );
     }
   }
 
   // ----- Saved meals -----
 
+  // ignore: unused_element
   void _foodLibrarySheet(BuildContext context, WidgetRef ref) {
     showModalBottomSheet<void>(
       context: context,
@@ -398,7 +440,8 @@ class NutritionScreen extends ConsumerWidget {
                   const Padding(
                     padding: EdgeInsets.all(24),
                     child: Text(
-                        'Nothing saved yet — tick "Save for reuse" when logging.'),
+                      'Nothing saved yet — tick "Save for reuse" when logging.',
+                    ),
                   ),
                 for (final m in meals)
                   AppCard(
@@ -410,21 +453,24 @@ class NutritionScreen extends ConsumerWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: Text(m.name,
-                                  style: Theme.of(c).textTheme.titleMedium),
+                              child: Text(
+                                m.name,
+                                style: Theme.of(c).textTheme.titleMedium,
+                              ),
                             ),
                             IconButton(
                               icon: Icon(
-                                  m.pinned
-                                      ? Icons.push_pin
-                                      : Icons.push_pin_outlined,
-                                  size: 18,
-                                  color: m.pinned
-                                      ? AppColors.accentDeep
-                                      : null),
+                                m.pinned
+                                    ? Icons.push_pin
+                                    : Icons.push_pin_outlined,
+                                size: 18,
+                                color: m.pinned ? AppColors.accentDeep : null,
+                              ),
                               tooltip: 'Pin to Quick Log',
-                              onPressed: () => repo.updateMeal(m.id,
-                                  MealsCompanion(pinned: Value(!m.pinned))),
+                              onPressed: () => repo.updateMeal(
+                                m.id,
+                                MealsCompanion(pinned: Value(!m.pinned)),
+                              ),
                             ),
                             PopupMenuButton<String>(
                               onSelected: (v) async {
@@ -432,20 +478,27 @@ class NutritionScreen extends ConsumerWidget {
                                   case 'edit':
                                     await _editMeal(c, repo, m);
                                   case 'hide':
-                                    await repo.updateMeal(m.id,
-                                        const MealsCompanion(hidden: Value(true)));
+                                    await repo.updateMeal(
+                                      m.id,
+                                      const MealsCompanion(hidden: Value(true)),
+                                    );
                                   case 'delete':
                                     await repo.deleteMeal(m.id);
                                 }
                               },
                               itemBuilder: (c) => const [
                                 PopupMenuItem(
-                                    value: 'edit',
-                                    child: Text('Rename / edit')),
+                                  value: 'edit',
+                                  child: Text('Rename / edit'),
+                                ),
                                 PopupMenuItem(
-                                    value: 'hide', child: Text('Hide')),
+                                  value: 'hide',
+                                  child: Text('Hide'),
+                                ),
                                 PopupMenuItem(
-                                    value: 'delete', child: Text('Delete')),
+                                  value: 'delete',
+                                  child: Text('Delete'),
+                                ),
                               ],
                             ),
                           ],
@@ -460,12 +513,14 @@ class NutritionScreen extends ConsumerWidget {
                           children: [
                             for (final step in portionSteps)
                               ActionChip(
-                                label: Text(step == 1.0
-                                    ? 'Log'
-                                    : '${step > 1 ? '+' : '−'}${((step - 1).abs() * 100).round()}%'),
+                                label: Text(
+                                  step == 1.0
+                                      ? 'Log'
+                                      : '${step > 1 ? '+' : '−'}${((step - 1).abs() * 100).round()}%',
+                                ),
                                 onPressed: () async {
                                   await repo.logMeal(
-                                    day: dayKey(DateTime.now()),
+                                    day: sheetRef.read(nutritionDayProvider),
                                     name: m.name,
                                     calories: m.calories,
                                     proteinG: m.proteinG,
@@ -490,7 +545,10 @@ class NutritionScreen extends ConsumerWidget {
   }
 
   Future<void> _editMeal(
-      BuildContext context, NutritionRepository repo, Meal m) async {
+    BuildContext context,
+    NutritionRepository repo,
+    Meal m,
+  ) async {
     final name = TextEditingController(text: m.name);
     final cal = TextEditingController(text: m.calories.round().toString());
     final protein = TextEditingController(text: m.proteinG.round().toString());
@@ -504,55 +562,68 @@ class NutritionScreen extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-                controller: name,
-                decoration: const InputDecoration(labelText: 'Name')),
+              controller: name,
+              decoration: const InputDecoration(labelText: 'Name'),
+            ),
             const SizedBox(height: 8),
             TextField(
-                controller: cal,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Calories')),
+              controller: cal,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: 'Calories'),
+            ),
             const SizedBox(height: 8),
-            Row(children: [
-              Expanded(
+            Row(
+              children: [
+                Expanded(
                   child: TextField(
-                      controller: protein,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'P'))),
-              const SizedBox(width: 8),
-              Expanded(
+                    controller: protein,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'P'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
                   child: TextField(
-                      controller: carbs,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'C'))),
-              const SizedBox(width: 8),
-              Expanded(
+                    controller: carbs,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'C'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
                   child: TextField(
-                      controller: fat,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'F'))),
-            ]),
+                    controller: fat,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'F'),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(c, false),
-              child: const Text('Cancel')),
+            onPressed: () => Navigator.pop(c, false),
+            child: const Text('Cancel'),
+          ),
           FilledButton(
-              onPressed: () => Navigator.pop(c, true),
-              child: const Text('Save')),
+            onPressed: () => Navigator.pop(c, true),
+            child: const Text('Save'),
+          ),
         ],
       ),
     );
     if (ok == true) {
       await repo.updateMeal(
-          m.id,
-          MealsCompanion(
-            name: Value(name.text.trim()),
-            calories: Value(double.tryParse(cal.text) ?? m.calories),
-            proteinG: Value(double.tryParse(protein.text) ?? m.proteinG),
-            carbsG: Value(double.tryParse(carbs.text) ?? m.carbsG),
-            fatG: Value(double.tryParse(fat.text) ?? m.fatG),
-          ));
+        m.id,
+        MealsCompanion(
+          name: Value(name.text.trim()),
+          calories: Value(double.tryParse(cal.text) ?? m.calories),
+          proteinG: Value(double.tryParse(protein.text) ?? m.proteinG),
+          carbsG: Value(double.tryParse(carbs.text) ?? m.carbsG),
+          fatG: Value(double.tryParse(fat.text) ?? m.fatG),
+        ),
+      );
     }
   }
 
@@ -560,29 +631,33 @@ class NutritionScreen extends ConsumerWidget {
 
   Future<void> _goalsSheet(BuildContext context, WidgetRef ref) async {
     final profile =
-        ref.read(settings.profileProvider).value ?? const settings.ProfileData();
+        ref.read(settings.profileProvider).value ??
+        const settings.ProfileData();
     final targets =
         ref.read(approvedTargetsProvider).value ?? const ApprovedTargets();
-    final daysLogged =
-        await ref.read(nutritionRepositoryProvider).daysWithLogs();
+    final daysLogged = await ref
+        .read(nutritionRepositoryProvider)
+        .daysWithLogs();
     if (!context.mounted) return;
 
     MacroTargets? suggestion;
     if (profile.weightKg != null &&
         profile.heightCm != null &&
         profile.age != null) {
-      suggestion = suggestTargets(Profile(
-        weightKg: profile.weightKg!,
-        heightCm: profile.heightCm!,
-        age: profile.age!,
-        goal: switch (profile.goal) {
-          'Lose fat' => Goal.loseFat,
-          'Build muscle' => Goal.buildMuscle,
-          'Recomposition' => Goal.recomposition,
-          'General health' => Goal.generalHealth,
-          _ => Goal.maintain,
-        },
-      ));
+      suggestion = suggestTargets(
+        Profile(
+          weightKg: profile.weightKg!,
+          heightCm: profile.heightCm!,
+          age: profile.age!,
+          goal: switch (profile.goal) {
+            'Lose fat' => Goal.loseFat,
+            'Build muscle' => Goal.buildMuscle,
+            'Recomposition' => Goal.recomposition,
+            'General health' => Goal.generalHealth,
+            _ => Goal.maintain,
+          },
+        ),
+      );
     }
     final enoughData = enoughDataForTargetChange(daysLogged);
 
@@ -598,34 +673,44 @@ class NutritionScreen extends ConsumerWidget {
             Text('Goals', style: Theme.of(c).textTheme.titleLarge),
             const SizedBox(height: 12),
             if (targets.isSet) ...[
-              Text('Current (approved by you):',
-                  style: Theme.of(c).textTheme.titleMedium),
               Text(
-                  '${targets.calories} kcal · P ${targets.proteinG} g · C ${targets.carbsG} g · F ${targets.fatG} g'),
+                'Current (approved by you):',
+                style: Theme.of(c).textTheme.titleMedium,
+              ),
+              Text(
+                '${targets.calories} kcal · P ${targets.proteinG} g · C ${targets.carbsG} g · F ${targets.fatG} g',
+              ),
               const SizedBox(height: 12),
             ],
             if (suggestion == null)
               const Text(
-                  'Fill in weight, height and age in Settings to get a suggested target.')
+                'Fill in weight, height and age in Settings to get a suggested target.',
+              )
             else ...[
               Text('Suggestion:', style: Theme.of(c).textTheme.titleMedium),
               Text(
-                  '${suggestion.calories} kcal · P ${suggestion.proteinG} g · C ${suggestion.carbsG} g · F ${suggestion.fatG} g'),
+                '${suggestion.calories} kcal · P ${suggestion.proteinG} g · C ${suggestion.carbsG} g · F ${suggestion.fatG} g',
+              ),
               const SizedBox(height: 8),
-              Text(suggestion.explanation,
-                  style: Theme.of(c).textTheme.bodySmall),
+              Text(
+                suggestion.explanation,
+                style: Theme.of(c).textTheme.bodySmall,
+              ),
               const SizedBox(height: 8),
               if (targets.isSet && !enoughData)
                 Text(
                   'Tip: log meals on ~10 of the last 14 days before changing '
                   'targets — trends beat guesses.',
-                  style: Theme.of(c).textTheme.bodySmall?.copyWith(
-                      color: AppColors.accentDeep),
+                  style: Theme.of(
+                    c,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.accentDeep),
                 ),
               const SizedBox(height: 8),
               FilledButton(
                 onPressed: () async {
-                  await ref.read(approvedTargetsProvider.notifier).approve(
+                  await ref
+                      .read(approvedTargetsProvider.notifier)
+                      .approve(
                         calories: suggestion!.calories,
                         proteinG: suggestion.proteinG,
                         carbsG: suggestion.carbsG,
@@ -647,10 +732,12 @@ class NutritionScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _manualTargets(BuildContext context, WidgetRef ref,
-      ApprovedTargets current) async {
-    final cal =
-        TextEditingController(text: current.calories?.toString() ?? '');
+  Future<void> _manualTargets(
+    BuildContext context,
+    WidgetRef ref,
+    ApprovedTargets current,
+  ) async {
+    final cal = TextEditingController(text: current.calories?.toString() ?? '');
     final p = TextEditingController(text: current.proteinG?.toString() ?? '');
     final cb = TextEditingController(text: current.carbsG?.toString() ?? '');
     final f = TextEditingController(text: current.fatG?.toString() ?? '');
@@ -662,48 +749,58 @@ class NutritionScreen extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-                controller: cal,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Calories')),
+              controller: cal,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: 'Calories'),
+            ),
             const SizedBox(height: 8),
-            Row(children: [
-              Expanded(
+            Row(
+              children: [
+                Expanded(
                   child: TextField(
-                      controller: p,
-                      keyboardType: TextInputType.number,
-                      decoration:
-                          const InputDecoration(labelText: 'P (g)'))),
-              const SizedBox(width: 8),
-              Expanded(
+                    controller: p,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'P (g)'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
                   child: TextField(
-                      controller: cb,
-                      keyboardType: TextInputType.number,
-                      decoration:
-                          const InputDecoration(labelText: 'C (g)'))),
-              const SizedBox(width: 8),
-              Expanded(
+                    controller: cb,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'C (g)'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
                   child: TextField(
-                      controller: f,
-                      keyboardType: TextInputType.number,
-                      decoration:
-                          const InputDecoration(labelText: 'F (g)'))),
-            ]),
+                    controller: f,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'F (g)'),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(c, false),
-              child: const Text('Cancel')),
+            onPressed: () => Navigator.pop(c, false),
+            child: const Text('Cancel'),
+          ),
           FilledButton(
-              onPressed: () => Navigator.pop(c, true),
-              child: const Text('Save')),
+            onPressed: () => Navigator.pop(c, true),
+            child: const Text('Save'),
+          ),
         ],
       ),
     );
     if (ok == true) {
       final calories = int.tryParse(cal.text);
       if (calories != null) {
-        await ref.read(approvedTargetsProvider.notifier).approve(
+        await ref
+            .read(approvedTargetsProvider.notifier)
+            .approve(
               calories: calories,
               proteinG: int.tryParse(p.text) ?? 0,
               carbsG: int.tryParse(cb.text) ?? 0,
@@ -726,8 +823,7 @@ class NutritionScreen extends ConsumerWidget {
           final weights = sheetRef.watch(weightsProvider).value ?? [];
           final repo = sheetRef.read(nutritionRepositoryProvider);
           final ordered = weights.reversed.toList(); // oldest first
-          final trend = weightTrend(
-              [for (final w in ordered) w.weightKg]);
+          final trend = weightTrend([for (final w in ordered) w.weightKg]);
           return DraggableScrollableSheet(
             expand: false,
             initialChildSize: 0.7,
@@ -738,8 +834,10 @@ class NutritionScreen extends ConsumerWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Text('Progress',
-                          style: Theme.of(c).textTheme.titleLarge),
+                      child: Text(
+                        'Progress',
+                        style: Theme.of(c).textTheme.titleLarge,
+                      ),
                     ),
                     FilledButton.icon(
                       icon: const Icon(Icons.add, size: 18),
@@ -751,17 +849,22 @@ class NutritionScreen extends ConsumerWidget {
                           builder: (d) => AlertDialog(
                             title: const Text('Weight (kg)'),
                             content: TextField(
-                                controller: w,
-                                autofocus: true,
-                                keyboardType: const TextInputType
-                                    .numberWithOptions(decimal: true)),
+                              controller: w,
+                              autofocus: true,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  ),
+                            ),
                             actions: [
                               TextButton(
-                                  onPressed: () => Navigator.pop(d, false),
-                                  child: const Text('Cancel')),
+                                onPressed: () => Navigator.pop(d, false),
+                                child: const Text('Cancel'),
+                              ),
                               FilledButton(
-                                  onPressed: () => Navigator.pop(d, true),
-                                  child: const Text('Log')),
+                                onPressed: () => Navigator.pop(d, true),
+                                child: const Text('Log'),
+                              ),
                             ],
                           ),
                         );
@@ -779,26 +882,68 @@ class NutritionScreen extends ConsumerWidget {
                     style: Theme.of(c).textTheme.bodyMedium,
                   )
                 else
-                  const Text('Log your weight whenever you like — the trend '
-                      'smooths daily noise. Optional, never pushed.'),
+                  const Text(
+                    'Log your weight whenever you like — the trend '
+                    'smooths daily noise. Optional, never pushed.',
+                  ),
                 const SizedBox(height: 8),
                 for (var i = weights.length - 1; i >= 0; i--)
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     dense: true,
                     title: Text(
-                        '${weights[weights.length - 1 - i].weightKg.toStringAsFixed(1)} kg'),
+                      '${weights[weights.length - 1 - i].weightKg.toStringAsFixed(1)} kg',
+                    ),
                     subtitle: Text(weights[weights.length - 1 - i].day),
                     trailing: IconButton(
                       icon: const Icon(Icons.close, size: 16),
-                      onPressed: () => repo
-                          .deleteWeight(weights[weights.length - 1 - i].id),
+                      onPressed: () =>
+                          repo.deleteWeight(weights[weights.length - 1 - i].id),
                     ),
                   ),
               ],
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _DiaryDaySelector extends ConsumerWidget {
+  const _DiaryDaySelector({required this.day});
+
+  final String day;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final date = DateTime.tryParse(day) ?? DateTime.now();
+    final today = dayKey(DateTime.now());
+    void move(int amount) {
+      final next = date.add(Duration(days: amount));
+      ref.read(nutritionDayProvider.notifier).select(dayKey(next));
+    }
+
+    return AppCard(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () => move(-1),
+            icon: const Icon(Icons.chevron_left),
+          ),
+          Expanded(
+            child: Text(
+              day == today ? 'Today' : DateFormat.yMMMMd().format(date),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          IconButton(
+            onPressed: day == today ? null : () => move(1),
+            icon: const Icon(Icons.chevron_right),
+          ),
+        ],
       ),
     );
   }
@@ -828,8 +973,8 @@ class _FoodLibrarySheetState extends ConsumerState<_FoodLibrarySheet> {
     final filtered = normalized.isEmpty
         ? meals
         : meals
-            .where((m) => m.name.toLowerCase().contains(normalized))
-            .toList();
+              .where((m) => m.name.toLowerCase().contains(normalized))
+              .toList();
     final repo = ref.read(nutritionRepositoryProvider);
 
     return DraggableScrollableSheet(
@@ -841,8 +986,10 @@ class _FoodLibrarySheetState extends ConsumerState<_FoodLibrarySheet> {
         children: [
           Text('Food library', style: Theme.of(c).textTheme.titleLarge),
           const SizedBox(height: 4),
-          Text('Search your saved foods and log them locally. Nothing requires an account.',
-              style: Theme.of(c).textTheme.bodySmall),
+          Text(
+            'Search your saved foods and log them locally. Nothing requires an account.',
+            style: Theme.of(c).textTheme.bodySmall,
+          ),
           const SizedBox(height: 12),
           TextField(
             controller: _search,
@@ -857,19 +1004,22 @@ class _FoodLibrarySheetState extends ConsumerState<_FoodLibrarySheet> {
           if (filtered.isEmpty)
             const Padding(
               padding: EdgeInsets.all(24),
-              child: Text('No saved foods match. Log a meal and choose Save for reuse.'),
+              child: Text(
+                'No saved foods match. Log a meal and choose Save for reuse.',
+              ),
             ),
           for (final meal in filtered)
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(meal.name),
               subtitle: Text(
-                  '${meal.calories.round()} kcal · P ${meal.proteinG.round()} · C ${meal.carbsG.round()} · F ${meal.fatG.round()}'),
+                '${meal.calories.round()} kcal · P ${meal.proteinG.round()} · C ${meal.carbsG.round()} · F ${meal.fatG.round()}',
+              ),
               trailing: IconButton(
                 tooltip: 'Log today',
                 icon: const Icon(Icons.add_circle_outline),
                 onPressed: () => repo.logMeal(
-                  day: dayKey(DateTime.now()),
+                  day: ref.read(nutritionDayProvider),
                   name: meal.name,
                   calories: meal.calories,
                   proteinG: meal.proteinG,
@@ -900,13 +1050,15 @@ class _VoiceMealDialogState extends State<_VoiceMealDialog> {
   @override
   void initState() {
     super.initState();
-    widget.speech.listen(onResult: (result) {
-      if (!mounted) return;
-      setState(() => words = result.recognizedWords);
-      if (result.finalResult && words.trim().isNotEmpty) {
-        Navigator.pop(context, words);
-      }
-    });
+    widget.speech.listen(
+      onResult: (result) {
+        if (!mounted) return;
+        setState(() => words = result.recognizedWords);
+        if (result.finalResult && words.trim().isNotEmpty) {
+          Navigator.pop(context, words);
+        }
+      },
+    );
   }
 
   @override
@@ -916,19 +1068,21 @@ class _VoiceMealDialogState extends State<_VoiceMealDialog> {
       content: Text(words.isEmpty ? 'Listening…' : words),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel')),
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
       ],
     );
   }
 }
 
 class _MacroRow extends StatelessWidget {
-  const _MacroRow(
-      {required this.label,
-      required this.value,
-      required this.target,
-      required this.unit});
+  const _MacroRow({
+    required this.label,
+    required this.value,
+    required this.target,
+    required this.unit,
+  });
 
   final String label;
   final double value;
@@ -947,15 +1101,17 @@ class _MacroRow extends StatelessWidget {
           Row(
             children: [
               SizedBox(
-                  width: 76,
-                  child:
-                      Text(label, style: Theme.of(context).textTheme.bodyMedium)),
+                width: 76,
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
               Text(
                 '${fmt.format(value.round())}${target != null ? ' / ${fmt.format(target!.round())}' : ''} $unit',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
               ),
             ],
           ),

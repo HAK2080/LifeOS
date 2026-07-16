@@ -17,11 +17,13 @@ planned offline product flows implemented:
   permission-gated steps and recorded heart-rate samples. Live sessions now
   summarize average heart rate and time in the 120–150 bpm target range;
   wearable-specific background sync remains device/provider dependent.
-- Phase 3 has a manual nutrition foundation: meals, saved meals, Quick Log,
-  portions, approved targets, weight logging, trend logic, and working photo,
-  voice, and barcode capture paths that return to editable manual logging.
-  Food recognition and barcode lookup now have replaceable service interfaces;
-  the shipped provider is intentionally manual-only and offline.
+- Phase 3 now has an offline nutrition feature-parity layer: a first-class food
+  library with servings, brands, barcodes, pinning, and search; recipe builder
+  and per-serving macro calculation; date-navigable meal diary; saved meals,
+  portions, approved targets, weight logging, trend logic, and editable photo,
+  voice, and barcode capture paths. Food recognition and barcode lookup remain
+  replaceable service interfaces; the shipped provider is intentionally
+  manual-only and offline.
 - Phase 4 is substantially implemented. Growth protocols can now be added, persisted locally,
   paused/resumed, and logged as completed, minimum, or skipped without streak
   pressure. Lightweight Goals can be created and moved between active,
@@ -39,9 +41,9 @@ planned offline product flows implemented:
 - Today keeps Ayah of the Day date-aware and lets the user dismiss it for the
   current day. The unused Quick check-in card has been removed from the Today
   surface; its legacy table remains only for backwards-compatible local data.
-- Nutrition includes a searchable local Food library over saved foods. This is
-  an original Flutter implementation informed by FoodYou's feature model; the
-  FoodYou GPL-3.0 source is not embedded in this project.
+- Nutrition includes a searchable local Food library and Recipes screen. This
+  is an original Flutter implementation informed by FoodYou's feature model;
+  the FoodYou GPL-3.0 source is not embedded in this project.
   Goal contribution links cover habit, training, nutrition, and cardio counts;
   richer custom linking remains optional follow-up work.
 - Phase 5 production hardening is substantially implemented: photo/voice/barcode capture,
@@ -52,7 +54,7 @@ planned offline product flows implemented:
   and physical-device QA remain external release steps.
 
 Latest verification: code generation completed cleanly, `flutter analyze` is
-clean, and the full suite passes (68 tests). Fresh test APKs are available at
+clean, and the full suite passes (70 tests). Fresh test APKs are available at
 `build/app/outputs/flutter-apk/app-debug.apk` (debug, 235 MB) and
 `build/app/outputs/flutter-apk/app-release.apk` (local release, 84 MB). Builds
 emit only the known Flutter/Kotlin-plugin migration warnings.
@@ -163,6 +165,7 @@ Do not treat an old APK under `build/` as validation of current source.
 - [Pure training progression](lib/features/training/progression.dart)
 - [Strength content and volume heuristics](lib/features/training/strength/strength_content.dart)
 - [Nutrition logic](lib/features/nutrition/nutrition_logic.dart)
+- [Nutrition repository](lib/features/nutrition/nutrition_repository.dart)
 
 ## External project references
 
@@ -172,5 +175,6 @@ Do not treat an old APK under `build/` as validation of current source.
   LifeOS architecture; the external React/Node source, branding, and assets
   are not embedded.
 - [FoodYou](https://github.com/maksimowiczm/FoodYou) is GPL-3.0 licensed and is
-  implemented in Kotlin/Compose. Its local food-diary feature model informed
-  Life's original searchable Food library; no FoodYou source code is copied.
+  implemented in Kotlin/Compose. Its local food-diary, food-library, and
+  recipe feature model informed Life's original Flutter feature-parity layer;
+  no FoodYou source code, branding, or assets are copied.

@@ -6,6 +6,8 @@ import 'style.dart';
 import '../features/equipment/equipment_screen.dart';
 import '../features/growth/growth_screen.dart';
 import '../features/nutrition/nutrition_screen.dart';
+import '../features/nutrition/food_library_screen.dart';
+import '../features/nutrition/recipes_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/tasks/tasks_screen.dart';
 import '../features/today/today_screen.dart';
@@ -104,6 +106,16 @@ final appRouter = GoRouter(
             GoRoute(
               path: '/nutrition',
               builder: (c, s) => const NutritionScreen(),
+              routes: [
+                GoRoute(
+                  path: 'foods',
+                  builder: (c, s) => const FoodLibraryScreen(),
+                ),
+                GoRoute(
+                  path: 'recipes',
+                  builder: (c, s) => const RecipesScreen(),
+                ),
+              ],
             ),
           ],
         ),

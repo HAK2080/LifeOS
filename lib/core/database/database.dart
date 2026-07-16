@@ -204,6 +204,50 @@ class Goals extends Table {
 
 // ---------- Nutrition (Phase 3) ----------
 
+/// A reusable food entry, stored per serving so logs can preserve the values
+/// used at the time they were created.
+class Foods extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text()();
+  TextColumn get brand => text().nullable()();
+  TextColumn get barcode => text().nullable()();
+  TextColumn get servingLabel =>
+      text().withDefault(const Constant('1 serving'))();
+  RealColumn get servingGrams => real().nullable()();
+  RealColumn get calories => real()();
+  RealColumn get proteinG => real().withDefault(const Constant(0))();
+  RealColumn get carbsG => real().withDefault(const Constant(0))();
+  RealColumn get fatG => real().withDefault(const Constant(0))();
+  RealColumn get fiberG => real().withDefault(const Constant(0))();
+  TextColumn get source => text().withDefault(const Constant('local'))();
+  BoolColumn get pinned => boolean().withDefault(const Constant(false))();
+  BoolColumn get hidden => boolean().withDefault(const Constant(false))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+class Recipes extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text()();
+  TextColumn get notes => text().nullable()();
+  TextColumn get instructions => text().nullable()();
+  RealColumn get servings => real().withDefault(const Constant(1))();
+  BoolColumn get pinned => boolean().withDefault(const Constant(false))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+class RecipeIngredients extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get recipeId => integer().references(Recipes, #id)();
+  IntColumn get foodId => integer().nullable().references(Foods, #id)();
+  TextColumn get name => text()();
+  RealColumn get amount => real().withDefault(const Constant(1))();
+  TextColumn get unit => text().withDefault(const Constant('serving'))();
+  RealColumn get calories => real().withDefault(const Constant(0))();
+  RealColumn get proteinG => real().withDefault(const Constant(0))();
+  RealColumn get carbsG => real().withDefault(const Constant(0))();
+  RealColumn get fatG => real().withDefault(const Constant(0))();
+}
+
 class Meals extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
@@ -299,6 +343,9 @@ class WellnessProtocolSources extends Table {
     SessionSets,
     Zone2Sessions,
     WodSessions,
+    Foods,
+    Recipes,
+    RecipeIngredients,
     WellnessProtocols,
     WellnessSources,
     WellnessProtocolSources,
@@ -326,7 +373,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   static const seedEquipment = [
     'Smith machine / functional trainer',
@@ -554,6 +601,11 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 5 && from >= 4) {
         await m.addColumn(habits, habits.protocolId);
+      }
+      if (from < 6) {
+        await m.createTable(foods);
+        await m.createTable(recipes);
+        await m.createTable(recipeIngredients);
       }
     },
   );

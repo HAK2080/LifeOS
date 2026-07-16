@@ -30,15 +30,24 @@ class DataExportService {
       'planWorkouts': await _rows(database.select(database.planWorkouts)),
       'planExercises': await _rows(database.select(database.planExercises)),
       'workoutSessions': await _rows(database.select(database.workoutSessions)),
-      'sessionExercises': await _rows(database.select(database.sessionExercises)),
+      'sessionExercises': await _rows(
+        database.select(database.sessionExercises),
+      ),
       'sessionSets': await _rows(database.select(database.sessionSets)),
       'zone2Sessions': await _rows(database.select(database.zone2Sessions)),
       'wodSessions': await _rows(database.select(database.wodSessions)),
-      'wellnessProtocols':
-          await _rows(database.select(database.wellnessProtocols)),
+      'foods': await _rows(database.select(database.foods)),
+      'recipes': await _rows(database.select(database.recipes)),
+      'recipeIngredients': await _rows(
+        database.select(database.recipeIngredients),
+      ),
+      'wellnessProtocols': await _rows(
+        database.select(database.wellnessProtocols),
+      ),
       'wellnessSources': await _rows(database.select(database.wellnessSources)),
-      'wellnessProtocolSources':
-          await _rows(database.select(database.wellnessProtocolSources)),
+      'wellnessProtocolSources': await _rows(
+        database.select(database.wellnessProtocolSources),
+      ),
       'meals': await _rows(database.select(database.meals)),
       'mealLogs': await _rows(database.select(database.mealLogs)),
       'weightEntries': await _rows(database.select(database.weightEntries)),
@@ -65,8 +74,10 @@ class DataExportService {
   }
 
   Future<ShareResult> shareEncrypted(String password) async {
-    final encrypted = await const EncryptedBackupCodec()
-        .encrypt(await buildJson(), password);
+    final encrypted = await const EncryptedBackupCodec().encrypt(
+      await buildJson(),
+      password,
+    );
     return _shareBytes(
       utf8.encode(encrypted),
       name: 'life-encrypted-backup.json',
@@ -75,14 +86,22 @@ class DataExportService {
   }
 
   Future<ShareResult> _shareBytes(
-      List<int> bytes, {
-      required String name,
-      required String text,
-    }) {
-    return SharePlus.instance.share(ShareParams(
-      text: text,
-      files: [XFile.fromData(Uint8List.fromList(bytes), name: name, mimeType: 'application/json')],
-    ));
+    List<int> bytes, {
+    required String name,
+    required String text,
+  }) {
+    return SharePlus.instance.share(
+      ShareParams(
+        text: text,
+        files: [
+          XFile.fromData(
+            Uint8List.fromList(bytes),
+            name: name,
+            mimeType: 'application/json',
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> pickAndRestore() async {
@@ -91,7 +110,10 @@ class DataExportService {
 
   Future<void> pickAndRestoreEncrypted(String password) async {
     await _pickAndReadBackup((source) async {
-      final clear = await const EncryptedBackupCodec().decrypt(source, password);
+      final clear = await const EncryptedBackupCodec().decrypt(
+        source,
+        password,
+      );
       await restoreJson(clear);
     });
   }
@@ -117,13 +139,35 @@ class DataExportService {
     }
     final tables = Map<String, dynamic>.from(decoded['tables'] as Map);
     final orderedTables = <String>[
-      'task_lists', 'tasks', 'subtasks', 'equipment_items', 'check_ins',
-      'good_deeds', 'focus_entries', 'exercises', 'workout_plans',
-      'plan_workouts', 'plan_exercises', 'workout_sessions',
-      'session_exercises', 'session_sets', 'zone2_sessions', 'wod_sessions',
-      'wellness_protocols', 'wellness_sources', 'wellness_protocol_sources',
-      'meals', 'meal_logs', 'weight_entries', 'habits', 'habit_logs',
-      'habit_reviews', 'goals',
+      'task_lists',
+      'tasks',
+      'subtasks',
+      'equipment_items',
+      'check_ins',
+      'good_deeds',
+      'focus_entries',
+      'exercises',
+      'workout_plans',
+      'plan_workouts',
+      'plan_exercises',
+      'workout_sessions',
+      'session_exercises',
+      'session_sets',
+      'zone2_sessions',
+      'wod_sessions',
+      'foods',
+      'recipes',
+      'recipe_ingredients',
+      'wellness_protocols',
+      'wellness_sources',
+      'wellness_protocol_sources',
+      'meals',
+      'meal_logs',
+      'weight_entries',
+      'habits',
+      'habit_logs',
+      'habit_reviews',
+      'goals',
     ];
     await database.transaction(() async {
       for (final table in orderedTables.reversed) {
@@ -157,13 +201,18 @@ class DataExportService {
         .toList();
   }
 
-  String _camelCase(String value) => value.split('_').first +
-      value.split('_').skip(1).map((part) => part[0].toUpperCase() + part.substring(1)).join();
+  String _camelCase(String value) =>
+      value.split('_').first +
+      value
+          .split('_')
+          .skip(1)
+          .map((part) => part[0].toUpperCase() + part.substring(1))
+          .join();
 
   String _snakeCase(String value) => value.replaceAllMapped(
-        RegExp(r'([A-Z])'),
-        (match) => '_${match.group(1)!.toLowerCase()}',
-      );
+    RegExp(r'([A-Z])'),
+    (match) => '_${match.group(1)!.toLowerCase()}',
+  );
 
   dynamic _sqlValue(dynamic value) => value is bool ? (value ? 1 : 0) : value;
 }
