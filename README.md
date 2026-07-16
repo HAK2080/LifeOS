@@ -6,7 +6,8 @@ for preview and widget work.
 
 ## Current status
 
-As of 2026-07-16, the repository is a functional internal alpha:
+As of 2026-07-16, the repository is a functional internal alpha with the
+planned offline product flows implemented:
 
 - Phase 1 is mostly complete: app shell/navigation, Today, Tasks, equipment,
   local profile/settings, Drift/SQLite, local notifications, and privacy copy.
@@ -21,17 +22,23 @@ As of 2026-07-16, the repository is a functional internal alpha:
   voice, and barcode capture paths that return to editable manual logging.
   Food recognition and barcode lookup now have replaceable service interfaces;
   the shipped provider is intentionally manual-only and offline.
-- Phase 4 is underway. Growth protocols can now be added, persisted locally,
+- Phase 4 is substantially implemented. Growth protocols can now be added, persisted locally,
   paused/resumed, and logged as completed, minimum, or skipped without streak
   pressure. Lightweight Goals can be created and moved between active,
   paused, and completed. Fixed-day/flexible scheduling, optional reminders,
   review dates, and basic automatic contribution counts are now wired.
-  Richer contribution linking is still pending.
-- Phase 5 production hardening has started: photo/voice/barcode capture,
+  Goal contribution links cover habit, training, nutrition, and cardio counts;
+  richer custom linking remains optional follow-up work.
+- Phase 5 production hardening is substantially implemented: photo/voice/barcode capture,
   versioned JSON export/restore, and password-protected AES-256-GCM export /
   restore are available from Settings. Restore validates the format/version,
   replaces all local tables inside one transaction, and preserves row ids.
-  Release signing and full production QA remain; CI is checked in.
+  CI and local release compilation are checked in. A credentialed publish build
+  and physical-device QA remain external release steps.
+
+Latest verification: `flutter analyze` is clean, the full suite passes (63
+tests), and `flutter build apk --release` produces an APK. The build emits only
+the known Flutter/Kotlin-plugin migration warnings.
 
 The product brief and non-negotiable principles are in [docs/BRIEF.md](docs/BRIEF.md).
 Keep manual entry working, avoid guilt mechanics, remain offline-first, and
@@ -98,13 +105,9 @@ Do not treat an old APK under `build/` as validation of current source.
 
 ## Immediate next steps
 
-1. Add migration/rollback coverage around restore and execute a credentialed
-   release build before publishing.
-2. Expand migration and widget coverage for Growth, Goals, and capture flows;
-   improve contribution links beyond current kind-based counts.
-3. Complete Health Connect background sync and richer training data flows.
-4. Add optional AI food recognition/product lookup implementations and
-   production QA in the order defined by `docs/BRIEF.md`.
+1. Run a credentialed release build and physical-device QA before publishing.
+2. Add optional AI food recognition/product lookup implementations if desired.
+3. Add provider-specific Health Connect background sync where supported.
 
 ## Useful files
 
