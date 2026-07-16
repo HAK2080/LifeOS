@@ -108,22 +108,29 @@ class TrainingRepository {
   // ----- Exercises within a session -----
 
   Stream<List<SessionExerciseData>> watchSessionExercises(int sessionId) {
+    // Join all three tables so the stream re-emits on set changes too.
     final q = (db.select(db.sessionExercises)
-          ..where((t) => t.sessionId.equals(sessionId))
-          ..orderBy([(t) => OrderingTerm.asc(t.position)]))
+          ..where((t) => t.sessionId.equals(sessionId)))
         .join([
-      innerJoin(db.exercises, db.exercises.id.equalsExp(db.sessionExercises.exerciseId)),
+      innerJoin(db.exercises,
+          db.exercises.id.equalsExp(db.sessionExercises.exerciseId)),
+      leftOuterJoin(db.sessionSets,
+          db.sessionSets.sessionExerciseId.equalsExp(db.sessionExercises.id)),
     ]);
-    return q.watch().asyncMap((rows) async {
-      final result = <SessionExerciseData>[];
+    return q.watch().map((rows) {
+      final byLink = <int, SessionExerciseData>{};
       for (final row in rows) {
         final link = row.readTable(db.sessionExercises);
         final exercise = row.readTable(db.exercises);
-        final sets = await (db.select(db.sessionSets)
-              ..where((t) => t.sessionExerciseId.equals(link.id))
-              ..orderBy([(t) => OrderingTerm.asc(t.setNumber)]))
-            .get();
-        result.add(SessionExerciseData(link, exercise, sets));
+        final set = row.readTableOrNull(db.sessionSets);
+        final data = byLink.putIfAbsent(
+            link.id, () => SessionExerciseData(link, exercise, []));
+        if (set != null) data.sets.add(set);
+      }
+      final result = byLink.values.toList()
+        ..sort((a, b) => a.link.position.compareTo(b.link.position));
+      for (final d in result) {
+        d.sets.sort((a, b) => a.setNumber.compareTo(b.setNumber));
       }
       return result;
     });
