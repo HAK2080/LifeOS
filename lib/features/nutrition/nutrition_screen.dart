@@ -13,6 +13,7 @@ import '../settings/settings_screen.dart' as settings;
 import '../today/today_data.dart' show dayKey;
 import 'nutrition_logic.dart';
 import 'nutrition_repository.dart';
+import 'food_services.dart';
 
 final _frequentMealsProvider = FutureProvider<List<Meal>>((ref) {
   ref.watch(todayLogsProvider);
@@ -296,9 +297,11 @@ class NutritionScreen extends ConsumerWidget {
     final photo = await picker.pickImage(source: ImageSource.camera);
     if (photo == null) return;
     try {
+      final estimate = await ref.read(foodRecognitionServiceProvider)
+          .estimateFromImage(photo.path);
       if (context.mounted) {
         await _logMealDialog(context, ref,
-            initialName: 'Photo estimate — edit this meal');
+            initialName: estimate?.name ?? 'Photo estimate - edit this meal');
       }
     } finally {
       // Keep no user image after the editable estimate step.
@@ -350,7 +353,10 @@ class NutritionScreen extends ConsumerWidget {
       ),
     );
     if (code != null && context.mounted) {
-      await _logMealDialog(context, ref, initialName: 'Barcode $code');
+      final product = await ref.read(barcodeProductServiceProvider).lookup(code);
+      if (!context.mounted) return;
+      await _logMealDialog(context, ref,
+          initialName: product?.name ?? 'Barcode $code');
     }
   }
 

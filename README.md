@@ -19,8 +19,8 @@ As of 2026-07-16, the repository is a functional internal alpha:
 - Phase 3 has a manual nutrition foundation: meals, saved meals, Quick Log,
   portions, approved targets, weight logging, trend logic, and working photo,
   voice, and barcode capture paths that return to editable manual logging.
-  AI food recognition and barcode product lookup are still replaceable-service
-  work rather than built-in data sources.
+  Food recognition and barcode lookup now have replaceable service interfaces;
+  the shipped provider is intentionally manual-only and offline.
 - Phase 4 is underway. Growth protocols can now be added, persisted locally,
   paused/resumed, and logged as completed, minimum, or skipped without streak
   pressure. Lightweight Goals can be created and moved between active,
@@ -103,8 +103,8 @@ Do not treat an old APK under `build/` as validation of current source.
 2. Expand migration and widget coverage for Growth, Goals, and capture flows;
    improve contribution links beyond current kind-based counts.
 3. Complete Health Connect background sync and richer training data flows.
-4. Add replaceable AI food recognition/product lookup and production QA in the
-   order defined by `docs/BRIEF.md`.
+4. Add optional AI food recognition/product lookup implementations and
+   production QA in the order defined by `docs/BRIEF.md`.
 
 ## Useful files
 
