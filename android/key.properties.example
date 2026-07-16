@@ -1,0 +1,6 @@
+# Copy to android/key.properties only if you prefer Gradle-local credentials.
+# The checked-in build uses LIFE_* environment variables instead.
+storeFile=/absolute/path/to/life-release.jks
+storePassword=replace-me
+keyAlias=life
+keyPassword=replace-me

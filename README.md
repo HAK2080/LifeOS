@@ -81,6 +81,12 @@ C:\flutter\bin\flutter.bat test
 C:\flutter\bin\flutter.bat build apk --debug
 ```
 
+For a release APK, provide `LIFE_KEYSTORE_PATH`, `LIFE_KEYSTORE_PASSWORD`,
+`LIFE_KEY_ALIAS`, and `LIFE_KEY_PASSWORD` in the build environment, then run
+`C:\flutter\bin\flutter.bat build apk --release`. No signing credentials are
+stored in the repository. Without those variables, local release builds use
+the debug key as an explicit development fallback and are not publishable.
+
 For web preview, use `run-web.bat` or the `life_app` launch configuration on
 port 5180. Drift web support depends on the checked-in
 `web/sqlite3.wasm` and `web/drift_worker.js` files.
@@ -91,7 +97,8 @@ Do not treat an old APK under `build/` as validation of current source.
 
 ## Immediate next steps
 
-1. Add migration/rollback coverage around restore and release signing.
+1. Add migration/rollback coverage around restore and execute a credentialed
+   release build before publishing.
 2. Expand migration and widget coverage for Growth, Goals, and capture flows;
    improve contribution links beyond current kind-based counts.
 3. Complete Health Connect background sync and richer training data flows.
