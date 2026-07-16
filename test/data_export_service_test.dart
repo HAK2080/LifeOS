@@ -37,4 +37,14 @@ void main() {
 
     expect((await db.select(db.tasks).get()).single.title, 'Keep me');
   });
+
+  test('rejects invalid backups before changing local data', () async {
+    await db.into(db.tasks).insert(const TasksCompanion(title: Value('Safe')));
+
+    expect(
+      () => DataExportService(db).restoreJson('{"format":"other"}'),
+      throwsA(isA<FormatException>()),
+    );
+    expect((await db.select(db.tasks).get()).single.title, 'Safe');
+  });
 }
