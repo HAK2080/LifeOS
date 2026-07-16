@@ -70,7 +70,9 @@ This folder is the shared source of truth for Claude and Codex. Before coding:
   Equipment, and Settings.
 - `test/`: pure-logic, repository, asset, database, and widget tests.
 - `.github/workflows/flutter.yml`: shared CI quality gate for code generation,
-  analysis, tests, and a debug APK build.
+  analysis, tests, a debug APK build, and downloadable APK artifact.
+- [Privacy policy](docs/PRIVACY.md)
+- [Release and device QA checklist](docs/RELEASE_CHECKLIST.md)
 
 The app opens on Today. Main navigation order is Tasks, Today, Training,
 Nutrition, Growth. There is no account, cloud sync, team functionality, or

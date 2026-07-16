@@ -127,7 +127,7 @@ class SettingsScreen extends ConsumerWidget {
                   _PrivacyPoint(
                       'Progress photos store only the estimate, date, trend and confidence — never the image.'),
                   _PrivacyPoint(
-                      'Optional encrypted backup arrives in a later phase.'),
+                      'Encrypted backups are created only when you choose them and are protected by your password.'),
                 ],
               ),
             ),
