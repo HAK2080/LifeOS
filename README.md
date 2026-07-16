@@ -26,9 +26,9 @@ As of 2026-07-16, the repository is a functional internal alpha:
   paused, and completed. Fixed-day/flexible scheduling, optional reminders,
   review dates, and basic automatic contribution counts are now wired.
   Richer contribution linking is still pending.
-- Phase 5 production hardening is not complete: photo/voice/barcode capture,
-  export, backup/restore, encryption, CI, release signing, and full production
-  QA remain.
+- Phase 5 production hardening has started: photo/voice/barcode capture and a
+  versioned, readable local JSON export are available from Settings. Restore,
+  encrypted backup, CI, release signing, and full production QA remain.
 
 The product brief and non-negotiable principles are in [docs/BRIEF.md](docs/BRIEF.md).
 Keep manual entry working, avoid guilt mechanics, remain offline-first, and
@@ -54,6 +54,8 @@ This folder is the shared source of truth for Claude and Codex. Before coding:
 - `lib/core/notifications/`: local task reminders and background-capable rest
   timer notifications.
 - `lib/core/health/`: replaceable Health Connect gateway with manual fallback.
+- `lib/core/backup/`: versioned local JSON export for device-data handoff and
+  recovery preparation.
 - `lib/features/<module>/`: Today, Tasks, Training, Nutrition, Growth,
   Equipment, and Settings.
 - `test/`: pure-logic, repository, asset, database, and widget tests.
@@ -85,12 +87,12 @@ Do not treat an old APK under `build/` as validation of current source.
 
 ## Immediate next steps
 
-1. Expand migration and widget coverage for Growth, Goals, and capture flows;
+1. Add restore/import for the versioned local export, then encrypted backup.
+2. Expand migration and widget coverage for Growth, Goals, and capture flows;
    improve contribution links beyond current kind-based counts.
-2. Complete Health Connect background sync and richer training data flows.
-3. Add replaceable AI food recognition/product lookup, then continue
-   production hardening in the order defined
-   by `docs/BRIEF.md`.
+3. Complete Health Connect background sync and richer training data flows.
+4. Add replaceable AI food recognition/product lookup, CI, release signing,
+   and production QA in the order defined by `docs/BRIEF.md`.
 
 ## Useful files
 

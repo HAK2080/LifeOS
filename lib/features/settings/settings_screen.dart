@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../core/backup/data_export_service.dart';
+import '../../core/database/database_provider.dart';
 
 class ProfileData {
   const ProfileData({this.weightKg, this.heightCm, this.age, this.goal});
@@ -110,7 +114,7 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 24),
           Text('Privacy', style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
-          const Card(
+          Card(
             child: Padding(
               padding: EdgeInsets.all(16),
               child: Column(
@@ -128,9 +132,35 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
           ),
+          const SizedBox(height: 8),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.ios_share_outlined),
+              title: const Text('Export local data'),
+              subtitle: const Text('Share a readable backup of this device data'),
+              onTap: () => _exportData(context, ref),
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> _exportData(BuildContext context, WidgetRef ref) async {
+    try {
+      final result = await DataExportService(ref.read(databaseProvider)).share();
+      if (!context.mounted || result.status == ShareResultStatus.dismissed) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Local backup ready to share.')),
+      );
+    } catch (_) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not export local data.')),
+      );
+    }
   }
 
   Widget _numTile(BuildContext context, WidgetRef ref, String label,
