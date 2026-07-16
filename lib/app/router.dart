@@ -121,7 +121,7 @@ class _AppShell extends StatelessWidget {
         ),
         child: SafeArea(
           child: SizedBox(
-            height: 64,
+            height: 72,
             child: Row(
               children: [
                 for (var i = 0; i < _tabs.length; i++)
@@ -166,21 +166,28 @@ class _NavItem extends StatelessWidget {
       label: label,
       child: InkWell(
         onTap: onTap,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: color, size: 24),
-            const SizedBox(height: 3),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'Sans',
-                fontSize: 11.5,
-                fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-                color: color,
-              ),
-            ),
-          ],
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          decoration: BoxDecoration(
+            color: selected ? scheme.surfaceContainerHighest : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: color, size: 22),
+              const SizedBox(height: 4),
+              Text(label,
+                  style: TextStyle(
+                    fontFamily: 'Sans',
+                    fontSize: 10,
+                    letterSpacing: .5,
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                    color: color,
+                  )),
+            ],
+          ),
         ),
       ),
     );

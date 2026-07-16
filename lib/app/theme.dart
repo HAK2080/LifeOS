@@ -26,7 +26,6 @@ ThemeData buildTheme(Brightness brightness) {
   );
 
   const sans = 'Sans';
-  const serif = 'Serif';
   const arabicFallback = ['Naskh'];
 
   final base = dark ? Typography.whiteMountainView : Typography.blackMountainView;
@@ -39,14 +38,14 @@ ThemeData buildTheme(Brightness brightness) {
       )
       .copyWith(
         headlineSmall: TextStyle(
-            fontFamily: serif,
+            fontFamily: sans,
             fontFamilyFallback: arabicFallback,
             fontWeight: FontWeight.w600,
             fontSize: 24,
             height: 1.3,
             color: scheme.onSurface),
         titleLarge: TextStyle(
-            fontFamily: serif,
+            fontFamily: sans,
             fontFamilyFallback: arabicFallback,
             fontWeight: FontWeight.w600,
             fontSize: 20,
@@ -94,9 +93,9 @@ ThemeData buildTheme(Brightness brightness) {
       elevation: 0,
       scrolledUnderElevation: 0,
       titleTextStyle: TextStyle(
-        fontFamily: serif,
-        fontSize: 24,
-        fontWeight: FontWeight.w600,
+        fontFamily: sans,
+        fontSize: 22,
+        fontWeight: FontWeight.w700,
         color: scheme.onSurface,
       ),
       iconTheme: IconThemeData(color: scheme.onSurfaceVariant),
@@ -189,7 +188,7 @@ ThemeData buildTheme(Brightness brightness) {
         side: BorderSide(color: scheme.outline),
       ),
       titleTextStyle: TextStyle(
-          fontFamily: serif,
+          fontFamily: sans,
           fontFamilyFallback: arabicFallback,
           fontSize: 19,
           fontWeight: FontWeight.w600,

@@ -76,6 +76,25 @@ This folder is the shared source of truth for Claude and Codex. Before coding:
 - [Privacy policy](docs/PRIVACY.md)
 - [Release and device QA checklist](docs/RELEASE_CHECKLIST.md)
 
+## UI/UX direction
+
+The shared visual system is inspired by Nominal's current editorial product
+language, without copying its brand assets or product copy:
+
+- Ink/paper neutrals with an acid-lime accent replace the earlier terracotta
+  palette.
+- Headings and navigation use strong sans-serif hierarchy; compact section
+  labels use tracking and muted contrast for an editorial rhythm.
+- Cards use tighter 14px geometry, hairline borders, and restrained shadows.
+- The five-tab shell uses a quiet selected surface, stronger selected weight,
+  and larger touch-safe spacing.
+- Life-specific principles remain unchanged: no red guilt states, no streak
+  pressure, no mandatory AI, and manual entry always works.
+
+UI tokens live in `lib/app/style.dart` and `lib/app/theme.dart`; shell behavior
+lives in `lib/app/router.dart`. Claude should extend these tokens rather than
+introducing per-screen colors or one-off card styles.
+
 The app opens on Today. Main navigation order is Tasks, Today, Training,
 Nutrition, Growth. There is no account, cloud sync, team functionality, or
 mandatory AI.

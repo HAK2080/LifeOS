@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 
-/// Claude-inspired design tokens: warm ivory light theme, warm charcoal
-/// dark theme, one terracotta accent. Calm, mature, easy on the eyes.
+/// Life design tokens: Nominal-inspired ink, paper, and acid-lime contrast.
+/// The structure is confident and editorial without adding pressure mechanics.
 abstract final class AppColors {
-  // Shared accent (Claude terracotta)
-  static const accent = Color(0xFFD97757);
-  static const accentDeep = Color(0xFFC2603F);
+  static const accent = Color(0xFFD7FF4F);
+  static const accentDeep = Color(0xFF8FAF17);
 
   // Light
-  static const lightBg = Color(0xFFFAF9F5);
+  static const lightBg = Color(0xFFF5F6F0);
   static const lightSurface = Color(0xFFFFFFFF);
-  static const lightPanel = Color(0xFFF0EEE6); // tinted panel (ayah card)
-  static const lightBorder = Color(0xFFE3E0D5);
-  static const lightText = Color(0xFF33322E);
-  static const lightText2 = Color(0xFF75746C);
+  static const lightPanel = Color(0xFFEAF3C9);
+  static const lightBorder = Color(0xFFD9DED1);
+  static const lightText = Color(0xFF121712);
+  static const lightText2 = Color(0xFF687064);
 
   // Dark (warm charcoal, like Claude dark mode)
-  static const darkBg = Color(0xFF262624);
-  static const darkSurface = Color(0xFF30302E);
-  static const darkPanel = Color(0xFF383836);
-  static const darkBorder = Color(0xFF45443F);
-  static const darkText = Color(0xFFE8E6DF);
-  static const darkText2 = Color(0xFFA6A49B);
+  static const darkBg = Color(0xFF0B0E0C);
+  static const darkSurface = Color(0xFF141914);
+  static const darkPanel = Color(0xFF1D261B);
+  static const darkBorder = Color(0xFF303A2D);
+  static const darkText = Color(0xFFF1F5E9);
+  static const darkText2 = Color(0xFFA9B2A4);
 }
 
 /// Convenience accessors for the current brightness.
@@ -58,7 +57,7 @@ class AppCard extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         color: tinted ? scheme.panel : scheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: scheme.border),
         boxShadow: [
           BoxShadow(
@@ -71,7 +70,7 @@ class AppCard extends StatelessWidget {
       ),
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: onTap,
@@ -82,7 +81,7 @@ class AppCard extends StatelessWidget {
   }
 }
 
-/// Serif section title in the accent, normal case. Arabic uses Naskh.
+/// Compact editorial section label. Arabic uses Naskh.
 class SectionTitle extends StatelessWidget {
   const SectionTitle(this.text, {super.key, this.arabic = false});
 
@@ -95,10 +94,11 @@ class SectionTitle extends StatelessWidget {
       text,
       textDirection: arabic ? TextDirection.rtl : TextDirection.ltr,
       style: TextStyle(
-        fontFamily: arabic ? 'Naskh' : 'Serif',
-        fontSize: arabic ? 18 : 17,
+        fontFamily: arabic ? 'Naskh' : 'Sans',
+        fontSize: arabic ? 18 : 12,
+        letterSpacing: arabic ? 0 : 1.2,
         fontWeight: FontWeight.w600,
-        color: AppColors.accent,
+        color: arabic ? AppColors.accentDeep : Theme.of(context).colorScheme.onSurfaceVariant,
         height: 1.3,
       ),
     );

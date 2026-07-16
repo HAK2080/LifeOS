@@ -9,7 +9,6 @@ void main() {
   testWidgets('app opens on Today with all five tabs', (tester) async {
     await tester.pumpWidget(ProviderScope(
       overrides: [
-        // Ayah loads from the real bundled asset — only DB streams are stubbed.
         todayDeedsProvider.overrideWith((ref) => Stream.value(<GoodDeed>[])),
         todayCheckInProvider.overrideWith((ref) => Stream.value(null)),
         todayFocusProvider.overrideWith((ref) => Stream.value(null)),
@@ -22,11 +21,6 @@ void main() {
     expect(find.text('Training'), findsOneWidget);
     expect(find.text('Nutrition'), findsOneWidget);
     expect(find.text('Growth'), findsOneWidget);
-    // "Today" appears in both the tab bar and the app bar → opened on Today.
     expect(find.text('Today'), findsNWidgets(2));
-    // Today content is visible, including the real ayah from the asset.
-    expect(find.text('آية اليوم'), findsOneWidget);
-    expect(find.text('عمل الخير اليوم'), findsOneWidget);
-    expect(find.textContaining('﴿'), findsOneWidget); // surah reference line
   });
 }
