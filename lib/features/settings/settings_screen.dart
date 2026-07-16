@@ -141,6 +141,14 @@ class SettingsScreen extends ConsumerWidget {
               onTap: () => _exportData(context, ref),
             ),
           ),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.restore_outlined),
+              title: const Text('Restore local data'),
+              subtitle: const Text('Replace this device data from a JSON backup'),
+              onTap: () => _restoreData(context, ref),
+            ),
+          ),
         ],
       ),
     );
@@ -159,6 +167,33 @@ class SettingsScreen extends ConsumerWidget {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Could not export local data.')),
+      );
+    }
+  }
+
+  Future<void> _restoreData(BuildContext context, WidgetRef ref) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Replace local data?'),
+        content: const Text('This replaces all Life data on this device. Export a backup first if you might need the current data.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('Cancel')),
+          FilledButton(onPressed: () => Navigator.pop(dialogContext, true), child: const Text('Choose backup')),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    try {
+      await DataExportService(ref.read(databaseProvider)).pickAndRestore();
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Local data restored.')),
+      );
+    } catch (_) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not restore that backup.')),
       );
     }
   }

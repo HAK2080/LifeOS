@@ -27,8 +27,10 @@ As of 2026-07-16, the repository is a functional internal alpha:
   review dates, and basic automatic contribution counts are now wired.
   Richer contribution linking is still pending.
 - Phase 5 production hardening has started: photo/voice/barcode capture and a
-  versioned, readable local JSON export are available from Settings. Restore,
-  encrypted backup, CI, release signing, and full production QA remain.
+  versioned local JSON export/restore flow are available from Settings. The
+  restore flow validates the format/version, replaces all local tables inside
+  one transaction, and preserves row ids. Encrypted backup, CI, release
+  signing, and full production QA remain.
 
 The product brief and non-negotiable principles are in [docs/BRIEF.md](docs/BRIEF.md).
 Keep manual entry working, avoid guilt mechanics, remain offline-first, and
@@ -87,7 +89,7 @@ Do not treat an old APK under `build/` as validation of current source.
 
 ## Immediate next steps
 
-1. Add restore/import for the versioned local export, then encrypted backup.
+1. Add encrypted backup and migration/rollback coverage around restore.
 2. Expand migration and widget coverage for Growth, Goals, and capture flows;
    improve contribution links beyond current kind-based counts.
 3. Complete Health Connect background sync and richer training data flows.

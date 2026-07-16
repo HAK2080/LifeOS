@@ -27,4 +27,14 @@ void main() {
       'Review',
     );
   });
+
+  test('restores a versioned export without changing row ids', () async {
+    await db.into(db.tasks).insert(const TasksCompanion(title: Value('Keep me')));
+    final backup = await DataExportService(db).buildJson();
+    await db.delete(db.tasks).go();
+
+    await DataExportService(db).restoreJson(backup);
+
+    expect((await db.select(db.tasks).get()).single.title, 'Keep me');
+  });
 }
