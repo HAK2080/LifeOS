@@ -16,7 +16,10 @@ As of 2026-07-16, the repository is a functional internal alpha:
   permission-gated steps and recorded heart-rate samples. Wearable-specific
   background sync and richer time-in-zone analytics remain.
 - Phase 3 has a manual nutrition foundation: meals, saved meals, Quick Log,
-  portions, approved targets, weight logging, and trend logic.
+  portions, approved targets, weight logging, trend logic, and working photo,
+  voice, and barcode capture paths that return to editable manual logging.
+  AI food recognition and barcode product lookup are still replaceable-service
+  work rather than built-in data sources.
 - Phase 4 is underway. Growth protocols can now be added, persisted locally,
   paused/resumed, and logged as completed, minimum, or skipped without streak
   pressure. Lightweight Goals can be created and moved between active,
@@ -82,10 +85,11 @@ Do not treat an old APK under `build/` as validation of current source.
 
 ## Immediate next steps
 
-1. Expand migration and widget coverage for Growth and Goals, then improve
-   contribution links beyond the current kind-based counts.
+1. Expand migration and widget coverage for Growth, Goals, and capture flows;
+   improve contribution links beyond current kind-based counts.
 2. Complete Health Connect background sync and richer training data flows.
-3. Continue nutrition capture and production hardening in the order defined
+3. Add replaceable AI food recognition/product lookup, then continue
+   production hardening in the order defined
    by `docs/BRIEF.md`.
 
 ## Useful files

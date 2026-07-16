@@ -2,9 +2,13 @@ import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../app/style.dart';
 import '../../core/database/database.dart';
+import '../../core/media/temporary_file_cleanup.dart';
 import '../settings/settings_screen.dart' as settings;
 import '../today/today_data.dart' show dayKey;
 import 'nutrition_logic.dart';
@@ -105,6 +109,28 @@ class NutritionScreen extends ConsumerWidget {
               ),
             ],
           ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              ActionChip(
+                avatar: const Icon(Icons.photo_camera_outlined, size: 18),
+                label: const Text('Photo'),
+                onPressed: () => _photoMeal(context, ref),
+              ),
+              ActionChip(
+                avatar: const Icon(Icons.mic_none_outlined, size: 18),
+                label: const Text('Voice'),
+                onPressed: () => _voiceMeal(context, ref),
+              ),
+              ActionChip(
+                avatar: const Icon(Icons.qr_code_scanner_outlined, size: 18),
+                label: const Text('Barcode'),
+                onPressed: () => _barcodeMeal(context, ref),
+              ),
+            ],
+          ),
           if (frequent.isNotEmpty) ...[
             const SizedBox(height: 16),
             const SectionTitle('Quick log'),
@@ -135,8 +161,9 @@ class NutritionScreen extends ConsumerWidget {
           ],
           const SizedBox(height: 16),
           Text(
-            'Photo, voice and barcode logging arrive with the AI phase — '
-            'photos will always be deleted after analysis.',
+            'All estimates remain editable. Photos are temporary and deleted '
+            'after the estimate step; AI food recognition can be added behind '
+            'the same replaceable flow later.',
             style: Theme.of(context).textTheme.bodySmall,
           ),
           if (logs.isNotEmpty) ...[
@@ -167,8 +194,9 @@ class NutritionScreen extends ConsumerWidget {
 
   // ----- Log meal (manual) -----
 
-  Future<void> _logMealDialog(BuildContext context, WidgetRef ref) async {
-    final name = TextEditingController();
+  Future<void> _logMealDialog(BuildContext context, WidgetRef ref,
+      {String initialName = ''}) async {
+    final name = TextEditingController(text: initialName);
     final cal = TextEditingController();
     final protein = TextEditingController();
     final carbs = TextEditingController();
@@ -261,6 +289,69 @@ class NutritionScreen extends ConsumerWidget {
       fatG: f,
       mealId: mealId,
     );
+  }
+
+  Future<void> _photoMeal(BuildContext context, WidgetRef ref) async {
+    final picker = ImagePicker();
+    final photo = await picker.pickImage(source: ImageSource.camera);
+    if (photo == null) return;
+    try {
+      if (context.mounted) {
+        await _logMealDialog(context, ref,
+            initialName: 'Photo estimate — edit this meal');
+      }
+    } finally {
+      // Keep no user image after the editable estimate step.
+      try {
+        await deleteTemporaryPath(photo.path);
+      } catch (_) {
+        // Some providers return a read-only temporary URI.
+      }
+    }
+  }
+
+  Future<void> _voiceMeal(BuildContext context, WidgetRef ref) async {
+    final speech = SpeechToText();
+    if (!await speech.initialize()) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Speech recognition is unavailable.')));
+      }
+      return;
+    }
+    if (!context.mounted) return;
+    final words = await showDialog<String>(
+      context: context,
+      builder: (_) => _VoiceMealDialog(speech: speech),
+    );
+    await speech.stop();
+    if (words != null && words.trim().isNotEmpty && context.mounted) {
+      await _logMealDialog(context, ref, initialName: words.trim());
+    }
+  }
+
+  Future<void> _barcodeMeal(BuildContext context, WidgetRef ref) async {
+    final code = await showDialog<String>(
+      context: context,
+      builder: (c) => Dialog(
+        child: SizedBox(
+          width: 320,
+          height: 420,
+          child: MobileScanner(
+            onDetect: (capture) {
+              if (capture.barcodes.isEmpty) return;
+              final value = capture.barcodes.first.rawValue;
+              if (value != null && value.isNotEmpty && c.mounted) {
+                Navigator.pop(c, value);
+              }
+            },
+          ),
+        ),
+      ),
+    );
+    if (code != null && context.mounted) {
+      await _logMealDialog(context, ref, initialName: 'Barcode $code');
+    }
   }
 
   // ----- Saved meals -----
@@ -689,6 +780,44 @@ class NutritionScreen extends ConsumerWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _VoiceMealDialog extends StatefulWidget {
+  const _VoiceMealDialog({required this.speech});
+
+  final SpeechToText speech;
+
+  @override
+  State<_VoiceMealDialog> createState() => _VoiceMealDialogState();
+}
+
+class _VoiceMealDialogState extends State<_VoiceMealDialog> {
+  String words = '';
+
+  @override
+  void initState() {
+    super.initState();
+    widget.speech.listen(onResult: (result) {
+      if (!mounted) return;
+      setState(() => words = result.recognizedWords);
+      if (result.finalResult && words.trim().isNotEmpty) {
+        Navigator.pop(context, words);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Describe the meal'),
+      content: Text(words.isEmpty ? 'Listening…' : words),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel')),
+      ],
     );
   }
 }
