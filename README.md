@@ -30,7 +30,9 @@ planned offline product flows implemented:
   paused, and completed. Fixed-day/flexible scheduling, optional reminders,
   review dates, and basic automatic contribution counts are now wired. The
   Wellness library is now seeded from versioned JSON and stores protocols,
-  sources, habit logs, and reviews separately from the UI.
+  broad browsing categories, sources, habit logs, and reviews separately from
+  the UI. It includes a day navigator, recent practice history, copyable source
+  URLs, and category filtering inspired by the reviewed Longevity Master flow.
 - Tasks now present user-created lists as visible Categories, with tasks nested
   under their category in the all-tasks view. Strength now has an original
   Progressive Overload feature-parity layer: 100+ exercises, searchable
@@ -54,7 +56,7 @@ planned offline product flows implemented:
   and physical-device QA remain external release steps.
 
 Latest verification: code generation completed cleanly, `flutter analyze` is
-clean, and the full suite passes (70 tests). Fresh test APKs are available at
+clean, and the full suite passes (71 tests). Fresh test APKs are available at
 `build/app/outputs/flutter-apk/app-debug.apk` (debug, 235 MB) and
 `build/app/outputs/flutter-apk/app-release.apk` (local release, 84 MB). Builds
 emit only the known Flutter/Kotlin-plugin migration warnings.
@@ -178,3 +180,8 @@ Do not treat an old APK under `build/` as validation of current source.
   implemented in Kotlin/Compose. Its local food-diary, food-library, and
   recipe feature model informed Life's original Flutter feature-parity layer;
   no FoodYou source code, branding, or assets are copied.
+- [Longevity Master](https://github.com/banghuazhao/longevity-master) is a
+  CC BY-NC 4.0 SwiftUI/SQLite habit tracker. Its category gallery, flexible
+  scheduling, reminder, calendar/history, and local relational-data ideas were
+  reviewed; LifeOS keeps its own offline Flutter implementation and does not
+  copy its source, content, branding, scoring, streaks, or achievements.

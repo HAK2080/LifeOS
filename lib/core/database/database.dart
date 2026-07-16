@@ -298,6 +298,8 @@ class WellnessProtocols extends Table {
   TextColumn get id => text()();
   IntColumn get version => integer().withDefault(const Constant(1))();
   TextColumn get category => text()();
+  TextColumn get categoryGroup =>
+      text().withDefault(const Constant('Mental Health'))();
   TextColumn get title => text()();
   TextColumn get purpose => text()();
   TextColumn get instructions => text()();
@@ -373,7 +375,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   static const seedEquipment = [
     'Smith machine / functional trainer',
@@ -606,6 +608,25 @@ class AppDatabase extends _$AppDatabase {
         await m.createTable(foods);
         await m.createTable(recipes);
         await m.createTable(recipeIngredients);
+      }
+      if (from < 7) {
+        await m.addColumn(wellnessProtocols, wellnessProtocols.categoryGroup);
+        await customStatement('''
+          UPDATE wellness_protocols
+          SET category_group = CASE category
+            WHEN 'Nutrition habits' THEN 'Diet'
+            WHEN 'Caffeine' THEN 'Diet'
+            WHEN 'Zone 2' THEN 'Exercise'
+            WHEN 'Strength' THEN 'Exercise'
+            WHEN 'Walking' THEN 'Exercise'
+            WHEN 'Mobility' THEN 'Exercise'
+            WHEN 'Sleep' THEN 'Sleep'
+            WHEN 'Morning light' THEN 'Sleep'
+            WHEN 'Sauna' THEN 'Preventive Health'
+            WHEN 'Cold exposure' THEN 'Preventive Health'
+            ELSE 'Mental Health'
+          END
+        ''');
       }
     },
   );

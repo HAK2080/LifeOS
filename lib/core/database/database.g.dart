@@ -8286,6 +8286,18 @@ class $WellnessProtocolsTable extends WellnessProtocols
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _categoryGroupMeta = const VerificationMeta(
+    'categoryGroup',
+  );
+  @override
+  late final GeneratedColumn<String> categoryGroup = GeneratedColumn<String>(
+    'category_group',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('Mental Health'),
+  );
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
@@ -8423,6 +8435,7 @@ class $WellnessProtocolsTable extends WellnessProtocols
     id,
     version,
     category,
+    categoryGroup,
     title,
     purpose,
     instructions,
@@ -8466,6 +8479,15 @@ class $WellnessProtocolsTable extends WellnessProtocols
       );
     } else if (isInserting) {
       context.missing(_categoryMeta);
+    }
+    if (data.containsKey('category_group')) {
+      context.handle(
+        _categoryGroupMeta,
+        categoryGroup.isAcceptableOrUnknown(
+          data['category_group']!,
+          _categoryGroupMeta,
+        ),
+      );
     }
     if (data.containsKey('title')) {
       context.handle(
@@ -8599,6 +8621,10 @@ class $WellnessProtocolsTable extends WellnessProtocols
         DriftSqlType.string,
         data['${effectivePrefix}category'],
       )!,
+      categoryGroup: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category_group'],
+      )!,
       title: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}title'],
@@ -8661,6 +8687,7 @@ class WellnessProtocol extends DataClass
   final String id;
   final int version;
   final String category;
+  final String categoryGroup;
   final String title;
   final String purpose;
   final String instructions;
@@ -8677,6 +8704,7 @@ class WellnessProtocol extends DataClass
     required this.id,
     required this.version,
     required this.category,
+    required this.categoryGroup,
     required this.title,
     required this.purpose,
     required this.instructions,
@@ -8696,6 +8724,7 @@ class WellnessProtocol extends DataClass
     map['id'] = Variable<String>(id);
     map['version'] = Variable<int>(version);
     map['category'] = Variable<String>(category);
+    map['category_group'] = Variable<String>(categoryGroup);
     map['title'] = Variable<String>(title);
     map['purpose'] = Variable<String>(purpose);
     map['instructions'] = Variable<String>(instructions);
@@ -8718,6 +8747,7 @@ class WellnessProtocol extends DataClass
       id: Value(id),
       version: Value(version),
       category: Value(category),
+      categoryGroup: Value(categoryGroup),
       title: Value(title),
       purpose: Value(purpose),
       instructions: Value(instructions),
@@ -8744,6 +8774,7 @@ class WellnessProtocol extends DataClass
       id: serializer.fromJson<String>(json['id']),
       version: serializer.fromJson<int>(json['version']),
       category: serializer.fromJson<String>(json['category']),
+      categoryGroup: serializer.fromJson<String>(json['categoryGroup']),
       title: serializer.fromJson<String>(json['title']),
       purpose: serializer.fromJson<String>(json['purpose']),
       instructions: serializer.fromJson<String>(json['instructions']),
@@ -8765,6 +8796,7 @@ class WellnessProtocol extends DataClass
       'id': serializer.toJson<String>(id),
       'version': serializer.toJson<int>(version),
       'category': serializer.toJson<String>(category),
+      'categoryGroup': serializer.toJson<String>(categoryGroup),
       'title': serializer.toJson<String>(title),
       'purpose': serializer.toJson<String>(purpose),
       'instructions': serializer.toJson<String>(instructions),
@@ -8784,6 +8816,7 @@ class WellnessProtocol extends DataClass
     String? id,
     int? version,
     String? category,
+    String? categoryGroup,
     String? title,
     String? purpose,
     String? instructions,
@@ -8800,6 +8833,7 @@ class WellnessProtocol extends DataClass
     id: id ?? this.id,
     version: version ?? this.version,
     category: category ?? this.category,
+    categoryGroup: categoryGroup ?? this.categoryGroup,
     title: title ?? this.title,
     purpose: purpose ?? this.purpose,
     instructions: instructions ?? this.instructions,
@@ -8820,6 +8854,9 @@ class WellnessProtocol extends DataClass
       id: data.id.present ? data.id.value : this.id,
       version: data.version.present ? data.version.value : this.version,
       category: data.category.present ? data.category.value : this.category,
+      categoryGroup: data.categoryGroup.present
+          ? data.categoryGroup.value
+          : this.categoryGroup,
       title: data.title.present ? data.title.value : this.title,
       purpose: data.purpose.present ? data.purpose.value : this.purpose,
       instructions: data.instructions.present
@@ -8855,6 +8892,7 @@ class WellnessProtocol extends DataClass
           ..write('id: $id, ')
           ..write('version: $version, ')
           ..write('category: $category, ')
+          ..write('categoryGroup: $categoryGroup, ')
           ..write('title: $title, ')
           ..write('purpose: $purpose, ')
           ..write('instructions: $instructions, ')
@@ -8876,6 +8914,7 @@ class WellnessProtocol extends DataClass
     id,
     version,
     category,
+    categoryGroup,
     title,
     purpose,
     instructions,
@@ -8896,6 +8935,7 @@ class WellnessProtocol extends DataClass
           other.id == this.id &&
           other.version == this.version &&
           other.category == this.category &&
+          other.categoryGroup == this.categoryGroup &&
           other.title == this.title &&
           other.purpose == this.purpose &&
           other.instructions == this.instructions &&
@@ -8914,6 +8954,7 @@ class WellnessProtocolsCompanion extends UpdateCompanion<WellnessProtocol> {
   final Value<String> id;
   final Value<int> version;
   final Value<String> category;
+  final Value<String> categoryGroup;
   final Value<String> title;
   final Value<String> purpose;
   final Value<String> instructions;
@@ -8931,6 +8972,7 @@ class WellnessProtocolsCompanion extends UpdateCompanion<WellnessProtocol> {
     this.id = const Value.absent(),
     this.version = const Value.absent(),
     this.category = const Value.absent(),
+    this.categoryGroup = const Value.absent(),
     this.title = const Value.absent(),
     this.purpose = const Value.absent(),
     this.instructions = const Value.absent(),
@@ -8949,6 +8991,7 @@ class WellnessProtocolsCompanion extends UpdateCompanion<WellnessProtocol> {
     required String id,
     this.version = const Value.absent(),
     required String category,
+    this.categoryGroup = const Value.absent(),
     required String title,
     required String purpose,
     required String instructions,
@@ -8977,6 +9020,7 @@ class WellnessProtocolsCompanion extends UpdateCompanion<WellnessProtocol> {
     Expression<String>? id,
     Expression<int>? version,
     Expression<String>? category,
+    Expression<String>? categoryGroup,
     Expression<String>? title,
     Expression<String>? purpose,
     Expression<String>? instructions,
@@ -8995,6 +9039,7 @@ class WellnessProtocolsCompanion extends UpdateCompanion<WellnessProtocol> {
       if (id != null) 'id': id,
       if (version != null) 'version': version,
       if (category != null) 'category': category,
+      if (categoryGroup != null) 'category_group': categoryGroup,
       if (title != null) 'title': title,
       if (purpose != null) 'purpose': purpose,
       if (instructions != null) 'instructions': instructions,
@@ -9015,6 +9060,7 @@ class WellnessProtocolsCompanion extends UpdateCompanion<WellnessProtocol> {
     Value<String>? id,
     Value<int>? version,
     Value<String>? category,
+    Value<String>? categoryGroup,
     Value<String>? title,
     Value<String>? purpose,
     Value<String>? instructions,
@@ -9033,6 +9079,7 @@ class WellnessProtocolsCompanion extends UpdateCompanion<WellnessProtocol> {
       id: id ?? this.id,
       version: version ?? this.version,
       category: category ?? this.category,
+      categoryGroup: categoryGroup ?? this.categoryGroup,
       title: title ?? this.title,
       purpose: purpose ?? this.purpose,
       instructions: instructions ?? this.instructions,
@@ -9060,6 +9107,9 @@ class WellnessProtocolsCompanion extends UpdateCompanion<WellnessProtocol> {
     }
     if (category.present) {
       map['category'] = Variable<String>(category.value);
+    }
+    if (categoryGroup.present) {
+      map['category_group'] = Variable<String>(categoryGroup.value);
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
@@ -9109,6 +9159,7 @@ class WellnessProtocolsCompanion extends UpdateCompanion<WellnessProtocol> {
           ..write('id: $id, ')
           ..write('version: $version, ')
           ..write('category: $category, ')
+          ..write('categoryGroup: $categoryGroup, ')
           ..write('title: $title, ')
           ..write('purpose: $purpose, ')
           ..write('instructions: $instructions, ')
@@ -20151,6 +20202,7 @@ typedef $$WellnessProtocolsTableCreateCompanionBuilder =
       required String id,
       Value<int> version,
       required String category,
+      Value<String> categoryGroup,
       required String title,
       required String purpose,
       required String instructions,
@@ -20170,6 +20222,7 @@ typedef $$WellnessProtocolsTableUpdateCompanionBuilder =
       Value<String> id,
       Value<int> version,
       Value<String> category,
+      Value<String> categoryGroup,
       Value<String> title,
       Value<String> purpose,
       Value<String> instructions,
@@ -20265,6 +20318,11 @@ class $$WellnessProtocolsTableFilterComposer
 
   ColumnFilters<String> get category => $composableBuilder(
     column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get categoryGroup => $composableBuilder(
+    column: $table.categoryGroup,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -20404,6 +20462,11 @@ class $$WellnessProtocolsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get categoryGroup => $composableBuilder(
+    column: $table.categoryGroup,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get title => $composableBuilder(
     column: $table.title,
     builder: (column) => ColumnOrderings(column),
@@ -20482,6 +20545,11 @@ class $$WellnessProtocolsTableAnnotationComposer
 
   GeneratedColumn<String> get category =>
       $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<String> get categoryGroup => $composableBuilder(
+    column: $table.categoryGroup,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
@@ -20625,6 +20693,7 @@ class $$WellnessProtocolsTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<int> version = const Value.absent(),
                 Value<String> category = const Value.absent(),
+                Value<String> categoryGroup = const Value.absent(),
                 Value<String> title = const Value.absent(),
                 Value<String> purpose = const Value.absent(),
                 Value<String> instructions = const Value.absent(),
@@ -20642,6 +20711,7 @@ class $$WellnessProtocolsTableTableManager
                 id: id,
                 version: version,
                 category: category,
+                categoryGroup: categoryGroup,
                 title: title,
                 purpose: purpose,
                 instructions: instructions,
@@ -20661,6 +20731,7 @@ class $$WellnessProtocolsTableTableManager
                 required String id,
                 Value<int> version = const Value.absent(),
                 required String category,
+                Value<String> categoryGroup = const Value.absent(),
                 required String title,
                 required String purpose,
                 required String instructions,
@@ -20678,6 +20749,7 @@ class $$WellnessProtocolsTableTableManager
                 id: id,
                 version: version,
                 category: category,
+                categoryGroup: categoryGroup,
                 title: title,
                 purpose: purpose,
                 instructions: instructions,

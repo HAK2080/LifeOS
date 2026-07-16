@@ -8,7 +8,7 @@ The Growth tab becomes an offline-first Wellness library. Protocols are immutabl
 
 | Table | Purpose |
 | --- | --- |
-| `wellness_protocols` | Versioned, curated protocol content kept separate from UI and user changes. |
+| `wellness_protocols` | Versioned, curated protocol content kept separate from UI and user changes, including `category` and broad `category_group` values for browsing. |
 | `wellness_sources` | Source records with title, publisher, URL, and source kind. |
 | `wellness_protocol_sources` | Many-to-many link between protocols and sources. |
 | `habits` | User-owned protocol or custom habit, including schedule and status. Existing rows remain valid. |
@@ -19,13 +19,13 @@ Seed JSON is versioned by filename (`wellness_protocols_v1.json`) and each recor
 
 ## UI flow
 
-1. Growth → Start with a protocol.
-2. Browse by category and open a protocol.
+1. Growth → browse the protocol gallery by broad category: Diet, Exercise, Sleep, Preventive Health, or Mental Health.
+2. Open a protocol and review the specific practice category.
 3. Read purpose, instructions, minimum/standard versions, evidence, safety notes, and sources.
 4. Add as a habit.
 5. Customize frequency, duration, minimum version, and reminders.
-6. Log completed, minimum completed, or skipped without streaks or penalties.
-7. At the review period, record whether it helped and choose keep, adjust, pause, or stop.
+6. Choose a day and log completed, minimum completed, or skipped without streaks or penalties.
+7. Open a practice history to review recent states, then record whether it helped and choose keep, adjust, pause, or stop.
 
 ## Safety policy
 
@@ -46,6 +46,7 @@ Seed JSON is versioned by filename (`wellness_protocols_v1.json`) and each recor
       "id": "morning-light",
       "version": 1,
       "category": "Morning light",
+      "category_group": "Sleep",
       "title": "Morning light",
       "purpose": "Give the body clock a consistent daytime signal.",
       "instructions": "Spend time outdoors soon after waking; do not stare at the sun.",

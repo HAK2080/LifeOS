@@ -28,6 +28,7 @@ class WellnessProtocolSpec {
     required this.id,
     required this.version,
     required this.category,
+    required this.categoryGroup,
     required this.title,
     required this.purpose,
     required this.instructions,
@@ -47,6 +48,9 @@ class WellnessProtocolSpec {
       id: json['id'] as String,
       version: json['version'] as int,
       category: json['category'] as String,
+      categoryGroup:
+          json['category_group'] as String? ??
+          categoryGroupFor(json['category'] as String),
       title: json['title'] as String,
       purpose: json['purpose'] as String,
       instructions: json['instructions'] as String,
@@ -76,6 +80,7 @@ class WellnessProtocolSpec {
   final String id;
   final int version;
   final String category;
+  final String categoryGroup;
   final String title;
   final String purpose;
   final String instructions;
@@ -89,3 +94,11 @@ class WellnessProtocolSpec {
   final int reviewPeriodDays;
   final List<WellnessSourceSpec> sources;
 }
+
+String categoryGroupFor(String category) => switch (category) {
+  'Nutrition habits' || 'Caffeine' => 'Diet',
+  'Zone 2' || 'Strength' || 'Walking' || 'Mobility' => 'Exercise',
+  'Sleep' || 'Morning light' => 'Sleep',
+  'Sauna' || 'Cold exposure' => 'Preventive Health',
+  _ => 'Mental Health',
+};

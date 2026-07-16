@@ -16,8 +16,9 @@ class GrowthRepository {
   final AppDatabase db;
   final NotificationService notifications;
 
-  Stream<List<Habit>> watchHabits() =>
-      (db.select(db.habits)..orderBy([(h) => OrderingTerm.asc(h.name)])).watch();
+  Stream<List<Habit>> watchHabits() => (db.select(
+    db.habits,
+  )..orderBy([(h) => OrderingTerm.asc(h.name)])).watch();
 
   Stream<List<HabitLog>> watchLogs(String day) =>
       (db.select(db.habitLogs)..where((l) => l.day.equals(day))).watch();
@@ -25,16 +26,20 @@ class GrowthRepository {
   Future<void> ensureProtocolsSeeded() async {
     if ((await db.select(db.wellnessProtocols).get()).isNotEmpty) return;
     final raw = await rootBundle.loadString(
-        'assets/data/wellness_protocols_v1.json');
+      'assets/data/wellness_protocols_v1.json',
+    );
     final protocols = WellnessProtocolSpec.parseSeed(raw);
     await db.transaction(() async {
       final sourceIds = <String>{};
       for (final protocol in protocols) {
-        await db.into(db.wellnessProtocols).insert(
+        await db
+            .into(db.wellnessProtocols)
+            .insert(
               WellnessProtocolsCompanion.insert(
                 id: protocol.id,
                 version: Value(protocol.version),
                 category: protocol.category,
+                categoryGroup: Value(protocol.categoryGroup),
                 title: protocol.title,
                 purpose: protocol.purpose,
                 instructions: protocol.instructions,
@@ -50,7 +55,9 @@ class GrowthRepository {
             );
         for (final source in protocol.sources) {
           if (sourceIds.add(source.id)) {
-            await db.into(db.wellnessSources).insert(
+            await db
+                .into(db.wellnessSources)
+                .insert(
                   WellnessSourcesCompanion.insert(
                     id: source.id,
                     title: source.title,
@@ -59,7 +66,9 @@ class GrowthRepository {
                   ),
                 );
           }
-          await db.into(db.wellnessProtocolSources).insert(
+          await db
+              .into(db.wellnessProtocolSources)
+              .insert(
                 WellnessProtocolSourcesCompanion.insert(
                   protocolId: protocol.id,
                   sourceId: source.id,
@@ -84,6 +93,7 @@ class GrowthRepository {
         id: row.id,
         version: row.version,
         category: row.category,
+        categoryGroup: row.categoryGroup,
         title: row.title,
         purpose: row.purpose,
         instructions: row.instructions,
@@ -98,19 +108,24 @@ class GrowthRepository {
         sources: sourceIds
             .map((id) => sourcesById[id])
             .whereType<WellnessSource>()
-            .map((source) => WellnessSourceSpec(
-                  id: source.id,
-                  title: source.title,
-                  publisher: source.publisher,
-                  url: source.url,
-                ))
+            .map(
+              (source) => WellnessSourceSpec(
+                id: source.id,
+                title: source.title,
+                publisher: source.publisher,
+                url: source.url,
+              ),
+            )
             .toList(growable: false),
       );
     }
+
     yield rows.map(toProtocol).toList(growable: false);
   }
 
-  Future<int> addProtocol(WellnessProtocolSpec protocol) => db.into(db.habits).insert(
+  Future<int> addProtocol(WellnessProtocolSpec protocol) => db
+      .into(db.habits)
+      .insert(
         HabitsCompanion.insert(
           protocolId: Value(protocol.id),
           name: protocol.title,
@@ -132,16 +147,19 @@ class GrowthRepository {
     String? protocol,
     String? minimumVersion,
     int? weeklyTarget,
-  }) =>
-      db.into(db.habits).insert(HabitsCompanion.insert(
-            name: name,
-            purpose: Value(purpose),
-            protocol: Value(protocol),
-            scheduleType: Value(weeklyTarget == null ? 'none' : 'weekly'),
-            weeklyTarget: Value(weeklyTarget),
-            minimumVersion: Value(minimumVersion),
-            evidenceLevel: const Value('Personal preference'),
-          ));
+  }) => db
+      .into(db.habits)
+      .insert(
+        HabitsCompanion.insert(
+          name: name,
+          purpose: Value(purpose),
+          protocol: Value(protocol),
+          scheduleType: Value(weeklyTarget == null ? 'none' : 'weekly'),
+          weeklyTarget: Value(weeklyTarget),
+          minimumVersion: Value(minimumVersion),
+          evidenceLevel: const Value('Personal preference'),
+        ),
+      );
 
   Future<void> updateHabit(int id, HabitsCompanion changes) =>
       (db.update(db.habits)..where((h) => h.id.equals(id))).write(changes);
@@ -179,16 +197,22 @@ class GrowthRepository {
   }
 
   Future<void> clearReminder(int habitId) async {
-    await updateHabit(habitId, const HabitsCompanion(reminderTime: Value(null)));
+    await updateHabit(
+      habitId,
+      const HabitsCompanion(reminderTime: Value(null)),
+    );
     await notifications.cancelHabitReminder(habitId);
   }
 
   Future<void> markReviewed(int habitId) => updateHabit(
-      habitId, HabitsCompanion(lastReviewAt: Value(DateTime.now())));
+    habitId,
+    HabitsCompanion(lastReviewAt: Value(DateTime.now())),
+  );
 
   Future<void> deleteHabit(int id) async {
-    final habit = await (db.select(db.habits)..where((h) => h.id.equals(id)))
-        .getSingleOrNull();
+    final habit = await (db.select(
+      db.habits,
+    )..where((h) => h.id.equals(id))).getSingleOrNull();
     if (habit?.reminderTime != null) {
       await notifications.cancelHabitReminder(id);
     }
@@ -203,21 +227,28 @@ class GrowthRepository {
     bool? helped,
     String? notes,
   }) async {
-    await db.into(db.habitReviews).insert(HabitReviewsCompanion.insert(
-          habitId: habitId,
-          outcome: outcome,
-          helped: Value(helped),
-          notes: Value(notes),
-        ));
+    await db
+        .into(db.habitReviews)
+        .insert(
+          HabitReviewsCompanion.insert(
+            habitId: habitId,
+            outcome: outcome,
+            helped: Value(helped),
+            notes: Value(notes),
+          ),
+        );
     final status = switch (outcome) {
       'pause' => 'paused',
       'stop' => 'stopped',
       _ => 'active',
     };
-    await updateHabit(habitId, HabitsCompanion(
-      status: Value(status),
-      lastReviewAt: Value(DateTime.now()),
-    ));
+    await updateHabit(
+      habitId,
+      HabitsCompanion(
+        status: Value(status),
+        lastReviewAt: Value(DateTime.now()),
+      ),
+    );
   }
 
   Future<void> setLog({
@@ -225,15 +256,20 @@ class GrowthRepository {
     required String day,
     required String status,
   }) async {
-    final existing = await (db.select(db.habitLogs)
-          ..where((l) => l.habitId.equals(habitId) & l.day.equals(day)))
-        .getSingleOrNull();
+    final existing =
+        await (db.select(db.habitLogs)
+              ..where((l) => l.habitId.equals(habitId) & l.day.equals(day)))
+            .getSingleOrNull();
     if (existing == null) {
-      await db.into(db.habitLogs).insert(HabitLogsCompanion.insert(
-            habitId: habitId,
-            day: day,
-            status: status,
-          ));
+      await db
+          .into(db.habitLogs)
+          .insert(
+            HabitLogsCompanion.insert(
+              habitId: habitId,
+              day: day,
+              status: status,
+            ),
+          );
     } else {
       await (db.update(db.habitLogs)..where((l) => l.id.equals(existing.id)))
           .write(HabitLogsCompanion(status: Value(status)));
@@ -241,9 +277,23 @@ class GrowthRepository {
   }
 
   Future<void> clearLog(int habitId, String day) async {
-    await (db.delete(db.habitLogs)
-          ..where((l) => l.habitId.equals(habitId) & l.day.equals(day)))
-        .go();
+    await (db.delete(
+      db.habitLogs,
+    )..where((l) => l.habitId.equals(habitId) & l.day.equals(day))).go();
+  }
+
+  /// Recent per-day records for a practice. The UI can show a calendar-like
+  /// review without calculating streaks or assigning a score.
+  Future<List<HabitLog>> habitHistory(int habitId, {int days = 28}) async {
+    final start = growthDayKey(
+      DateTime.now().subtract(Duration(days: days - 1)),
+    );
+    final logs =
+        await (db.select(db.habitLogs)
+              ..where((l) => l.habitId.equals(habitId))
+              ..orderBy([(l) => OrderingTerm.desc(l.day)]))
+            .get();
+    return logs.where((log) => log.day.compareTo(start) >= 0).toList();
   }
 
   Stream<List<LifeGoal>> watchGoals() =>
@@ -254,13 +304,16 @@ class GrowthRepository {
     String? target,
     String kind = 'custom',
     DateTime? deadline,
-  }) =>
-      db.into(db.goals).insert(GoalsCompanion.insert(
-            name: name,
-            kind: Value(kind),
-            target: Value(target),
-            deadline: Value(deadline),
-          ));
+  }) => db
+      .into(db.goals)
+      .insert(
+        GoalsCompanion.insert(
+          name: name,
+          kind: Value(kind),
+          target: Value(target),
+          deadline: Value(deadline),
+        ),
+      );
 
   Future<void> updateGoal(int id, GoalsCompanion changes) =>
       (db.update(db.goals)..where((g) => g.id.equals(id))).write(changes);
@@ -273,23 +326,25 @@ class GrowthRepository {
   Future<int> contributionCount(LifeGoal goal) async {
     switch (goal.kind) {
       case 'habit':
-        final logs = await (db.select(db.habitLogs)
-              ..where((l) => l.status.equals('completed') |
-                  l.status.equals('minimum')))
-            .get();
+        final logs =
+            await (db.select(db.habitLogs)..where(
+                  (l) =>
+                      l.status.equals('completed') | l.status.equals('minimum'),
+                ))
+                .get();
         return logs.length;
       case 'training':
-        final sessions = await (db.select(db.workoutSessions)
-              ..where((s) => s.finishedAt.isNotNull()))
-            .get();
+        final sessions = await (db.select(
+          db.workoutSessions,
+        )..where((s) => s.finishedAt.isNotNull())).get();
         return sessions.length;
       case 'nutrition':
         final logs = await db.select(db.mealLogs).get();
         return logs.map((l) => l.day).toSet().length;
       case 'cardio':
-        final sessions = await (db.select(db.zone2Sessions)
-              ..where((s) => s.kind.equals('zone2')))
-            .get();
+        final sessions = await (db.select(
+          db.zone2Sessions,
+        )..where((s) => s.kind.equals('zone2'))).get();
         return sessions.fold<int>(0, (sum, s) => sum + s.durationMin);
       default:
         return 0;
@@ -298,18 +353,36 @@ class GrowthRepository {
 }
 
 final growthRepositoryProvider = Provider<GrowthRepository>(
-    (ref) => GrowthRepository(ref.watch(databaseProvider),
-        ref.watch(notificationServiceProvider)));
+  (ref) => GrowthRepository(
+    ref.watch(databaseProvider),
+    ref.watch(notificationServiceProvider),
+  ),
+);
 
 final growthHabitsProvider = StreamProvider<List<Habit>>(
-    (ref) => ref.watch(growthRepositoryProvider).watchHabits());
+  (ref) => ref.watch(growthRepositoryProvider).watchHabits(),
+);
 
 final growthProtocolsProvider = StreamProvider<List<WellnessProtocolSpec>>(
-    (ref) => ref.watch(growthRepositoryProvider).watchProtocols());
+  (ref) => ref.watch(growthRepositoryProvider).watchProtocols(),
+);
 
-final growthLogsProvider = StreamProvider<List<HabitLog>>((ref) => ref
-    .watch(growthRepositoryProvider)
-    .watchLogs(growthDayKey(DateTime.now())));
+final growthDayProvider = NotifierProvider<GrowthDayNotifier, String>(
+  GrowthDayNotifier.new,
+);
+
+class GrowthDayNotifier extends Notifier<String> {
+  @override
+  String build() => growthDayKey(DateTime.now());
+
+  void select(String day) => state = day;
+}
+
+final growthLogsProvider = StreamProvider.autoDispose
+    .family<List<HabitLog>, String>(
+      (ref, day) => ref.watch(growthRepositoryProvider).watchLogs(day),
+    );
 
 final growthGoalsProvider = StreamProvider<List<LifeGoal>>(
-    (ref) => ref.watch(growthRepositoryProvider).watchGoals());
+  (ref) => ref.watch(growthRepositoryProvider).watchGoals(),
+);

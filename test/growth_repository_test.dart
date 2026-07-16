@@ -28,12 +28,16 @@ void main() {
     expect(protocols, hasLength(15));
     expect(sources, isNotEmpty);
     expect(protocols.map((p) => p.category), contains('Morning light'));
+    expect(protocols.first.categoryGroup, 'Sleep');
   });
 
   test('adds a protocol and records one daily completion state', () async {
     final raw = await rootBundle.loadString(
-        'assets/data/wellness_protocols_v1.json');
-    final id = await repo.addProtocol(WellnessProtocolSpec.parseSeed(raw).first);
+      'assets/data/wellness_protocols_v1.json',
+    );
+    final id = await repo.addProtocol(
+      WellnessProtocolSpec.parseSeed(raw).first,
+    );
     final habits = await db.select(db.habits).get();
     expect(habits.single.id, id);
     expect(habits.single.name, 'Sleep schedule');
@@ -44,10 +48,13 @@ void main() {
     final logs = await repo.db.select(repo.db.habitLogs).get();
     expect(logs, hasLength(1));
     expect(logs.single.status, 'completed');
-    final goalId = await repo.addGoal(name: 'Practice consistency', kind: 'habit');
-    final goal = await (repo.db.select(repo.db.goals)
-          ..where((g) => g.id.equals(goalId)))
-        .getSingle();
+    final goalId = await repo.addGoal(
+      name: 'Practice consistency',
+      kind: 'habit',
+    );
+    final goal = await (repo.db.select(
+      repo.db.goals,
+    )..where((g) => g.id.equals(goalId))).getSingle();
     expect(await repo.contributionCount(goal), 1);
   });
 
@@ -59,12 +66,26 @@ void main() {
     expect(await repo.db.select(repo.db.habitLogs).get(), isEmpty);
   });
 
+  test('practice history returns recent states without scoring them', () async {
+    final id = await repo.addCustom(name: 'Evening walk');
+    await repo.setLog(habitId: id, day: '2026-07-16', status: 'completed');
+    await repo.setLog(habitId: id, day: '2026-07-15', status: 'minimum');
+    await repo.setLog(habitId: id, day: '2026-06-01', status: 'skipped');
+
+    final history = await repo.habitHistory(id, days: 28);
+    expect(history.map((log) => log.status), ['completed', 'minimum']);
+    expect(history.map((log) => log.day), ['2026-07-16', '2026-07-15']);
+  });
+
   test('creates and updates a lightweight goal', () async {
     final id = await repo.addGoal(name: 'Read consistently', target: '15 min');
     final goal = (await repo.db.select(repo.db.goals).get()).single;
     expect(goal.id, id);
     expect(goal.target, '15 min');
     await repo.updateGoal(id, const GoalsCompanion(status: Value('completed')));
-    expect((await repo.db.select(repo.db.goals).get()).single.status, 'completed');
+    expect(
+      (await repo.db.select(repo.db.goals).get()).single.status,
+      'completed',
+    );
   });
 }
