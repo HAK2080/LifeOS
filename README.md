@@ -15,9 +15,11 @@ As of 2026-07-16, the repository is a functional internal alpha:
   Zone 2 manual sessions, walking, and mobility.
 - Phase 3 has a manual nutrition foundation: meals, saved meals, Quick Log,
   portions, approved targets, weight logging, and trend logic.
-- Phase 4 is beginning. `lib/features/growth/protocols.dart` contains curated
-  protocol presets, and the database has initial habit/goal tables, but Growth
-  persistence and UI are not wired yet.
+- Phase 4 is underway. Growth protocols can now be added, persisted locally,
+  paused/resumed, and logged as completed, minimum, or skipped without streak
+  pressure. Lightweight Goals can be created and moved between active,
+  paused, and completed. Fixed-day scheduling, reminders, reviews, and
+  automatic contribution links are still pending.
 - Phase 5 production hardening is not complete: Health Connect, photo/voice/
   barcode capture, export, backup/restore, encryption, CI, release signing,
   and full production QA remain.
@@ -75,12 +77,10 @@ Do not treat an old APK under `build/` as validation of current source.
 
 ## Immediate next steps
 
-1. Regenerate Drift code and restore a clean `flutter analyze` / `flutter test`
-   baseline after the Phase 4 schema addition.
-2. Decide whether to finish the Growth/Goals vertical slice now or defer the
-   schema until its repository and UI are ready.
-3. Add tests for habit/goal migrations and the first Growth interactions.
-4. Then implement Health Connect and production hardening in the order defined
+1. Add fixed-day scheduling, reminders, reviews, and automatic contribution
+   links to the Growth/Goals slice.
+2. Expand migration and widget coverage for Growth and Goals.
+3. Then implement Health Connect and production hardening in the order defined
    by `docs/BRIEF.md`.
 
 ## Useful files
