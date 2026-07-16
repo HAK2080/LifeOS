@@ -143,10 +143,26 @@ class SettingsScreen extends ConsumerWidget {
           ),
           Card(
             child: ListTile(
+              leading: const Icon(Icons.enhanced_encryption_outlined),
+              title: const Text('Export encrypted backup'),
+              subtitle: const Text('Protect the backup with a password'),
+              onTap: () => _exportEncryptedData(context, ref),
+            ),
+          ),
+          Card(
+            child: ListTile(
               leading: const Icon(Icons.restore_outlined),
               title: const Text('Restore local data'),
               subtitle: const Text('Replace this device data from a JSON backup'),
               onTap: () => _restoreData(context, ref),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.lock_open_outlined),
+              title: const Text('Restore encrypted backup'),
+              subtitle: const Text('Password-protected JSON backup'),
+              onTap: () => _restoreEncryptedData(context, ref),
             ),
           ),
         ],
@@ -196,6 +212,94 @@ class SettingsScreen extends ConsumerWidget {
         const SnackBar(content: Text('Could not restore that backup.')),
       );
     }
+  }
+
+  Future<void> _exportEncryptedData(BuildContext context, WidgetRef ref) async {
+    final password = await _passwordDialog(context, confirm: true);
+    if (password == null) return;
+    try {
+      final result = await DataExportService(ref.read(databaseProvider))
+          .shareEncrypted(password);
+      if (!context.mounted || result.status == ShareResultStatus.dismissed) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Encrypted backup ready to share.')),
+      );
+    } catch (_) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not create encrypted backup.')),
+      );
+    }
+  }
+
+  Future<void> _restoreEncryptedData(BuildContext context, WidgetRef ref) async {
+    final password = await _passwordDialog(context);
+    if (password == null) return;
+    if (!context.mounted) return;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: const Text('Replace local data?'),
+        content: const Text('This replaces all Life data on this device.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Cancel')),
+          FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('Restore')),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    try {
+      await DataExportService(ref.read(databaseProvider))
+          .pickAndRestoreEncrypted(password);
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Encrypted backup restored.')),
+      );
+    } catch (_) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not restore encrypted backup.')),
+      );
+    }
+  }
+
+  Future<String?> _passwordDialog(BuildContext context,
+      {bool confirm = false}) async {
+    final password = TextEditingController();
+    final repeated = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text(confirm ? 'Create encrypted backup' : 'Backup password'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: password,
+              obscureText: true,
+              autofocus: true,
+              decoration: const InputDecoration(labelText: 'Password (8+ characters)'),
+            ),
+            if (confirm)
+              TextField(
+                controller: repeated,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'Repeat password'),
+              ),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c), child: const Text('Cancel')),
+          FilledButton(
+            onPressed: () {
+              if (password.text.length < 8 || (confirm && password.text != repeated.text)) return;
+              Navigator.pop(c, password.text);
+            },
+            child: const Text('Continue'),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _numTile(BuildContext context, WidgetRef ref, String label,

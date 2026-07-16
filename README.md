@@ -26,11 +26,11 @@ As of 2026-07-16, the repository is a functional internal alpha:
   paused, and completed. Fixed-day/flexible scheduling, optional reminders,
   review dates, and basic automatic contribution counts are now wired.
   Richer contribution linking is still pending.
-- Phase 5 production hardening has started: photo/voice/barcode capture and a
-  versioned local JSON export/restore flow are available from Settings. The
-  restore flow validates the format/version, replaces all local tables inside
-  one transaction, and preserves row ids. Encrypted backup, CI, release
-  signing, and full production QA remain.
+- Phase 5 production hardening has started: photo/voice/barcode capture,
+  versioned JSON export/restore, and password-protected AES-256-GCM export /
+  restore are available from Settings. Restore validates the format/version,
+  replaces all local tables inside one transaction, and preserves row ids.
+  Release signing and full production QA remain; CI is checked in.
 
 The product brief and non-negotiable principles are in [docs/BRIEF.md](docs/BRIEF.md).
 Keep manual entry working, avoid guilt mechanics, remain offline-first, and
@@ -56,8 +56,8 @@ This folder is the shared source of truth for Claude and Codex. Before coding:
 - `lib/core/notifications/`: local task reminders and background-capable rest
   timer notifications.
 - `lib/core/health/`: replaceable Health Connect gateway with manual fallback.
-- `lib/core/backup/`: versioned local JSON export for device-data handoff and
-  recovery preparation.
+- `lib/core/backup/`: versioned JSON export/restore plus password-protected
+  AES-256-GCM backup codec.
 - `lib/features/<module>/`: Today, Tasks, Training, Nutrition, Growth,
   Equipment, and Settings.
 - `test/`: pure-logic, repository, asset, database, and widget tests.
@@ -91,12 +91,12 @@ Do not treat an old APK under `build/` as validation of current source.
 
 ## Immediate next steps
 
-1. Add encrypted backup and migration/rollback coverage around restore.
+1. Add migration/rollback coverage around restore and release signing.
 2. Expand migration and widget coverage for Growth, Goals, and capture flows;
    improve contribution links beyond current kind-based counts.
 3. Complete Health Connect background sync and richer training data flows.
-4. Add replaceable AI food recognition/product lookup, encrypted backup,
-   release signing, and production QA in the order defined by `docs/BRIEF.md`.
+4. Add replaceable AI food recognition/product lookup and production QA in the
+   order defined by `docs/BRIEF.md`.
 
 ## Useful files
 

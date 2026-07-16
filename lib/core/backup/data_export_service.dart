@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../database/database.dart';
+import 'encrypted_backup_codec.dart';
 
 /// Creates a portable, human-readable snapshot of the local database.
 ///
@@ -50,14 +51,46 @@ class DataExportService {
   }
 
   Future<ShareResult> share() async {
-    final bytes = Uint8List.fromList(utf8.encode(await buildJson()));
-    return SharePlus.instance.share(ShareParams(
+    return _shareBytes(
+      utf8.encode(await buildJson()),
+      name: 'life-backup.json',
       text: 'Life local backup',
-      files: [XFile.fromData(bytes, name: 'life-backup.json', mimeType: 'application/json')],
+    );
+  }
+
+  Future<ShareResult> shareEncrypted(String password) async {
+    final encrypted = await const EncryptedBackupCodec()
+        .encrypt(await buildJson(), password);
+    return _shareBytes(
+      utf8.encode(encrypted),
+      name: 'life-encrypted-backup.json',
+      text: 'Life encrypted local backup',
+    );
+  }
+
+  Future<ShareResult> _shareBytes(
+      List<int> bytes, {
+      required String name,
+      required String text,
+    }) {
+    return SharePlus.instance.share(ShareParams(
+      text: text,
+      files: [XFile.fromData(Uint8List.fromList(bytes), name: name, mimeType: 'application/json')],
     ));
   }
 
   Future<void> pickAndRestore() async {
+    await _pickAndReadBackup((source) => restoreJson(source));
+  }
+
+  Future<void> pickAndRestoreEncrypted(String password) async {
+    await _pickAndReadBackup((source) async {
+      final clear = await const EncryptedBackupCodec().decrypt(source, password);
+      await restoreJson(clear);
+    });
+  }
+
+  Future<void> _pickAndReadBackup(Future<void> Function(String) restore) async {
     final picked = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['json'],
@@ -65,7 +98,7 @@ class DataExportService {
     );
     final bytes = picked?.files.single.bytes;
     if (bytes == null) throw const FormatException('No backup file selected');
-    await restoreJson(utf8.decode(bytes));
+    await restore(utf8.decode(bytes));
   }
 
   Future<void> restoreJson(String source) async {
