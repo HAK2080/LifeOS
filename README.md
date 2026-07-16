@@ -36,9 +36,11 @@ planned offline product flows implemented:
   CI and local release compilation are checked in. A credentialed publish build
   and physical-device QA remain external release steps.
 
-Latest verification: `flutter analyze` is clean, the full suite passes (63
-tests), and `flutter build apk --release` produces an APK. The build emits only
-the known Flutter/Kotlin-plugin migration warnings.
+Latest verification: code generation completed cleanly, `flutter analyze` is
+clean, and the full suite passes (63 tests). Fresh test APKs are available at
+`build/app/outputs/flutter-apk/app-debug.apk` (debug, 235 MB) and
+`build/app/outputs/flutter-apk/app-release.apk` (local release, 84 MB). Builds
+emit only the known Flutter/Kotlin-plugin migration warnings.
 
 The product brief and non-negotiable principles are in [docs/BRIEF.md](docs/BRIEF.md).
 Keep manual entry working, avoid guilt mechanics, remain offline-first, and
@@ -105,11 +107,14 @@ Android debug builds require `JAVA_HOME` to point to the Android Studio JBR and
 target Android API 26+ because Health Connect requires that minimum.
 Do not treat an old APK under `build/` as validation of current source.
 
-## Immediate next steps
+## Testing handoff
 
-1. Run a credentialed release build and physical-device QA before publishing.
-2. Add optional AI food recognition/product lookup implementations if desired.
-3. Add provider-specific Health Connect background sync where supported.
+1. Install the debug APK for normal internal testing.
+2. Follow [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md) for device,
+   Health Connect, notification, backup, accessibility, and offline checks.
+3. Use a credentialed signing environment only when preparing a publishable
+   release; the checked-in local release APK uses the documented development
+   fallback.
 
 ## Useful files
 
