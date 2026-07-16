@@ -12,7 +12,9 @@ As of 2026-07-16, the repository is a functional internal alpha:
   local profile/settings, Drift/SQLite, local notifications, and privacy copy.
 - Phase 2 is substantially implemented: strength logging, exercises, plans
   and text import, history/prefill, progression, rest timer, WODs, kettlebell,
-  Zone 2 manual sessions, walking, and mobility.
+  Zone 2 manual sessions, walking, mobility, and a Health Connect adapter for
+  permission-gated steps and recorded heart-rate samples. Wearable-specific
+  background sync and richer time-in-zone analytics remain.
 - Phase 3 has a manual nutrition foundation: meals, saved meals, Quick Log,
   portions, approved targets, weight logging, and trend logic.
 - Phase 4 is underway. Growth protocols can now be added, persisted locally,
@@ -21,9 +23,9 @@ As of 2026-07-16, the repository is a functional internal alpha:
   paused, and completed. Fixed-day/flexible scheduling, optional reminders,
   review dates, and basic automatic contribution counts are now wired.
   Richer contribution linking is still pending.
-- Phase 5 production hardening is not complete: Health Connect, photo/voice/
-  barcode capture, export, backup/restore, encryption, CI, release signing,
-  and full production QA remain.
+- Phase 5 production hardening is not complete: photo/voice/barcode capture,
+  export, backup/restore, encryption, CI, release signing, and full production
+  QA remain.
 
 The product brief and non-negotiable principles are in [docs/BRIEF.md](docs/BRIEF.md).
 Keep manual entry working, avoid guilt mechanics, remain offline-first, and
@@ -48,6 +50,7 @@ This folder is the shared source of truth for Claude and Codex. Before coding:
 - `lib/core/database/`: Drift schema, generated code, and Riverpod provider.
 - `lib/core/notifications/`: local task reminders and background-capable rest
   timer notifications.
+- `lib/core/health/`: replaceable Health Connect gateway with manual fallback.
 - `lib/features/<module>/`: Today, Tasks, Training, Nutrition, Growth,
   Equipment, and Settings.
 - `test/`: pure-logic, repository, asset, database, and widget tests.
@@ -73,14 +76,15 @@ For web preview, use `run-web.bat` or the `life_app` launch configuration on
 port 5180. Drift web support depends on the checked-in
 `web/sqlite3.wasm` and `web/drift_worker.js` files.
 
-Android debug builds require `JAVA_HOME` to point to the Android Studio JBR.
+Android debug builds require `JAVA_HOME` to point to the Android Studio JBR and
+target Android API 26+ because Health Connect requires that minimum.
 Do not treat an old APK under `build/` as validation of current source.
 
 ## Immediate next steps
 
 1. Expand migration and widget coverage for Growth and Goals, then improve
    contribution links beyond the current kind-based counts.
-2. Implement Health Connect and training data flows.
+2. Complete Health Connect background sync and richer training data flows.
 3. Continue nutrition capture and production hardening in the order defined
    by `docs/BRIEF.md`.
 

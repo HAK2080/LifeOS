@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../app/style.dart';
+import '../../../core/health/health_service.dart';
 import 'cardio_repository.dart';
 
 final stepsTodayProvider = FutureProvider<int>((ref) {
@@ -16,7 +17,9 @@ class WalkingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final prefs = ref.watch(zone2PrefsProvider).value ?? const Zone2Prefs();
-    final steps = ref.watch(stepsTodayProvider).value ?? 0;
+    final manualSteps = ref.watch(stepsTodayProvider).value ?? 0;
+    final healthSteps = ref.watch(healthStepsProvider).value;
+    final steps = healthSteps ?? manualSteps;
     final sessions = ref.watch(walkingSessionsProvider).value ?? [];
     final target = prefs.dailyStepTarget;
 
@@ -60,18 +63,42 @@ class WalkingScreen extends ConsumerWidget {
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 Text(
-                  'Step import from Health Connect arrives soon; manual entry always works.',
+                  healthSteps == null
+                      ? 'Manual entry always works. Connect Health Connect when you want automatic steps.'
+                      : 'Today’s steps from Health Connect. Manual walks remain available.',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),
           ),
           const SizedBox(height: 14),
-          OutlinedButton.icon(
-            icon: const Icon(Icons.add),
-            label: const Text('Log a walk'),
-            onPressed: () => _log(context, ref),
-          ),
+          Row(children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.add),
+                label: const Text('Log a walk'),
+                onPressed: () => _log(context, ref),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.sync),
+                label: const Text('Sync steps'),
+                onPressed: () async {
+                  final ok = await ref
+                      .read(healthStepsProvider.notifier)
+                      .sync();
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(ok
+                            ? 'Health Connect steps synced.'
+                            : 'Health Connect is unavailable or permission was not granted.')));
+                  }
+                },
+              ),
+            ),
+          ]),
           const SizedBox(height: 18),
           if (sessions.isNotEmpty) ...[
             const SectionTitle('History'),

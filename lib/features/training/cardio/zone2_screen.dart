@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../app/style.dart';
+import '../../../core/health/health_service.dart';
 import 'cardio_repository.dart';
 
 const zone2Activities = [
@@ -244,6 +245,7 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
   int elapsedSec = 0;
   bool running = false;
   bool started = false;
+  int? averageHr;
   Timer? _ticker;
 
   @override
@@ -305,8 +307,8 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
               ],
             ),
             Text(
-              'Live heart rate arrives with Health Connect. For now the timer '
-              'tracks your minutes — log HR after if you want.',
+              'The timer always works manually. Health Connect can provide '
+              'heart-rate samples when your device records them.',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 16),
@@ -336,6 +338,12 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
               child: Text('$activity · planned $targetMin min',
                   style: Theme.of(context).textTheme.bodyMedium),
             ),
+            const SizedBox(height: 8),
+            Center(
+              child: Text(averageHr == null
+                  ? 'Average HR: not synced'
+                  : 'Average HR: $averageHr bpm'),
+            ),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -355,6 +363,30 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
                   icon: const Icon(Icons.add_circle_outline),
                   onPressed: () => setState(() => targetMin += 5),
                 ),
+                IconButton(
+                  iconSize: 30,
+                  tooltip: 'Sync heart rate',
+                  icon: const Icon(Icons.favorite_outline),
+                  onPressed: () async {
+                    try {
+                      final gateway = ref.read(healthGatewayProvider);
+                      if (!await gateway.requestReadPermissions()) return;
+                      final now = DateTime.now();
+                      final samples = await gateway.readHeartRate(
+                          now.subtract(Duration(seconds: elapsedSec)), now);
+                      if (samples.isNotEmpty && mounted) {
+                        setState(() => averageHr = (samples
+                                .map((sample) => sample.bpm)
+                                .reduce((a, b) => a + b) /
+                            samples.length).round());
+                      }
+                    } catch (_) {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Heart-rate data is unavailable.')));
+                    }
+                  },
+                ),
                 const SizedBox(width: 12),
                 FilledButton.icon(
                   icon: const Icon(Icons.stop),
@@ -367,6 +399,7 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
                             kind: 'zone2',
                             activity: activity,
                             durationMin: mins,
+                            avgHr: averageHr,
                           );
                       await ref.read(zone2PrefsProvider.notifier).save(
                           lastActivity: activity, lastDurationMin: targetMin);
