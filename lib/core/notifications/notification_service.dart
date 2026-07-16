@@ -60,6 +60,42 @@ class NotificationService {
     await _plugin.cancel(id: taskId);
   }
 
+  Future<void> scheduleHabitReminder({
+    required int habitId,
+    required String title,
+    required int hour,
+    required int minute,
+  }) async {
+    if (kIsWeb) return;
+    await init();
+    final now = tz.TZDateTime.now(tz.local);
+    var next = tz.TZDateTime(tz.local, now.year, now.month, now.day, hour,
+        minute);
+    if (!next.isAfter(now)) next = next.add(const Duration(days: 1));
+    await _plugin.zonedSchedule(
+      id: 300000 + habitId,
+      title: title,
+      body: 'A gentle reminder for your practice.',
+      scheduledDate: next,
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'habit_reminders',
+          'Practice reminders',
+          channelDescription: 'Optional reminders for growth practices',
+          importance: Importance.defaultImportance,
+          priority: Priority.defaultPriority,
+        ),
+      ),
+      matchDateTimeComponents: DateTimeComponents.time,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    );
+  }
+
+  Future<void> cancelHabitReminder(int habitId) async {
+    if (kIsWeb) return;
+    await _plugin.cancel(id: 300000 + habitId);
+  }
+
   static const _restTimerId = 900001;
 
   /// Fires when the rest timer ends, even with the screen locked.

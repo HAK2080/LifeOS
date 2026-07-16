@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:life_app/core/database/database.dart';
 import 'package:life_app/features/growth/growth_repository.dart';
 import 'package:life_app/features/growth/protocols.dart';
+import 'package:life_app/core/notifications/notification_service.dart';
 
 import 'helpers/test_db.dart';
 
@@ -13,7 +14,7 @@ void main() {
 
   setUp(() {
     db = testDatabase();
-    repo = GrowthRepository(db);
+    repo = GrowthRepository(db, NotificationService());
   });
 
   tearDown(() => db.close());
@@ -30,6 +31,11 @@ void main() {
     final logs = await repo.db.select(repo.db.habitLogs).get();
     expect(logs, hasLength(1));
     expect(logs.single.status, 'completed');
+    final goalId = await repo.addGoal(name: 'Practice consistency', kind: 'habit');
+    final goal = await (repo.db.select(repo.db.goals)
+          ..where((g) => g.id.equals(goalId)))
+        .getSingle();
+    expect(await repo.contributionCount(goal), 1);
   });
 
   test('removes a habit and its logs', () async {

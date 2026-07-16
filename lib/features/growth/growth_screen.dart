@@ -81,6 +81,7 @@ class GrowthScreen extends ConsumerWidget {
             for (final goal in goals)
               _GoalCard(
                 goal: goal,
+                repo: repo,
                 onStatus: (status) => repo.updateGoal(
                     goal.id, GoalsCompanion(status: Value(status))),
                 onDelete: () => repo.deleteGoal(goal.id),
@@ -158,6 +159,54 @@ class GrowthScreen extends ConsumerWidget {
                 Text('Evidence: ${habit.evidenceLevel!}'),
               if (habit.safetyNotes != null)
                 Text('Safety: ${habit.safetyNotes!}'),
+              Text(_scheduleSummary(habit)),
+              Row(children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () async {
+                      if (sheetContext.mounted) Navigator.pop(sheetContext);
+                      await _editSchedule(context, repo, habit);
+                    },
+                    icon: const Icon(Icons.event_repeat_outlined),
+                    label: const Text('Schedule'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () async {
+                      if (habit.reminderTime == null) {
+                        final time = await showTimePicker(
+                            context: context, initialTime: TimeOfDay.now());
+                        if (time != null) {
+                          await repo.setReminder(
+                              habit: habit,
+                              hour: time.hour,
+                              minute: time.minute);
+                        }
+                      } else {
+                        await repo.clearReminder(habit.id);
+                      }
+                      if (sheetContext.mounted) Navigator.pop(sheetContext);
+                    },
+                    icon: Icon(habit.reminderTime == null
+                        ? Icons.notifications_outlined
+                        : Icons.notifications_off_outlined),
+                    label: Text(habit.reminderTime == null
+                        ? 'Reminder'
+                        : 'Remove reminder'),
+                  ),
+                ),
+              ]),
+              if (_reviewDue(habit))
+                OutlinedButton.icon(
+                  onPressed: () async {
+                    await repo.markReviewed(habit.id);
+                    if (sheetContext.mounted) Navigator.pop(sheetContext);
+                  },
+                  icon: const Icon(Icons.rate_review_outlined),
+                  label: const Text('Mark review complete'),
+                ),
               Row(
                 children: [
                   Expanded(
@@ -189,6 +238,95 @@ class GrowthScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  String _scheduleSummary(Habit habit) {
+    final schedule = switch (habit.scheduleType) {
+      'fixed' => 'Fixed days: ${_dayNames(habit.fixedDays)}',
+      'weekly' => 'Flexible target: ${habit.weeklyTarget ?? 0}/week',
+      'both' => 'Fixed days + ${habit.weeklyTarget ?? 0}/week',
+      _ => 'No schedule',
+    };
+    return '$schedule${habit.reminderTime == null ? '' : ' · Reminder ${habit.reminderTime}'}';
+  }
+
+  String _dayNames(String? csv) {
+    const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final days = (csv ?? '')
+        .split(',')
+        .map(int.tryParse)
+        .whereType<int>()
+        .where((d) => d >= 1 && d <= 7)
+        .map((d) => names[d - 1]);
+    return days.isEmpty ? 'none selected' : days.join(', ');
+  }
+
+  bool _reviewDue(Habit habit) {
+    if (habit.reviewAfterDays == null) return false;
+    final last = habit.lastReviewAt ?? habit.createdAt;
+    return DateTime.now().isAfter(last.add(Duration(days: habit.reviewAfterDays!)));
+  }
+
+  Future<void> _editSchedule(
+      BuildContext context, GrowthRepository repo, Habit habit) async {
+    var type = habit.scheduleType;
+    var days = (habit.fixedDays ?? '')
+        .split(',')
+        .map(int.tryParse)
+        .whereType<int>()
+        .toSet();
+    final target = TextEditingController(text: habit.weeklyTarget?.toString() ?? '');
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (c, setState) => AlertDialog(
+          title: const Text('Practice schedule'),
+          content: SingleChildScrollView(
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              DropdownButtonFormField<String>(
+                initialValue: type,
+                items: const [
+                  DropdownMenuItem(value: 'none', child: Text('No schedule')),
+                  DropdownMenuItem(value: 'fixed', child: Text('Fixed days')),
+                  DropdownMenuItem(value: 'weekly', child: Text('Flexible weekly target')),
+                  DropdownMenuItem(value: 'both', child: Text('Fixed days + weekly target')),
+                ],
+                onChanged: (v) => setState(() => type = v ?? 'none'),
+              ),
+              if (type == 'fixed' || type == 'both') ...[
+                const SizedBox(height: 10),
+                Wrap(spacing: 4, children: [
+                  for (var day = 1; day <= 7; day++)
+                    FilterChip(
+                      label: Text(_dayNames('$day')),
+                      selected: days.contains(day),
+                      onSelected: (selected) => setState(() => selected
+                          ? days.add(day)
+                          : days.remove(day)),
+                    ),
+                ]),
+              ],
+              if (type == 'weekly' || type == 'both')
+                TextField(
+                    controller: target,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'Times per week')),
+            ]),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('Cancel')),
+            FilledButton(onPressed: () => Navigator.pop(dialogContext, true), child: const Text('Save')),
+          ],
+        ),
+      ),
+    );
+    if (result == true) {
+      await repo.setSchedule(
+          habit: habit,
+          type: type,
+          days: days.toList()..sort(),
+          weeklyTarget: int.tryParse(target.text));
+    }
   }
 
   Future<void> _addCustom(BuildContext context, GrowthRepository repo) async {
@@ -227,24 +365,40 @@ class GrowthScreen extends ConsumerWidget {
   Future<void> _addGoal(BuildContext context, GrowthRepository repo) async {
     final name = TextEditingController();
     final target = TextEditingController();
+    var kind = 'custom';
     final added = await showDialog<bool>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('New goal'),
-        content: Column(mainAxisSize: MainAxisSize.min, children: [
-          TextField(controller: name, autofocus: true, decoration: const InputDecoration(labelText: 'Name')),
-          TextField(controller: target, decoration: const InputDecoration(labelText: 'Target (optional)')),
-        ]),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('Cancel')),
-          FilledButton(onPressed: () => Navigator.pop(dialogContext, true), child: const Text('Add')),
-        ],
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (c, setState) => AlertDialog(
+          title: const Text('New goal'),
+          content: Column(mainAxisSize: MainAxisSize.min, children: [
+            TextField(controller: name, autofocus: true, decoration: const InputDecoration(labelText: 'Name')),
+            TextField(controller: target, decoration: const InputDecoration(labelText: 'Target (optional)')),
+            DropdownButtonFormField<String>(
+              initialValue: kind,
+              decoration: const InputDecoration(labelText: 'Automatic link'),
+              items: const [
+                DropdownMenuItem(value: 'custom', child: Text('None')),
+                DropdownMenuItem(value: 'habit', child: Text('Growth practices')),
+                DropdownMenuItem(value: 'training', child: Text('Strength training')),
+                DropdownMenuItem(value: 'nutrition', child: Text('Nutrition logging days')),
+                DropdownMenuItem(value: 'cardio', child: Text('Zone 2 minutes')),
+              ],
+              onChanged: (value) => setState(() => kind = value ?? 'custom'),
+            ),
+          ]),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('Cancel')),
+            FilledButton(onPressed: () => Navigator.pop(dialogContext, true), child: const Text('Add')),
+          ],
+        ),
       ),
     );
     if (added == true && name.text.trim().isNotEmpty) {
       await repo.addGoal(
         name: name.text.trim(),
         target: target.text.trim().isEmpty ? null : target.text.trim(),
+        kind: kind,
       );
     }
   }
@@ -337,11 +491,13 @@ class _HabitCard extends StatelessWidget {
 class _GoalCard extends StatelessWidget {
   const _GoalCard({
     required this.goal,
+    required this.repo,
     required this.onStatus,
     required this.onDelete,
   });
 
   final LifeGoal goal;
+  final GrowthRepository repo;
   final ValueChanged<String> onStatus;
   final VoidCallback onDelete;
 
@@ -356,6 +512,14 @@ class _GoalCard extends StatelessWidget {
           IconButton(onPressed: onDelete, icon: const Icon(Icons.close, size: 19)),
         ]),
         if (goal.target != null) Text(goal.target!, style: Theme.of(context).textTheme.bodySmall),
+        if (goal.kind != 'custom')
+          FutureBuilder<int>(
+            future: repo.contributionCount(goal),
+            builder: (context, snapshot) => Text(
+              'Automatically linked activity: ${snapshot.data ?? 0}',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
         const SizedBox(height: 6),
         Wrap(spacing: 6, children: [
           for (final option in const [

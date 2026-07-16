@@ -18,8 +18,9 @@ As of 2026-07-16, the repository is a functional internal alpha:
 - Phase 4 is underway. Growth protocols can now be added, persisted locally,
   paused/resumed, and logged as completed, minimum, or skipped without streak
   pressure. Lightweight Goals can be created and moved between active,
-  paused, and completed. Fixed-day scheduling, reminders, reviews, and
-  automatic contribution links are still pending.
+  paused, and completed. Fixed-day/flexible scheduling, optional reminders,
+  review dates, and basic automatic contribution counts are now wired.
+  Richer contribution linking is still pending.
 - Phase 5 production hardening is not complete: Health Connect, photo/voice/
   barcode capture, export, backup/restore, encryption, CI, release signing,
   and full production QA remain.
@@ -77,10 +78,10 @@ Do not treat an old APK under `build/` as validation of current source.
 
 ## Immediate next steps
 
-1. Add fixed-day scheduling, reminders, reviews, and automatic contribution
-   links to the Growth/Goals slice.
-2. Expand migration and widget coverage for Growth and Goals.
-3. Then implement Health Connect and production hardening in the order defined
+1. Expand migration and widget coverage for Growth and Goals, then improve
+   contribution links beyond the current kind-based counts.
+2. Implement Health Connect and training data flows.
+3. Continue nutrition capture and production hardening in the order defined
    by `docs/BRIEF.md`.
 
 ## Useful files

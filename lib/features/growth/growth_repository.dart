@@ -3,15 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/database/database.dart';
 import '../../core/database/database_provider.dart';
+import '../../core/notifications/notification_service.dart';
 import 'protocols.dart';
 
 String growthDayKey(DateTime day) =>
     '${day.year.toString().padLeft(4, '0')}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
 
 class GrowthRepository {
-  GrowthRepository(this.db);
+  GrowthRepository(this.db, this.notifications);
 
   final AppDatabase db;
+  final NotificationService notifications;
 
   Stream<List<Habit>> watchHabits() =>
       (db.select(db.habits)..orderBy([(h) => OrderingTerm.asc(h.name)])).watch();
@@ -56,7 +58,52 @@ class GrowthRepository {
   Future<void> updateHabit(int id, HabitsCompanion changes) =>
       (db.update(db.habits)..where((h) => h.id.equals(id))).write(changes);
 
+  Future<void> setSchedule({
+    required Habit habit,
+    required String type,
+    required List<int> days,
+    int? weeklyTarget,
+  }) async {
+    await updateHabit(
+      habit.id,
+      HabitsCompanion(
+        scheduleType: Value(type),
+        fixedDays: Value(days.isEmpty ? null : days.join(',')),
+        weeklyTarget: Value(weeklyTarget),
+      ),
+    );
+  }
+
+  Future<void> setReminder({
+    required Habit habit,
+    required int hour,
+    required int minute,
+  }) async {
+    final time =
+        '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+    await updateHabit(habit.id, HabitsCompanion(reminderTime: Value(time)));
+    await notifications.scheduleHabitReminder(
+      habitId: habit.id,
+      title: habit.name,
+      hour: hour,
+      minute: minute,
+    );
+  }
+
+  Future<void> clearReminder(int habitId) async {
+    await updateHabit(habitId, const HabitsCompanion(reminderTime: Value(null)));
+    await notifications.cancelHabitReminder(habitId);
+  }
+
+  Future<void> markReviewed(int habitId) => updateHabit(
+      habitId, HabitsCompanion(lastReviewAt: Value(DateTime.now())));
+
   Future<void> deleteHabit(int id) async {
+    final habit = await (db.select(db.habits)..where((h) => h.id.equals(id)))
+        .getSingleOrNull();
+    if (habit?.reminderTime != null) {
+      await notifications.cancelHabitReminder(id);
+    }
     await (db.delete(db.habitLogs)..where((l) => l.habitId.equals(id))).go();
     await (db.delete(db.habits)..where((h) => h.id.equals(id))).go();
   }
@@ -108,10 +155,39 @@ class GrowthRepository {
 
   Future<void> deleteGoal(int id) =>
       (db.delete(db.goals)..where((g) => g.id.equals(id))).go();
+
+  /// A deliberately lightweight automatic link. It reports useful activity
+  /// without forcing the user to manually classify every action.
+  Future<int> contributionCount(LifeGoal goal) async {
+    switch (goal.kind) {
+      case 'habit':
+        final logs = await (db.select(db.habitLogs)
+              ..where((l) => l.status.equals('completed') |
+                  l.status.equals('minimum')))
+            .get();
+        return logs.length;
+      case 'training':
+        final sessions = await (db.select(db.workoutSessions)
+              ..where((s) => s.finishedAt.isNotNull()))
+            .get();
+        return sessions.length;
+      case 'nutrition':
+        final logs = await db.select(db.mealLogs).get();
+        return logs.map((l) => l.day).toSet().length;
+      case 'cardio':
+        final sessions = await (db.select(db.zone2Sessions)
+              ..where((s) => s.kind.equals('zone2')))
+            .get();
+        return sessions.fold<int>(0, (sum, s) => sum + s.durationMin);
+      default:
+        return 0;
+    }
+  }
 }
 
 final growthRepositoryProvider = Provider<GrowthRepository>(
-    (ref) => GrowthRepository(ref.watch(databaseProvider)));
+    (ref) => GrowthRepository(ref.watch(databaseProvider),
+        ref.watch(notificationServiceProvider)));
 
 final growthHabitsProvider = StreamProvider<List<Habit>>(
     (ref) => ref.watch(growthRepositoryProvider).watchHabits());
