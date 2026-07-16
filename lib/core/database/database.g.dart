@@ -7857,6 +7857,1822 @@ class WeightEntriesCompanion extends UpdateCompanion<WeightEntry> {
   }
 }
 
+class $HabitsTable extends Habits with TableInfo<$HabitsTable, Habit> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HabitsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _purposeMeta = const VerificationMeta(
+    'purpose',
+  );
+  @override
+  late final GeneratedColumn<String> purpose = GeneratedColumn<String>(
+    'purpose',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _protocolMeta = const VerificationMeta(
+    'protocol',
+  );
+  @override
+  late final GeneratedColumn<String> protocol = GeneratedColumn<String>(
+    'protocol',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _scheduleTypeMeta = const VerificationMeta(
+    'scheduleType',
+  );
+  @override
+  late final GeneratedColumn<String> scheduleType = GeneratedColumn<String>(
+    'schedule_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('none'),
+  );
+  static const VerificationMeta _fixedDaysMeta = const VerificationMeta(
+    'fixedDays',
+  );
+  @override
+  late final GeneratedColumn<String> fixedDays = GeneratedColumn<String>(
+    'fixed_days',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _weeklyTargetMeta = const VerificationMeta(
+    'weeklyTarget',
+  );
+  @override
+  late final GeneratedColumn<int> weeklyTarget = GeneratedColumn<int>(
+    'weekly_target',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _durationMinMeta = const VerificationMeta(
+    'durationMin',
+  );
+  @override
+  late final GeneratedColumn<int> durationMin = GeneratedColumn<int>(
+    'duration_min',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _minimumVersionMeta = const VerificationMeta(
+    'minimumVersion',
+  );
+  @override
+  late final GeneratedColumn<String> minimumVersion = GeneratedColumn<String>(
+    'minimum_version',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reminderTimeMeta = const VerificationMeta(
+    'reminderTime',
+  );
+  @override
+  late final GeneratedColumn<String> reminderTime = GeneratedColumn<String>(
+    'reminder_time',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _evidenceLevelMeta = const VerificationMeta(
+    'evidenceLevel',
+  );
+  @override
+  late final GeneratedColumn<String> evidenceLevel = GeneratedColumn<String>(
+    'evidence_level',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _safetyNotesMeta = const VerificationMeta(
+    'safetyNotes',
+  );
+  @override
+  late final GeneratedColumn<String> safetyNotes = GeneratedColumn<String>(
+    'safety_notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reviewAfterDaysMeta = const VerificationMeta(
+    'reviewAfterDays',
+  );
+  @override
+  late final GeneratedColumn<int> reviewAfterDays = GeneratedColumn<int>(
+    'review_after_days',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _lastReviewAtMeta = const VerificationMeta(
+    'lastReviewAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> lastReviewAt = GeneratedColumn<DateTime>(
+    'last_review_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    purpose,
+    protocol,
+    scheduleType,
+    fixedDays,
+    weeklyTarget,
+    durationMin,
+    minimumVersion,
+    reminderTime,
+    notes,
+    evidenceLevel,
+    safetyNotes,
+    source,
+    reviewAfterDays,
+    lastReviewAt,
+    status,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'habits';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Habit> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('purpose')) {
+      context.handle(
+        _purposeMeta,
+        purpose.isAcceptableOrUnknown(data['purpose']!, _purposeMeta),
+      );
+    }
+    if (data.containsKey('protocol')) {
+      context.handle(
+        _protocolMeta,
+        protocol.isAcceptableOrUnknown(data['protocol']!, _protocolMeta),
+      );
+    }
+    if (data.containsKey('schedule_type')) {
+      context.handle(
+        _scheduleTypeMeta,
+        scheduleType.isAcceptableOrUnknown(
+          data['schedule_type']!,
+          _scheduleTypeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('fixed_days')) {
+      context.handle(
+        _fixedDaysMeta,
+        fixedDays.isAcceptableOrUnknown(data['fixed_days']!, _fixedDaysMeta),
+      );
+    }
+    if (data.containsKey('weekly_target')) {
+      context.handle(
+        _weeklyTargetMeta,
+        weeklyTarget.isAcceptableOrUnknown(
+          data['weekly_target']!,
+          _weeklyTargetMeta,
+        ),
+      );
+    }
+    if (data.containsKey('duration_min')) {
+      context.handle(
+        _durationMinMeta,
+        durationMin.isAcceptableOrUnknown(
+          data['duration_min']!,
+          _durationMinMeta,
+        ),
+      );
+    }
+    if (data.containsKey('minimum_version')) {
+      context.handle(
+        _minimumVersionMeta,
+        minimumVersion.isAcceptableOrUnknown(
+          data['minimum_version']!,
+          _minimumVersionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reminder_time')) {
+      context.handle(
+        _reminderTimeMeta,
+        reminderTime.isAcceptableOrUnknown(
+          data['reminder_time']!,
+          _reminderTimeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('evidence_level')) {
+      context.handle(
+        _evidenceLevelMeta,
+        evidenceLevel.isAcceptableOrUnknown(
+          data['evidence_level']!,
+          _evidenceLevelMeta,
+        ),
+      );
+    }
+    if (data.containsKey('safety_notes')) {
+      context.handle(
+        _safetyNotesMeta,
+        safetyNotes.isAcceptableOrUnknown(
+          data['safety_notes']!,
+          _safetyNotesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    }
+    if (data.containsKey('review_after_days')) {
+      context.handle(
+        _reviewAfterDaysMeta,
+        reviewAfterDays.isAcceptableOrUnknown(
+          data['review_after_days']!,
+          _reviewAfterDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_review_at')) {
+      context.handle(
+        _lastReviewAtMeta,
+        lastReviewAt.isAcceptableOrUnknown(
+          data['last_review_at']!,
+          _lastReviewAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Habit map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Habit(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      purpose: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}purpose'],
+      ),
+      protocol: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}protocol'],
+      ),
+      scheduleType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}schedule_type'],
+      )!,
+      fixedDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}fixed_days'],
+      ),
+      weeklyTarget: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}weekly_target'],
+      ),
+      durationMin: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}duration_min'],
+      ),
+      minimumVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}minimum_version'],
+      ),
+      reminderTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reminder_time'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      evidenceLevel: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}evidence_level'],
+      ),
+      safetyNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}safety_notes'],
+      ),
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      ),
+      reviewAfterDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}review_after_days'],
+      ),
+      lastReviewAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_review_at'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $HabitsTable createAlias(String alias) {
+    return $HabitsTable(attachedDatabase, alias);
+  }
+}
+
+class Habit extends DataClass implements Insertable<Habit> {
+  final int id;
+  final String name;
+  final String? purpose;
+  final String? protocol;
+  final String scheduleType;
+  final String? fixedDays;
+  final int? weeklyTarget;
+  final int? durationMin;
+  final String? minimumVersion;
+  final String? reminderTime;
+  final String? notes;
+  final String? evidenceLevel;
+  final String? safetyNotes;
+  final String? source;
+  final int? reviewAfterDays;
+  final DateTime? lastReviewAt;
+  final String status;
+  final DateTime createdAt;
+  const Habit({
+    required this.id,
+    required this.name,
+    this.purpose,
+    this.protocol,
+    required this.scheduleType,
+    this.fixedDays,
+    this.weeklyTarget,
+    this.durationMin,
+    this.minimumVersion,
+    this.reminderTime,
+    this.notes,
+    this.evidenceLevel,
+    this.safetyNotes,
+    this.source,
+    this.reviewAfterDays,
+    this.lastReviewAt,
+    required this.status,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || purpose != null) {
+      map['purpose'] = Variable<String>(purpose);
+    }
+    if (!nullToAbsent || protocol != null) {
+      map['protocol'] = Variable<String>(protocol);
+    }
+    map['schedule_type'] = Variable<String>(scheduleType);
+    if (!nullToAbsent || fixedDays != null) {
+      map['fixed_days'] = Variable<String>(fixedDays);
+    }
+    if (!nullToAbsent || weeklyTarget != null) {
+      map['weekly_target'] = Variable<int>(weeklyTarget);
+    }
+    if (!nullToAbsent || durationMin != null) {
+      map['duration_min'] = Variable<int>(durationMin);
+    }
+    if (!nullToAbsent || minimumVersion != null) {
+      map['minimum_version'] = Variable<String>(minimumVersion);
+    }
+    if (!nullToAbsent || reminderTime != null) {
+      map['reminder_time'] = Variable<String>(reminderTime);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || evidenceLevel != null) {
+      map['evidence_level'] = Variable<String>(evidenceLevel);
+    }
+    if (!nullToAbsent || safetyNotes != null) {
+      map['safety_notes'] = Variable<String>(safetyNotes);
+    }
+    if (!nullToAbsent || source != null) {
+      map['source'] = Variable<String>(source);
+    }
+    if (!nullToAbsent || reviewAfterDays != null) {
+      map['review_after_days'] = Variable<int>(reviewAfterDays);
+    }
+    if (!nullToAbsent || lastReviewAt != null) {
+      map['last_review_at'] = Variable<DateTime>(lastReviewAt);
+    }
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  HabitsCompanion toCompanion(bool nullToAbsent) {
+    return HabitsCompanion(
+      id: Value(id),
+      name: Value(name),
+      purpose: purpose == null && nullToAbsent
+          ? const Value.absent()
+          : Value(purpose),
+      protocol: protocol == null && nullToAbsent
+          ? const Value.absent()
+          : Value(protocol),
+      scheduleType: Value(scheduleType),
+      fixedDays: fixedDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fixedDays),
+      weeklyTarget: weeklyTarget == null && nullToAbsent
+          ? const Value.absent()
+          : Value(weeklyTarget),
+      durationMin: durationMin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(durationMin),
+      minimumVersion: minimumVersion == null && nullToAbsent
+          ? const Value.absent()
+          : Value(minimumVersion),
+      reminderTime: reminderTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reminderTime),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      evidenceLevel: evidenceLevel == null && nullToAbsent
+          ? const Value.absent()
+          : Value(evidenceLevel),
+      safetyNotes: safetyNotes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(safetyNotes),
+      source: source == null && nullToAbsent
+          ? const Value.absent()
+          : Value(source),
+      reviewAfterDays: reviewAfterDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reviewAfterDays),
+      lastReviewAt: lastReviewAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastReviewAt),
+      status: Value(status),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory Habit.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Habit(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      purpose: serializer.fromJson<String?>(json['purpose']),
+      protocol: serializer.fromJson<String?>(json['protocol']),
+      scheduleType: serializer.fromJson<String>(json['scheduleType']),
+      fixedDays: serializer.fromJson<String?>(json['fixedDays']),
+      weeklyTarget: serializer.fromJson<int?>(json['weeklyTarget']),
+      durationMin: serializer.fromJson<int?>(json['durationMin']),
+      minimumVersion: serializer.fromJson<String?>(json['minimumVersion']),
+      reminderTime: serializer.fromJson<String?>(json['reminderTime']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      evidenceLevel: serializer.fromJson<String?>(json['evidenceLevel']),
+      safetyNotes: serializer.fromJson<String?>(json['safetyNotes']),
+      source: serializer.fromJson<String?>(json['source']),
+      reviewAfterDays: serializer.fromJson<int?>(json['reviewAfterDays']),
+      lastReviewAt: serializer.fromJson<DateTime?>(json['lastReviewAt']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'purpose': serializer.toJson<String?>(purpose),
+      'protocol': serializer.toJson<String?>(protocol),
+      'scheduleType': serializer.toJson<String>(scheduleType),
+      'fixedDays': serializer.toJson<String?>(fixedDays),
+      'weeklyTarget': serializer.toJson<int?>(weeklyTarget),
+      'durationMin': serializer.toJson<int?>(durationMin),
+      'minimumVersion': serializer.toJson<String?>(minimumVersion),
+      'reminderTime': serializer.toJson<String?>(reminderTime),
+      'notes': serializer.toJson<String?>(notes),
+      'evidenceLevel': serializer.toJson<String?>(evidenceLevel),
+      'safetyNotes': serializer.toJson<String?>(safetyNotes),
+      'source': serializer.toJson<String?>(source),
+      'reviewAfterDays': serializer.toJson<int?>(reviewAfterDays),
+      'lastReviewAt': serializer.toJson<DateTime?>(lastReviewAt),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  Habit copyWith({
+    int? id,
+    String? name,
+    Value<String?> purpose = const Value.absent(),
+    Value<String?> protocol = const Value.absent(),
+    String? scheduleType,
+    Value<String?> fixedDays = const Value.absent(),
+    Value<int?> weeklyTarget = const Value.absent(),
+    Value<int?> durationMin = const Value.absent(),
+    Value<String?> minimumVersion = const Value.absent(),
+    Value<String?> reminderTime = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    Value<String?> evidenceLevel = const Value.absent(),
+    Value<String?> safetyNotes = const Value.absent(),
+    Value<String?> source = const Value.absent(),
+    Value<int?> reviewAfterDays = const Value.absent(),
+    Value<DateTime?> lastReviewAt = const Value.absent(),
+    String? status,
+    DateTime? createdAt,
+  }) => Habit(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    purpose: purpose.present ? purpose.value : this.purpose,
+    protocol: protocol.present ? protocol.value : this.protocol,
+    scheduleType: scheduleType ?? this.scheduleType,
+    fixedDays: fixedDays.present ? fixedDays.value : this.fixedDays,
+    weeklyTarget: weeklyTarget.present ? weeklyTarget.value : this.weeklyTarget,
+    durationMin: durationMin.present ? durationMin.value : this.durationMin,
+    minimumVersion: minimumVersion.present
+        ? minimumVersion.value
+        : this.minimumVersion,
+    reminderTime: reminderTime.present ? reminderTime.value : this.reminderTime,
+    notes: notes.present ? notes.value : this.notes,
+    evidenceLevel: evidenceLevel.present
+        ? evidenceLevel.value
+        : this.evidenceLevel,
+    safetyNotes: safetyNotes.present ? safetyNotes.value : this.safetyNotes,
+    source: source.present ? source.value : this.source,
+    reviewAfterDays: reviewAfterDays.present
+        ? reviewAfterDays.value
+        : this.reviewAfterDays,
+    lastReviewAt: lastReviewAt.present ? lastReviewAt.value : this.lastReviewAt,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  Habit copyWithCompanion(HabitsCompanion data) {
+    return Habit(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      purpose: data.purpose.present ? data.purpose.value : this.purpose,
+      protocol: data.protocol.present ? data.protocol.value : this.protocol,
+      scheduleType: data.scheduleType.present
+          ? data.scheduleType.value
+          : this.scheduleType,
+      fixedDays: data.fixedDays.present ? data.fixedDays.value : this.fixedDays,
+      weeklyTarget: data.weeklyTarget.present
+          ? data.weeklyTarget.value
+          : this.weeklyTarget,
+      durationMin: data.durationMin.present
+          ? data.durationMin.value
+          : this.durationMin,
+      minimumVersion: data.minimumVersion.present
+          ? data.minimumVersion.value
+          : this.minimumVersion,
+      reminderTime: data.reminderTime.present
+          ? data.reminderTime.value
+          : this.reminderTime,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      evidenceLevel: data.evidenceLevel.present
+          ? data.evidenceLevel.value
+          : this.evidenceLevel,
+      safetyNotes: data.safetyNotes.present
+          ? data.safetyNotes.value
+          : this.safetyNotes,
+      source: data.source.present ? data.source.value : this.source,
+      reviewAfterDays: data.reviewAfterDays.present
+          ? data.reviewAfterDays.value
+          : this.reviewAfterDays,
+      lastReviewAt: data.lastReviewAt.present
+          ? data.lastReviewAt.value
+          : this.lastReviewAt,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Habit(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('purpose: $purpose, ')
+          ..write('protocol: $protocol, ')
+          ..write('scheduleType: $scheduleType, ')
+          ..write('fixedDays: $fixedDays, ')
+          ..write('weeklyTarget: $weeklyTarget, ')
+          ..write('durationMin: $durationMin, ')
+          ..write('minimumVersion: $minimumVersion, ')
+          ..write('reminderTime: $reminderTime, ')
+          ..write('notes: $notes, ')
+          ..write('evidenceLevel: $evidenceLevel, ')
+          ..write('safetyNotes: $safetyNotes, ')
+          ..write('source: $source, ')
+          ..write('reviewAfterDays: $reviewAfterDays, ')
+          ..write('lastReviewAt: $lastReviewAt, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    purpose,
+    protocol,
+    scheduleType,
+    fixedDays,
+    weeklyTarget,
+    durationMin,
+    minimumVersion,
+    reminderTime,
+    notes,
+    evidenceLevel,
+    safetyNotes,
+    source,
+    reviewAfterDays,
+    lastReviewAt,
+    status,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Habit &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.purpose == this.purpose &&
+          other.protocol == this.protocol &&
+          other.scheduleType == this.scheduleType &&
+          other.fixedDays == this.fixedDays &&
+          other.weeklyTarget == this.weeklyTarget &&
+          other.durationMin == this.durationMin &&
+          other.minimumVersion == this.minimumVersion &&
+          other.reminderTime == this.reminderTime &&
+          other.notes == this.notes &&
+          other.evidenceLevel == this.evidenceLevel &&
+          other.safetyNotes == this.safetyNotes &&
+          other.source == this.source &&
+          other.reviewAfterDays == this.reviewAfterDays &&
+          other.lastReviewAt == this.lastReviewAt &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt);
+}
+
+class HabitsCompanion extends UpdateCompanion<Habit> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String?> purpose;
+  final Value<String?> protocol;
+  final Value<String> scheduleType;
+  final Value<String?> fixedDays;
+  final Value<int?> weeklyTarget;
+  final Value<int?> durationMin;
+  final Value<String?> minimumVersion;
+  final Value<String?> reminderTime;
+  final Value<String?> notes;
+  final Value<String?> evidenceLevel;
+  final Value<String?> safetyNotes;
+  final Value<String?> source;
+  final Value<int?> reviewAfterDays;
+  final Value<DateTime?> lastReviewAt;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  const HabitsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.purpose = const Value.absent(),
+    this.protocol = const Value.absent(),
+    this.scheduleType = const Value.absent(),
+    this.fixedDays = const Value.absent(),
+    this.weeklyTarget = const Value.absent(),
+    this.durationMin = const Value.absent(),
+    this.minimumVersion = const Value.absent(),
+    this.reminderTime = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.evidenceLevel = const Value.absent(),
+    this.safetyNotes = const Value.absent(),
+    this.source = const Value.absent(),
+    this.reviewAfterDays = const Value.absent(),
+    this.lastReviewAt = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  HabitsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.purpose = const Value.absent(),
+    this.protocol = const Value.absent(),
+    this.scheduleType = const Value.absent(),
+    this.fixedDays = const Value.absent(),
+    this.weeklyTarget = const Value.absent(),
+    this.durationMin = const Value.absent(),
+    this.minimumVersion = const Value.absent(),
+    this.reminderTime = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.evidenceLevel = const Value.absent(),
+    this.safetyNotes = const Value.absent(),
+    this.source = const Value.absent(),
+    this.reviewAfterDays = const Value.absent(),
+    this.lastReviewAt = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<Habit> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? purpose,
+    Expression<String>? protocol,
+    Expression<String>? scheduleType,
+    Expression<String>? fixedDays,
+    Expression<int>? weeklyTarget,
+    Expression<int>? durationMin,
+    Expression<String>? minimumVersion,
+    Expression<String>? reminderTime,
+    Expression<String>? notes,
+    Expression<String>? evidenceLevel,
+    Expression<String>? safetyNotes,
+    Expression<String>? source,
+    Expression<int>? reviewAfterDays,
+    Expression<DateTime>? lastReviewAt,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (purpose != null) 'purpose': purpose,
+      if (protocol != null) 'protocol': protocol,
+      if (scheduleType != null) 'schedule_type': scheduleType,
+      if (fixedDays != null) 'fixed_days': fixedDays,
+      if (weeklyTarget != null) 'weekly_target': weeklyTarget,
+      if (durationMin != null) 'duration_min': durationMin,
+      if (minimumVersion != null) 'minimum_version': minimumVersion,
+      if (reminderTime != null) 'reminder_time': reminderTime,
+      if (notes != null) 'notes': notes,
+      if (evidenceLevel != null) 'evidence_level': evidenceLevel,
+      if (safetyNotes != null) 'safety_notes': safetyNotes,
+      if (source != null) 'source': source,
+      if (reviewAfterDays != null) 'review_after_days': reviewAfterDays,
+      if (lastReviewAt != null) 'last_review_at': lastReviewAt,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  HabitsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String?>? purpose,
+    Value<String?>? protocol,
+    Value<String>? scheduleType,
+    Value<String?>? fixedDays,
+    Value<int?>? weeklyTarget,
+    Value<int?>? durationMin,
+    Value<String?>? minimumVersion,
+    Value<String?>? reminderTime,
+    Value<String?>? notes,
+    Value<String?>? evidenceLevel,
+    Value<String?>? safetyNotes,
+    Value<String?>? source,
+    Value<int?>? reviewAfterDays,
+    Value<DateTime?>? lastReviewAt,
+    Value<String>? status,
+    Value<DateTime>? createdAt,
+  }) {
+    return HabitsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      purpose: purpose ?? this.purpose,
+      protocol: protocol ?? this.protocol,
+      scheduleType: scheduleType ?? this.scheduleType,
+      fixedDays: fixedDays ?? this.fixedDays,
+      weeklyTarget: weeklyTarget ?? this.weeklyTarget,
+      durationMin: durationMin ?? this.durationMin,
+      minimumVersion: minimumVersion ?? this.minimumVersion,
+      reminderTime: reminderTime ?? this.reminderTime,
+      notes: notes ?? this.notes,
+      evidenceLevel: evidenceLevel ?? this.evidenceLevel,
+      safetyNotes: safetyNotes ?? this.safetyNotes,
+      source: source ?? this.source,
+      reviewAfterDays: reviewAfterDays ?? this.reviewAfterDays,
+      lastReviewAt: lastReviewAt ?? this.lastReviewAt,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (purpose.present) {
+      map['purpose'] = Variable<String>(purpose.value);
+    }
+    if (protocol.present) {
+      map['protocol'] = Variable<String>(protocol.value);
+    }
+    if (scheduleType.present) {
+      map['schedule_type'] = Variable<String>(scheduleType.value);
+    }
+    if (fixedDays.present) {
+      map['fixed_days'] = Variable<String>(fixedDays.value);
+    }
+    if (weeklyTarget.present) {
+      map['weekly_target'] = Variable<int>(weeklyTarget.value);
+    }
+    if (durationMin.present) {
+      map['duration_min'] = Variable<int>(durationMin.value);
+    }
+    if (minimumVersion.present) {
+      map['minimum_version'] = Variable<String>(minimumVersion.value);
+    }
+    if (reminderTime.present) {
+      map['reminder_time'] = Variable<String>(reminderTime.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (evidenceLevel.present) {
+      map['evidence_level'] = Variable<String>(evidenceLevel.value);
+    }
+    if (safetyNotes.present) {
+      map['safety_notes'] = Variable<String>(safetyNotes.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (reviewAfterDays.present) {
+      map['review_after_days'] = Variable<int>(reviewAfterDays.value);
+    }
+    if (lastReviewAt.present) {
+      map['last_review_at'] = Variable<DateTime>(lastReviewAt.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HabitsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('purpose: $purpose, ')
+          ..write('protocol: $protocol, ')
+          ..write('scheduleType: $scheduleType, ')
+          ..write('fixedDays: $fixedDays, ')
+          ..write('weeklyTarget: $weeklyTarget, ')
+          ..write('durationMin: $durationMin, ')
+          ..write('minimumVersion: $minimumVersion, ')
+          ..write('reminderTime: $reminderTime, ')
+          ..write('notes: $notes, ')
+          ..write('evidenceLevel: $evidenceLevel, ')
+          ..write('safetyNotes: $safetyNotes, ')
+          ..write('source: $source, ')
+          ..write('reviewAfterDays: $reviewAfterDays, ')
+          ..write('lastReviewAt: $lastReviewAt, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $HabitLogsTable extends HabitLogs
+    with TableInfo<$HabitLogsTable, HabitLog> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HabitLogsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _habitIdMeta = const VerificationMeta(
+    'habitId',
+  );
+  @override
+  late final GeneratedColumn<int> habitId = GeneratedColumn<int>(
+    'habit_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES habits (id)',
+    ),
+  );
+  static const VerificationMeta _dayMeta = const VerificationMeta('day');
+  @override
+  late final GeneratedColumn<String> day = GeneratedColumn<String>(
+    'day',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, habitId, day, status];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'habit_logs';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HabitLog> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('habit_id')) {
+      context.handle(
+        _habitIdMeta,
+        habitId.isAcceptableOrUnknown(data['habit_id']!, _habitIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_habitIdMeta);
+    }
+    if (data.containsKey('day')) {
+      context.handle(
+        _dayMeta,
+        day.isAcceptableOrUnknown(data['day']!, _dayMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HabitLog map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HabitLog(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      habitId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}habit_id'],
+      )!,
+      day: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}day'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+    );
+  }
+
+  @override
+  $HabitLogsTable createAlias(String alias) {
+    return $HabitLogsTable(attachedDatabase, alias);
+  }
+}
+
+class HabitLog extends DataClass implements Insertable<HabitLog> {
+  final int id;
+  final int habitId;
+  final String day;
+  final String status;
+  const HabitLog({
+    required this.id,
+    required this.habitId,
+    required this.day,
+    required this.status,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['habit_id'] = Variable<int>(habitId);
+    map['day'] = Variable<String>(day);
+    map['status'] = Variable<String>(status);
+    return map;
+  }
+
+  HabitLogsCompanion toCompanion(bool nullToAbsent) {
+    return HabitLogsCompanion(
+      id: Value(id),
+      habitId: Value(habitId),
+      day: Value(day),
+      status: Value(status),
+    );
+  }
+
+  factory HabitLog.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HabitLog(
+      id: serializer.fromJson<int>(json['id']),
+      habitId: serializer.fromJson<int>(json['habitId']),
+      day: serializer.fromJson<String>(json['day']),
+      status: serializer.fromJson<String>(json['status']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'habitId': serializer.toJson<int>(habitId),
+      'day': serializer.toJson<String>(day),
+      'status': serializer.toJson<String>(status),
+    };
+  }
+
+  HabitLog copyWith({int? id, int? habitId, String? day, String? status}) =>
+      HabitLog(
+        id: id ?? this.id,
+        habitId: habitId ?? this.habitId,
+        day: day ?? this.day,
+        status: status ?? this.status,
+      );
+  HabitLog copyWithCompanion(HabitLogsCompanion data) {
+    return HabitLog(
+      id: data.id.present ? data.id.value : this.id,
+      habitId: data.habitId.present ? data.habitId.value : this.habitId,
+      day: data.day.present ? data.day.value : this.day,
+      status: data.status.present ? data.status.value : this.status,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HabitLog(')
+          ..write('id: $id, ')
+          ..write('habitId: $habitId, ')
+          ..write('day: $day, ')
+          ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, habitId, day, status);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HabitLog &&
+          other.id == this.id &&
+          other.habitId == this.habitId &&
+          other.day == this.day &&
+          other.status == this.status);
+}
+
+class HabitLogsCompanion extends UpdateCompanion<HabitLog> {
+  final Value<int> id;
+  final Value<int> habitId;
+  final Value<String> day;
+  final Value<String> status;
+  const HabitLogsCompanion({
+    this.id = const Value.absent(),
+    this.habitId = const Value.absent(),
+    this.day = const Value.absent(),
+    this.status = const Value.absent(),
+  });
+  HabitLogsCompanion.insert({
+    this.id = const Value.absent(),
+    required int habitId,
+    required String day,
+    required String status,
+  }) : habitId = Value(habitId),
+       day = Value(day),
+       status = Value(status);
+  static Insertable<HabitLog> custom({
+    Expression<int>? id,
+    Expression<int>? habitId,
+    Expression<String>? day,
+    Expression<String>? status,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (habitId != null) 'habit_id': habitId,
+      if (day != null) 'day': day,
+      if (status != null) 'status': status,
+    });
+  }
+
+  HabitLogsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? habitId,
+    Value<String>? day,
+    Value<String>? status,
+  }) {
+    return HabitLogsCompanion(
+      id: id ?? this.id,
+      habitId: habitId ?? this.habitId,
+      day: day ?? this.day,
+      status: status ?? this.status,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (habitId.present) {
+      map['habit_id'] = Variable<int>(habitId.value);
+    }
+    if (day.present) {
+      map['day'] = Variable<String>(day.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HabitLogsCompanion(')
+          ..write('id: $id, ')
+          ..write('habitId: $habitId, ')
+          ..write('day: $day, ')
+          ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GoalsTable extends Goals with TableInfo<$GoalsTable, LifeGoal> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GoalsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('custom'),
+  );
+  static const VerificationMeta _targetMeta = const VerificationMeta('target');
+  @override
+  late final GeneratedColumn<String> target = GeneratedColumn<String>(
+    'target',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deadlineMeta = const VerificationMeta(
+    'deadline',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deadline = GeneratedColumn<DateTime>(
+    'deadline',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
+  );
+  static const VerificationMeta _autoLinkMeta = const VerificationMeta(
+    'autoLink',
+  );
+  @override
+  late final GeneratedColumn<bool> autoLink = GeneratedColumn<bool>(
+    'auto_link',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("auto_link" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    kind,
+    target,
+    deadline,
+    status,
+    autoLink,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'goals';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LifeGoal> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('kind')) {
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
+    }
+    if (data.containsKey('target')) {
+      context.handle(
+        _targetMeta,
+        target.isAcceptableOrUnknown(data['target']!, _targetMeta),
+      );
+    }
+    if (data.containsKey('deadline')) {
+      context.handle(
+        _deadlineMeta,
+        deadline.isAcceptableOrUnknown(data['deadline']!, _deadlineMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('auto_link')) {
+      context.handle(
+        _autoLinkMeta,
+        autoLink.isAcceptableOrUnknown(data['auto_link']!, _autoLinkMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LifeGoal map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LifeGoal(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      target: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target'],
+      ),
+      deadline: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deadline'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      autoLink: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}auto_link'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $GoalsTable createAlias(String alias) {
+    return $GoalsTable(attachedDatabase, alias);
+  }
+}
+
+class LifeGoal extends DataClass implements Insertable<LifeGoal> {
+  final int id;
+  final String name;
+  final String kind;
+  final String? target;
+  final DateTime? deadline;
+  final String status;
+  final bool autoLink;
+  final DateTime createdAt;
+  const LifeGoal({
+    required this.id,
+    required this.name,
+    required this.kind,
+    this.target,
+    this.deadline,
+    required this.status,
+    required this.autoLink,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['kind'] = Variable<String>(kind);
+    if (!nullToAbsent || target != null) {
+      map['target'] = Variable<String>(target);
+    }
+    if (!nullToAbsent || deadline != null) {
+      map['deadline'] = Variable<DateTime>(deadline);
+    }
+    map['status'] = Variable<String>(status);
+    map['auto_link'] = Variable<bool>(autoLink);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  GoalsCompanion toCompanion(bool nullToAbsent) {
+    return GoalsCompanion(
+      id: Value(id),
+      name: Value(name),
+      kind: Value(kind),
+      target: target == null && nullToAbsent
+          ? const Value.absent()
+          : Value(target),
+      deadline: deadline == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deadline),
+      status: Value(status),
+      autoLink: Value(autoLink),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory LifeGoal.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LifeGoal(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      kind: serializer.fromJson<String>(json['kind']),
+      target: serializer.fromJson<String?>(json['target']),
+      deadline: serializer.fromJson<DateTime?>(json['deadline']),
+      status: serializer.fromJson<String>(json['status']),
+      autoLink: serializer.fromJson<bool>(json['autoLink']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'kind': serializer.toJson<String>(kind),
+      'target': serializer.toJson<String?>(target),
+      'deadline': serializer.toJson<DateTime?>(deadline),
+      'status': serializer.toJson<String>(status),
+      'autoLink': serializer.toJson<bool>(autoLink),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  LifeGoal copyWith({
+    int? id,
+    String? name,
+    String? kind,
+    Value<String?> target = const Value.absent(),
+    Value<DateTime?> deadline = const Value.absent(),
+    String? status,
+    bool? autoLink,
+    DateTime? createdAt,
+  }) => LifeGoal(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    kind: kind ?? this.kind,
+    target: target.present ? target.value : this.target,
+    deadline: deadline.present ? deadline.value : this.deadline,
+    status: status ?? this.status,
+    autoLink: autoLink ?? this.autoLink,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  LifeGoal copyWithCompanion(GoalsCompanion data) {
+    return LifeGoal(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      target: data.target.present ? data.target.value : this.target,
+      deadline: data.deadline.present ? data.deadline.value : this.deadline,
+      status: data.status.present ? data.status.value : this.status,
+      autoLink: data.autoLink.present ? data.autoLink.value : this.autoLink,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LifeGoal(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('kind: $kind, ')
+          ..write('target: $target, ')
+          ..write('deadline: $deadline, ')
+          ..write('status: $status, ')
+          ..write('autoLink: $autoLink, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    kind,
+    target,
+    deadline,
+    status,
+    autoLink,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LifeGoal &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.kind == this.kind &&
+          other.target == this.target &&
+          other.deadline == this.deadline &&
+          other.status == this.status &&
+          other.autoLink == this.autoLink &&
+          other.createdAt == this.createdAt);
+}
+
+class GoalsCompanion extends UpdateCompanion<LifeGoal> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String> kind;
+  final Value<String?> target;
+  final Value<DateTime?> deadline;
+  final Value<String> status;
+  final Value<bool> autoLink;
+  final Value<DateTime> createdAt;
+  const GoalsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.target = const Value.absent(),
+    this.deadline = const Value.absent(),
+    this.status = const Value.absent(),
+    this.autoLink = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  GoalsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.kind = const Value.absent(),
+    this.target = const Value.absent(),
+    this.deadline = const Value.absent(),
+    this.status = const Value.absent(),
+    this.autoLink = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<LifeGoal> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? kind,
+    Expression<String>? target,
+    Expression<DateTime>? deadline,
+    Expression<String>? status,
+    Expression<bool>? autoLink,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (kind != null) 'kind': kind,
+      if (target != null) 'target': target,
+      if (deadline != null) 'deadline': deadline,
+      if (status != null) 'status': status,
+      if (autoLink != null) 'auto_link': autoLink,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  GoalsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String>? kind,
+    Value<String?>? target,
+    Value<DateTime?>? deadline,
+    Value<String>? status,
+    Value<bool>? autoLink,
+    Value<DateTime>? createdAt,
+  }) {
+    return GoalsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      kind: kind ?? this.kind,
+      target: target ?? this.target,
+      deadline: deadline ?? this.deadline,
+      status: status ?? this.status,
+      autoLink: autoLink ?? this.autoLink,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
+    }
+    if (target.present) {
+      map['target'] = Variable<String>(target.value);
+    }
+    if (deadline.present) {
+      map['deadline'] = Variable<DateTime>(deadline.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (autoLink.present) {
+      map['auto_link'] = Variable<bool>(autoLink.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GoalsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('kind: $kind, ')
+          ..write('target: $target, ')
+          ..write('deadline: $deadline, ')
+          ..write('status: $status, ')
+          ..write('autoLink: $autoLink, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -7883,6 +9699,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $MealsTable meals = $MealsTable(this);
   late final $MealLogsTable mealLogs = $MealLogsTable(this);
   late final $WeightEntriesTable weightEntries = $WeightEntriesTable(this);
+  late final $HabitsTable habits = $HabitsTable(this);
+  late final $HabitLogsTable habitLogs = $HabitLogsTable(this);
+  late final $GoalsTable goals = $GoalsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -7907,6 +9726,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     meals,
     mealLogs,
     weightEntries,
+    habits,
+    habitLogs,
+    goals,
   ];
 }
 
@@ -14168,6 +15990,1092 @@ typedef $$WeightEntriesTableProcessedTableManager =
       WeightEntry,
       PrefetchHooks Function()
     >;
+typedef $$HabitsTableCreateCompanionBuilder =
+    HabitsCompanion Function({
+      Value<int> id,
+      required String name,
+      Value<String?> purpose,
+      Value<String?> protocol,
+      Value<String> scheduleType,
+      Value<String?> fixedDays,
+      Value<int?> weeklyTarget,
+      Value<int?> durationMin,
+      Value<String?> minimumVersion,
+      Value<String?> reminderTime,
+      Value<String?> notes,
+      Value<String?> evidenceLevel,
+      Value<String?> safetyNotes,
+      Value<String?> source,
+      Value<int?> reviewAfterDays,
+      Value<DateTime?> lastReviewAt,
+      Value<String> status,
+      Value<DateTime> createdAt,
+    });
+typedef $$HabitsTableUpdateCompanionBuilder =
+    HabitsCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String?> purpose,
+      Value<String?> protocol,
+      Value<String> scheduleType,
+      Value<String?> fixedDays,
+      Value<int?> weeklyTarget,
+      Value<int?> durationMin,
+      Value<String?> minimumVersion,
+      Value<String?> reminderTime,
+      Value<String?> notes,
+      Value<String?> evidenceLevel,
+      Value<String?> safetyNotes,
+      Value<String?> source,
+      Value<int?> reviewAfterDays,
+      Value<DateTime?> lastReviewAt,
+      Value<String> status,
+      Value<DateTime> createdAt,
+    });
+
+final class $$HabitsTableReferences
+    extends BaseReferences<_$AppDatabase, $HabitsTable, Habit> {
+  $$HabitsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$HabitLogsTable, List<HabitLog>>
+  _habitLogsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.habitLogs,
+    aliasName: 'habits__id__habit_logs__habit_id',
+  );
+
+  $$HabitLogsTableProcessedTableManager get habitLogsRefs {
+    final manager = $$HabitLogsTableTableManager(
+      $_db,
+      $_db.habitLogs,
+    ).filter((f) => f.habitId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_habitLogsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$HabitsTableFilterComposer
+    extends Composer<_$AppDatabase, $HabitsTable> {
+  $$HabitsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get purpose => $composableBuilder(
+    column: $table.purpose,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get protocol => $composableBuilder(
+    column: $table.protocol,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get scheduleType => $composableBuilder(
+    column: $table.scheduleType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get fixedDays => $composableBuilder(
+    column: $table.fixedDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get weeklyTarget => $composableBuilder(
+    column: $table.weeklyTarget,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get durationMin => $composableBuilder(
+    column: $table.durationMin,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get minimumVersion => $composableBuilder(
+    column: $table.minimumVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get evidenceLevel => $composableBuilder(
+    column: $table.evidenceLevel,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get safetyNotes => $composableBuilder(
+    column: $table.safetyNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get reviewAfterDays => $composableBuilder(
+    column: $table.reviewAfterDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get lastReviewAt => $composableBuilder(
+    column: $table.lastReviewAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> habitLogsRefs(
+    Expression<bool> Function($$HabitLogsTableFilterComposer f) f,
+  ) {
+    final $$HabitLogsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.habitLogs,
+      getReferencedColumn: (t) => t.habitId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitLogsTableFilterComposer(
+            $db: $db,
+            $table: $db.habitLogs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$HabitsTableOrderingComposer
+    extends Composer<_$AppDatabase, $HabitsTable> {
+  $$HabitsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get purpose => $composableBuilder(
+    column: $table.purpose,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get protocol => $composableBuilder(
+    column: $table.protocol,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get scheduleType => $composableBuilder(
+    column: $table.scheduleType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fixedDays => $composableBuilder(
+    column: $table.fixedDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get weeklyTarget => $composableBuilder(
+    column: $table.weeklyTarget,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get durationMin => $composableBuilder(
+    column: $table.durationMin,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get minimumVersion => $composableBuilder(
+    column: $table.minimumVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get evidenceLevel => $composableBuilder(
+    column: $table.evidenceLevel,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get safetyNotes => $composableBuilder(
+    column: $table.safetyNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get reviewAfterDays => $composableBuilder(
+    column: $table.reviewAfterDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get lastReviewAt => $composableBuilder(
+    column: $table.lastReviewAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HabitsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HabitsTable> {
+  $$HabitsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get purpose =>
+      $composableBuilder(column: $table.purpose, builder: (column) => column);
+
+  GeneratedColumn<String> get protocol =>
+      $composableBuilder(column: $table.protocol, builder: (column) => column);
+
+  GeneratedColumn<String> get scheduleType => $composableBuilder(
+    column: $table.scheduleType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get fixedDays =>
+      $composableBuilder(column: $table.fixedDays, builder: (column) => column);
+
+  GeneratedColumn<int> get weeklyTarget => $composableBuilder(
+    column: $table.weeklyTarget,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get durationMin => $composableBuilder(
+    column: $table.durationMin,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get minimumVersion => $composableBuilder(
+    column: $table.minimumVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get evidenceLevel => $composableBuilder(
+    column: $table.evidenceLevel,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get safetyNotes => $composableBuilder(
+    column: $table.safetyNotes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<int> get reviewAfterDays => $composableBuilder(
+    column: $table.reviewAfterDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get lastReviewAt => $composableBuilder(
+    column: $table.lastReviewAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  Expression<T> habitLogsRefs<T extends Object>(
+    Expression<T> Function($$HabitLogsTableAnnotationComposer a) f,
+  ) {
+    final $$HabitLogsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.habitLogs,
+      getReferencedColumn: (t) => t.habitId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitLogsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.habitLogs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$HabitsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HabitsTable,
+          Habit,
+          $$HabitsTableFilterComposer,
+          $$HabitsTableOrderingComposer,
+          $$HabitsTableAnnotationComposer,
+          $$HabitsTableCreateCompanionBuilder,
+          $$HabitsTableUpdateCompanionBuilder,
+          (Habit, $$HabitsTableReferences),
+          Habit,
+          PrefetchHooks Function({bool habitLogsRefs})
+        > {
+  $$HabitsTableTableManager(_$AppDatabase db, $HabitsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HabitsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HabitsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HabitsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> purpose = const Value.absent(),
+                Value<String?> protocol = const Value.absent(),
+                Value<String> scheduleType = const Value.absent(),
+                Value<String?> fixedDays = const Value.absent(),
+                Value<int?> weeklyTarget = const Value.absent(),
+                Value<int?> durationMin = const Value.absent(),
+                Value<String?> minimumVersion = const Value.absent(),
+                Value<String?> reminderTime = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String?> evidenceLevel = const Value.absent(),
+                Value<String?> safetyNotes = const Value.absent(),
+                Value<String?> source = const Value.absent(),
+                Value<int?> reviewAfterDays = const Value.absent(),
+                Value<DateTime?> lastReviewAt = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => HabitsCompanion(
+                id: id,
+                name: name,
+                purpose: purpose,
+                protocol: protocol,
+                scheduleType: scheduleType,
+                fixedDays: fixedDays,
+                weeklyTarget: weeklyTarget,
+                durationMin: durationMin,
+                minimumVersion: minimumVersion,
+                reminderTime: reminderTime,
+                notes: notes,
+                evidenceLevel: evidenceLevel,
+                safetyNotes: safetyNotes,
+                source: source,
+                reviewAfterDays: reviewAfterDays,
+                lastReviewAt: lastReviewAt,
+                status: status,
+                createdAt: createdAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                Value<String?> purpose = const Value.absent(),
+                Value<String?> protocol = const Value.absent(),
+                Value<String> scheduleType = const Value.absent(),
+                Value<String?> fixedDays = const Value.absent(),
+                Value<int?> weeklyTarget = const Value.absent(),
+                Value<int?> durationMin = const Value.absent(),
+                Value<String?> minimumVersion = const Value.absent(),
+                Value<String?> reminderTime = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String?> evidenceLevel = const Value.absent(),
+                Value<String?> safetyNotes = const Value.absent(),
+                Value<String?> source = const Value.absent(),
+                Value<int?> reviewAfterDays = const Value.absent(),
+                Value<DateTime?> lastReviewAt = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => HabitsCompanion.insert(
+                id: id,
+                name: name,
+                purpose: purpose,
+                protocol: protocol,
+                scheduleType: scheduleType,
+                fixedDays: fixedDays,
+                weeklyTarget: weeklyTarget,
+                durationMin: durationMin,
+                minimumVersion: minimumVersion,
+                reminderTime: reminderTime,
+                notes: notes,
+                evidenceLevel: evidenceLevel,
+                safetyNotes: safetyNotes,
+                source: source,
+                reviewAfterDays: reviewAfterDays,
+                lastReviewAt: lastReviewAt,
+                status: status,
+                createdAt: createdAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) =>
+                    (e.readTable(table), $$HabitsTableReferences(db, table, e)),
+              )
+              .toList(),
+          prefetchHooksCallback: ({habitLogsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (habitLogsRefs) db.habitLogs],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (habitLogsRefs)
+                    await $_getPrefetchedData<Habit, $HabitsTable, HabitLog>(
+                      currentTable: table,
+                      referencedTable: $$HabitsTableReferences
+                          ._habitLogsRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$HabitsTableReferences(db, table, p0).habitLogsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.habitId == item.id),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$HabitsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HabitsTable,
+      Habit,
+      $$HabitsTableFilterComposer,
+      $$HabitsTableOrderingComposer,
+      $$HabitsTableAnnotationComposer,
+      $$HabitsTableCreateCompanionBuilder,
+      $$HabitsTableUpdateCompanionBuilder,
+      (Habit, $$HabitsTableReferences),
+      Habit,
+      PrefetchHooks Function({bool habitLogsRefs})
+    >;
+typedef $$HabitLogsTableCreateCompanionBuilder =
+    HabitLogsCompanion Function({
+      Value<int> id,
+      required int habitId,
+      required String day,
+      required String status,
+    });
+typedef $$HabitLogsTableUpdateCompanionBuilder =
+    HabitLogsCompanion Function({
+      Value<int> id,
+      Value<int> habitId,
+      Value<String> day,
+      Value<String> status,
+    });
+
+final class $$HabitLogsTableReferences
+    extends BaseReferences<_$AppDatabase, $HabitLogsTable, HabitLog> {
+  $$HabitLogsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $HabitsTable _habitIdTable(_$AppDatabase db) =>
+      db.habits.createAlias('habit_logs__habit_id__habits__id');
+
+  $$HabitsTableProcessedTableManager get habitId {
+    final $_column = $_itemColumn<int>('habit_id')!;
+
+    final manager = $$HabitsTableTableManager(
+      $_db,
+      $_db.habits,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_habitIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$HabitLogsTableFilterComposer
+    extends Composer<_$AppDatabase, $HabitLogsTable> {
+  $$HabitLogsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get day => $composableBuilder(
+    column: $table.day,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$HabitsTableFilterComposer get habitId {
+    final $$HabitsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.habitId,
+      referencedTable: $db.habits,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitsTableFilterComposer(
+            $db: $db,
+            $table: $db.habits,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$HabitLogsTableOrderingComposer
+    extends Composer<_$AppDatabase, $HabitLogsTable> {
+  $$HabitLogsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get day => $composableBuilder(
+    column: $table.day,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$HabitsTableOrderingComposer get habitId {
+    final $$HabitsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.habitId,
+      referencedTable: $db.habits,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitsTableOrderingComposer(
+            $db: $db,
+            $table: $db.habits,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$HabitLogsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HabitLogsTable> {
+  $$HabitLogsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get day =>
+      $composableBuilder(column: $table.day, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  $$HabitsTableAnnotationComposer get habitId {
+    final $$HabitsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.habitId,
+      referencedTable: $db.habits,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HabitsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.habits,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$HabitLogsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HabitLogsTable,
+          HabitLog,
+          $$HabitLogsTableFilterComposer,
+          $$HabitLogsTableOrderingComposer,
+          $$HabitLogsTableAnnotationComposer,
+          $$HabitLogsTableCreateCompanionBuilder,
+          $$HabitLogsTableUpdateCompanionBuilder,
+          (HabitLog, $$HabitLogsTableReferences),
+          HabitLog,
+          PrefetchHooks Function({bool habitId})
+        > {
+  $$HabitLogsTableTableManager(_$AppDatabase db, $HabitLogsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HabitLogsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HabitLogsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HabitLogsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> habitId = const Value.absent(),
+                Value<String> day = const Value.absent(),
+                Value<String> status = const Value.absent(),
+              }) => HabitLogsCompanion(
+                id: id,
+                habitId: habitId,
+                day: day,
+                status: status,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int habitId,
+                required String day,
+                required String status,
+              }) => HabitLogsCompanion.insert(
+                id: id,
+                habitId: habitId,
+                day: day,
+                status: status,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$HabitLogsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({habitId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (habitId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.habitId,
+                                referencedTable: $$HabitLogsTableReferences
+                                    ._habitIdTable(db),
+                                referencedColumn: $$HabitLogsTableReferences
+                                    ._habitIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$HabitLogsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HabitLogsTable,
+      HabitLog,
+      $$HabitLogsTableFilterComposer,
+      $$HabitLogsTableOrderingComposer,
+      $$HabitLogsTableAnnotationComposer,
+      $$HabitLogsTableCreateCompanionBuilder,
+      $$HabitLogsTableUpdateCompanionBuilder,
+      (HabitLog, $$HabitLogsTableReferences),
+      HabitLog,
+      PrefetchHooks Function({bool habitId})
+    >;
+typedef $$GoalsTableCreateCompanionBuilder =
+    GoalsCompanion Function({
+      Value<int> id,
+      required String name,
+      Value<String> kind,
+      Value<String?> target,
+      Value<DateTime?> deadline,
+      Value<String> status,
+      Value<bool> autoLink,
+      Value<DateTime> createdAt,
+    });
+typedef $$GoalsTableUpdateCompanionBuilder =
+    GoalsCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String> kind,
+      Value<String?> target,
+      Value<DateTime?> deadline,
+      Value<String> status,
+      Value<bool> autoLink,
+      Value<DateTime> createdAt,
+    });
+
+class $$GoalsTableFilterComposer extends Composer<_$AppDatabase, $GoalsTable> {
+  $$GoalsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get target => $composableBuilder(
+    column: $table.target,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deadline => $composableBuilder(
+    column: $table.deadline,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get autoLink => $composableBuilder(
+    column: $table.autoLink,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$GoalsTableOrderingComposer
+    extends Composer<_$AppDatabase, $GoalsTable> {
+  $$GoalsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get target => $composableBuilder(
+    column: $table.target,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deadline => $composableBuilder(
+    column: $table.deadline,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get autoLink => $composableBuilder(
+    column: $table.autoLink,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$GoalsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $GoalsTable> {
+  $$GoalsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumn<String> get target =>
+      $composableBuilder(column: $table.target, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deadline =>
+      $composableBuilder(column: $table.deadline, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<bool> get autoLink =>
+      $composableBuilder(column: $table.autoLink, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$GoalsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $GoalsTable,
+          LifeGoal,
+          $$GoalsTableFilterComposer,
+          $$GoalsTableOrderingComposer,
+          $$GoalsTableAnnotationComposer,
+          $$GoalsTableCreateCompanionBuilder,
+          $$GoalsTableUpdateCompanionBuilder,
+          (LifeGoal, BaseReferences<_$AppDatabase, $GoalsTable, LifeGoal>),
+          LifeGoal,
+          PrefetchHooks Function()
+        > {
+  $$GoalsTableTableManager(_$AppDatabase db, $GoalsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GoalsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GoalsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GoalsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> kind = const Value.absent(),
+                Value<String?> target = const Value.absent(),
+                Value<DateTime?> deadline = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<bool> autoLink = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => GoalsCompanion(
+                id: id,
+                name: name,
+                kind: kind,
+                target: target,
+                deadline: deadline,
+                status: status,
+                autoLink: autoLink,
+                createdAt: createdAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                Value<String> kind = const Value.absent(),
+                Value<String?> target = const Value.absent(),
+                Value<DateTime?> deadline = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<bool> autoLink = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => GoalsCompanion.insert(
+                id: id,
+                name: name,
+                kind: kind,
+                target: target,
+                deadline: deadline,
+                status: status,
+                autoLink: autoLink,
+                createdAt: createdAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$GoalsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $GoalsTable,
+      LifeGoal,
+      $$GoalsTableFilterComposer,
+      $$GoalsTableOrderingComposer,
+      $$GoalsTableAnnotationComposer,
+      $$GoalsTableCreateCompanionBuilder,
+      $$GoalsTableUpdateCompanionBuilder,
+      (LifeGoal, BaseReferences<_$AppDatabase, $GoalsTable, LifeGoal>),
+      LifeGoal,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -14210,4 +17118,10 @@ class $AppDatabaseManager {
       $$MealLogsTableTableManager(_db, _db.mealLogs);
   $$WeightEntriesTableTableManager get weightEntries =>
       $$WeightEntriesTableTableManager(_db, _db.weightEntries);
+  $$HabitsTableTableManager get habits =>
+      $$HabitsTableTableManager(_db, _db.habits);
+  $$HabitLogsTableTableManager get habitLogs =>
+      $$HabitLogsTableTableManager(_db, _db.habitLogs);
+  $$GoalsTableTableManager get goals =>
+      $$GoalsTableTableManager(_db, _db.goals);
 }

@@ -144,6 +144,53 @@ class Zone2Sessions extends Table {
   IntColumn get steps => integer().nullable()(); // walking only
 }
 
+// ---------- Growth & Goals (Phase 4) ----------
+
+class Habits extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text()();
+  TextColumn get purpose => text().nullable()();
+  TextColumn get protocol => text().nullable()();
+  // fixed | weekly | both | none
+  TextColumn get scheduleType => text().withDefault(const Constant('none'))();
+  TextColumn get fixedDays => text().nullable()(); // "1,3,5" (Mon=1)
+  IntColumn get weeklyTarget => integer().nullable()();
+  IntColumn get durationMin => integer().nullable()();
+  TextColumn get minimumVersion => text().nullable()();
+  TextColumn get reminderTime => text().nullable()(); // "07:30"
+  TextColumn get notes => text().nullable()();
+  TextColumn get evidenceLevel => text().nullable()();
+  TextColumn get safetyNotes => text().nullable()();
+  TextColumn get source => text().nullable()();
+  IntColumn get reviewAfterDays => integer().nullable()();
+  DateTimeColumn get lastReviewAt => dateTime().nullable()();
+  // active | paused | stopped
+  TextColumn get status => text().withDefault(const Constant('active'))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+class HabitLogs extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get habitId => integer().references(Habits, #id)();
+  TextColumn get day => text()();
+  // completed | minimum | skipped
+  TextColumn get status => text()();
+}
+
+@DataClassName('LifeGoal')
+class Goals extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text()();
+  // cardio | training | nutrition | body | recovery | custom
+  TextColumn get kind => text().withDefault(const Constant('custom'))();
+  TextColumn get target => text().nullable()();
+  DateTimeColumn get deadline => dateTime().nullable()();
+  // active | paused | completed
+  TextColumn get status => text().withDefault(const Constant('active'))();
+  BoolColumn get autoLink => boolean().withDefault(const Constant(true))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
 // ---------- Nutrition (Phase 3) ----------
 
 class Meals extends Table {
@@ -211,6 +258,9 @@ class WodSessions extends Table {
   Meals,
   MealLogs,
   WeightEntries,
+  Habits,
+  HabitLogs,
+  Goals,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
@@ -225,7 +275,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   static const seedEquipment = [
     'Smith machine / functional trainer',
@@ -354,6 +404,11 @@ class AppDatabase extends _$AppDatabase {
             await m.createTable(meals);
             await m.createTable(mealLogs);
             await m.createTable(weightEntries);
+          }
+          if (from < 4) {
+            await m.createTable(habits);
+            await m.createTable(habitLogs);
+            await m.createTable(goals);
           }
         },
       );
