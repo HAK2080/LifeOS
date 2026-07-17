@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../app/build_info.dart';
 import '../../core/backup/data_export_service.dart';
 import '../../core/database/database_provider.dart';
 
@@ -155,6 +156,16 @@ class SettingsScreen extends ConsumerWidget {
               title: const Text('Restore local data'),
               subtitle: const Text('Replace this device data from a JSON backup'),
               onTap: () => _restoreData(context, ref),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text('App', style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 8),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: const Text('LifeOS'),
+              subtitle: const Text(AppBuildInfo.label),
             ),
           ),
           Card(

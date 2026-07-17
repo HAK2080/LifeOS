@@ -154,6 +154,14 @@ files. Stop the server with `Ctrl+C`.
 
 Android debug builds require `JAVA_HOME` to point to the Android Studio JBR and
 target Android API 26+ because Health Connect requires that minimum.
+
+### Build identity
+
+The current installable build is `Version 1.0.0 · Build 2`. The same identity
+is visible in Settings → App on the device. Increment the `+N` build number in
+`pubspec.yaml` and update `lib/app/build_info.dart` together for every new APK;
+the build number is what distinguishes a newly installed APK from an older
+one.
 Do not treat an old APK under `build/` as validation of current source.
 
 ## Testing handoff
