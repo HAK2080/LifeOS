@@ -5,6 +5,6 @@
 /// testing can be tied to an exact APK.
 abstract final class AppBuildInfo {
   static const version = '1.0.0';
-  static const buildNumber = 3;
+  static const buildNumber = 4;
   static const label = 'Version $version · Build $buildNumber';
 }

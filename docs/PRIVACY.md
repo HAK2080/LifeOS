@@ -1,6 +1,6 @@
 # Life privacy policy
 
-Last updated: 2026-07-16
+Last updated: 2026-07-17
 
 Life is an offline-first personal app. It does not require an account and does
 not send personal data to a Life server. Tasks, meals, training, growth logs,
@@ -18,8 +18,16 @@ the relevant training screens. Manual entry remains available when permission
 is denied or Health Connect is unavailable.
 
 Voice capture is used to populate an editable meal name. The user chooses
-whether to save the resulting meal log. Barcode capture only reads the scanned
-code; the shipped app has no built-in remote product database.
+whether to save the resulting meal log. When the user chooses barcode capture,
+Life sends only the scanned barcode to the public Open Food Facts service to
+look up an editable food estimate. Successful results are cached locally. If
+the service is unavailable or the user is offline, manual entry remains
+available; Life does not upload the meal diary or profile with the request.
+
+The diagnostics report contains build/platform status, permissions, last-sync
+time, and local row counts. It does not include task titles, meal names, notes,
+profile values, workout contents, or other user-entered content. The report is
+shared only when the user explicitly opens the system share sheet.
 
 Plain JSON exports are readable backups. Encrypted backups use a password-based
 PBKDF2 key and AES-256-GCM. Life does not know or recover the password. Anyone

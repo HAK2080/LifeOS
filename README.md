@@ -6,7 +6,7 @@ for preview and widget work.
 
 ## Current status
 
-As of 2026-07-16, the repository is a functional internal alpha with the
+As of 2026-07-17, the repository is a functional internal alpha at Build 4 with the
 planned offline product flows implemented:
 
 - Phase 1 is mostly complete: app shell/navigation, Today, Tasks, equipment,
@@ -14,7 +14,9 @@ planned offline product flows implemented:
 - Phase 2 is substantially implemented: strength logging, exercises, plans
   and text import, history/prefill, progression, rest timer, WODs, kettlebell,
   Zone 2 manual sessions, walking, mobility, and a Health Connect adapter for
-  permission-gated steps and recorded heart-rate samples. Live sessions now
+  permission-gated steps and recorded heart-rate samples. Settings now exposes
+  Health Connect availability, permission state, sync pause/resume, access
+  request, system access management, disconnect, and last-sync status. Live sessions now
   summarize average heart rate and time in the 120–150 bpm target range;
   wearable-specific background sync remains device/provider dependent.
 - Phase 3 now has an offline nutrition feature-parity layer: a first-class food
@@ -22,8 +24,10 @@ planned offline product flows implemented:
   and per-serving macro calculation; date-navigable meal diary; saved meals,
   portions, approved targets, weight logging, trend logic, and editable photo,
   voice, and barcode capture paths. Food recognition and barcode lookup remain
-  replaceable service interfaces; the shipped provider is intentionally
-  manual-only and offline.
+  replaceable service interfaces. Barcode scans optionally query Open Food
+  Facts, cache successful editable estimates locally, and fall back to manual
+  entry whenever the network or product record is unavailable. Photo analysis
+  remains manual-only in the shipped build.
 - Phase 4 is substantially implemented. Growth protocols can now be added, persisted locally,
   paused/resumed, and logged as completed, minimum, or skipped without streak
   pressure. Lightweight Goals can be created and moved between active,
@@ -54,12 +58,21 @@ planned offline product flows implemented:
   replaces all local tables inside one transaction, and preserves row ids.
   CI and local release compilation are checked in. A credentialed publish build
   and physical-device QA remain external release steps.
+- Build 4 adds a responsive shell: phones retain the five-item bottom bar,
+  while tablet and desktop widths use a navigation rail and constrained content
+  area. Settings includes a privacy-safe diagnostics report and in-app release
+  notes; first launch of a new build shows a dismissible What's new sheet.
 
 Latest verification: code generation completed cleanly, `flutter analyze` is
-clean, and the full suite passes (71 tests). Fresh test APKs are available at
-`build/app/outputs/flutter-apk/app-debug.apk` (debug, 235 MB) and
-`build/app/outputs/flutter-apk/app-release.apk` (local release, 84 MB). Builds
-emit only the known Flutter/Kotlin-plugin migration warnings.
+clean, and the full suite passes (73 tests). Build 4 Android and web artifact
+verification completed on 2026-07-17: debug APK 189,382,041 bytes (SHA-256
+`A758548D6A8BD627FA12F7CC23E85FFC9F81428DCF59A94FA16DFBA0FF009F81`),
+local release APK 86,024,606 bytes (SHA-256
+`C0BDA9210F1713230920688376CD65DB3C4356A5C971385D847764E38577BB41`),
+and release web bundle 4,168,782 bytes. The local preview returned HTTP 200 and
+contained the Build 4 marker. The local release APK uses the documented debug
+signing fallback; a credentialed publish build and physical-device QA remain
+explicit external steps.
 
 The product brief and non-negotiable principles are in [docs/BRIEF.md](docs/BRIEF.md).
 The Wellness schema, safety policy, seed shape, and implementation plan are in
@@ -92,6 +105,8 @@ This folder is the shared source of truth for Claude and Codex. Before coding:
 - `lib/features/<module>/`: Today, Tasks, Training, Nutrition, Growth,
   Equipment, and Settings.
 - `test/`: pure-logic, repository, asset, database, and widget tests.
+- `lib/app/release_notes.dart`: per-build in-app change summary and first-run gate.
+- `lib/features/settings/diagnostics_screen.dart`: local, content-free support report.
 - `.github/workflows/flutter.yml`: shared CI quality gate for code generation,
   analysis, tests, a debug APK build, and downloadable APK artifact.
 - [Privacy policy](docs/PRIVACY.md)
@@ -115,7 +130,8 @@ editorial product language without copying branded assets or product copy:
 - Cards are flat with 10px geometry and hairline borders; buttons and chips use
   stadium shapes for a precise, product-like control language.
 - The five-tab shell uses a quiet selected surface, stronger selected weight,
-  and light/dark-aware selected colors.
+  and light/dark-aware selected colors. It changes to a NavigationRail at 900
+  logical pixels and caps primary content at 1100 pixels on wide screens.
 - Life-specific principles remain unchanged: no red guilt states, no streak
   pressure, no mandatory AI, and manual entry always works.
 
@@ -170,13 +186,29 @@ target Android API 26+ because Health Connect requires that minimum.
 
 ### Build identity
 
-The current installable build is `Version 1.0.0 · Build 3`. `BUILD 3` is shown
+The current installable build is `Version 1.0.0 / Build 4`. `BUILD 4` is shown
 in the Today app-bar and the full identity is visible in Settings → App on the
 device. Increment the `+N` build number in
 `pubspec.yaml` and update `lib/app/build_info.dart` together for every new APK;
 the build number is what distinguishes a newly installed APK from an older
 one.
 Do not treat an old APK under `build/` as validation of current source.
+
+### Build 4 implementation notes for Claude
+
+- Health Connect orchestration is in `lib/core/health/health_service.dart`.
+  Android system-settings navigation is bridged through the
+  `lifeos/health_connect` channel in `MainActivity.kt`; manual cardio entry is
+  still the fallback on unsupported devices and web.
+- Barcode networking is isolated behind `BarcodeProductService` in
+  `lib/features/nutrition/food_services.dart`. Only a user-scanned barcode is
+  sent to Open Food Facts, successful results are cached in SharedPreferences,
+  and all returned nutrition fields remain editable before saving.
+- New settings routes are `/settings/health-connect`, `/settings/diagnostics`,
+  and `/settings/release-notes`. Keep these nested beneath `/settings`.
+- Release-note display state is stored under `last_seen_release_build`. Add a
+  new release-note list and bump both `pubspec.yaml` and `build_info.dart` for
+  the next installable build.
 
 ## Testing handoff
 

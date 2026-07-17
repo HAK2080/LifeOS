@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,8 +17,9 @@ class ProfileData {
   final String? goal;
 }
 
-final profileProvider =
-    AsyncNotifierProvider<ProfileNotifier, ProfileData>(ProfileNotifier.new);
+final profileProvider = AsyncNotifierProvider<ProfileNotifier, ProfileData>(
+  ProfileNotifier.new,
+);
 
 class ProfileNotifier extends AsyncNotifier<ProfileData> {
   @override
@@ -31,8 +33,12 @@ class ProfileNotifier extends AsyncNotifier<ProfileData> {
     );
   }
 
-  Future<void> save(
-      {double? weightKg, double? heightCm, int? age, String? goal}) async {
+  Future<void> save({
+    double? weightKg,
+    double? heightCm,
+    int? age,
+    String? goal,
+  }) async {
     final p = await SharedPreferences.getInstance();
     if (weightKg != null) await p.setDouble('profile_weight', weightKg);
     if (heightCm != null) await p.setDouble('profile_height', heightCm);
@@ -44,7 +50,8 @@ class ProfileNotifier extends AsyncNotifier<ProfileData> {
 
 final notificationsEnabledProvider =
     AsyncNotifierProvider<NotificationsEnabledNotifier, bool>(
-        NotificationsEnabledNotifier.new);
+      NotificationsEnabledNotifier.new,
+    );
 
 class NotificationsEnabledNotifier extends AsyncNotifier<bool> {
   @override
@@ -70,120 +77,182 @@ class SettingsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Text('Profile', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 8),
-          Card(
-            child: Column(
-              children: [
-                _numTile(context, ref, 'Weight (kg)', profile.weightKg,
-                    (v) => ref.read(profileProvider.notifier).save(weightKg: v)),
-                _numTile(context, ref, 'Height (cm)', profile.heightCm,
-                    (v) => ref.read(profileProvider.notifier).save(heightCm: v)),
-                _numTile(
-                    context,
-                    ref,
-                    'Age',
-                    profile.age?.toDouble(),
-                    (v) => ref
-                        .read(profileProvider.notifier)
-                        .save(age: v.round())),
-                ListTile(
-                  title: const Text('Goal'),
-                  subtitle: Text(profile.goal ?? 'Not set'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => _pickGoal(context, ref),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 760),
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Text('Profile', style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 8),
+              Card(
+                child: Column(
+                  children: [
+                    _numTile(
+                      context,
+                      ref,
+                      'Weight (kg)',
+                      profile.weightKg,
+                      (v) =>
+                          ref.read(profileProvider.notifier).save(weightKg: v),
+                    ),
+                    _numTile(
+                      context,
+                      ref,
+                      'Height (cm)',
+                      profile.heightCm,
+                      (v) =>
+                          ref.read(profileProvider.notifier).save(heightCm: v),
+                    ),
+                    _numTile(
+                      context,
+                      ref,
+                      'Age',
+                      profile.age?.toDouble(),
+                      (v) => ref
+                          .read(profileProvider.notifier)
+                          .save(age: v.round()),
+                    ),
+                    ListTile(
+                      title: const Text('Goal'),
+                      subtitle: Text(profile.goal ?? 'Not set'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => _pickGoal(context, ref),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-          Text('Notifications', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 8),
-          Card(
-            child: SwitchListTile(
-              title: const Text('Allow reminders'),
-              subtitle: const Text(
-                  'Only reminders you set yourself. Never guilt-based.'),
-              value: notifs,
-              onChanged: (v) =>
-                  ref.read(notificationsEnabledProvider.notifier).set(v),
-            ),
-          ),
-          const SizedBox(height: 24),
-          Text('Privacy', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 8),
-          Card(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _PrivacyPoint(
-                      'All data lives on this device. No account, no cloud.'),
-                  _PrivacyPoint(
-                      'Photos (meals, equipment, machine consoles, progress) are processed temporarily and deleted after analysis.'),
-                  _PrivacyPoint(
-                      'Progress photos store only the estimate, date, trend and confidence — never the image.'),
-                  _PrivacyPoint(
-                      'Encrypted backups are created only when you choose them and are protected by your password.'),
-                ],
               ),
-            ),
+              const SizedBox(height: 24),
+              Text(
+                'Notifications',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Card(
+                child: SwitchListTile(
+                  title: const Text('Allow reminders'),
+                  subtitle: const Text(
+                    'Only reminders you set yourself. Never guilt-based.',
+                  ),
+                  value: notifs,
+                  onChanged: (v) =>
+                      ref.read(notificationsEnabledProvider.notifier).set(v),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text('Privacy', style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 8),
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _PrivacyPoint(
+                        'All data lives on this device. No account, no cloud.',
+                      ),
+                      _PrivacyPoint(
+                        'Photos (meals, equipment, machine consoles, progress) are processed temporarily and deleted after analysis.',
+                      ),
+                      _PrivacyPoint(
+                        'Progress photos store only the estimate, date, trend and confidence — never the image.',
+                      ),
+                      _PrivacyPoint(
+                        'Encrypted backups are created only when you choose them and are protected by your password.',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.ios_share_outlined),
+                  title: const Text('Export local data'),
+                  subtitle: const Text(
+                    'Share a readable backup of this device data',
+                  ),
+                  onTap: () => _exportData(context, ref),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.enhanced_encryption_outlined),
+                  title: const Text('Export encrypted backup'),
+                  subtitle: const Text('Protect the backup with a password'),
+                  onTap: () => _exportEncryptedData(context, ref),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.restore_outlined),
+                  title: const Text('Restore local data'),
+                  subtitle: const Text(
+                    'Replace this device data from a JSON backup',
+                  ),
+                  onTap: () => _restoreData(context, ref),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text('App', style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 8),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.health_and_safety_outlined),
+                  title: const Text('Health Connect'),
+                  subtitle: const Text('Sync, permissions, and access status'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => context.push('/settings/health-connect'),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.monitor_heart_outlined),
+                  title: const Text('Diagnostics'),
+                  subtitle: const Text(
+                    'Build, database, services, and local counts',
+                  ),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => context.push('/settings/diagnostics'),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.new_releases_outlined),
+                  title: const Text('What’s new'),
+                  subtitle: const Text('Changes in the installed build'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => context.push('/settings/release-notes'),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.info_outline),
+                  title: const Text('LifeOS'),
+                  subtitle: const Text(AppBuildInfo.label),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.lock_open_outlined),
+                  title: const Text('Restore encrypted backup'),
+                  subtitle: const Text('Password-protected JSON backup'),
+                  onTap: () => _restoreEncryptedData(context, ref),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.ios_share_outlined),
-              title: const Text('Export local data'),
-              subtitle: const Text('Share a readable backup of this device data'),
-              onTap: () => _exportData(context, ref),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.enhanced_encryption_outlined),
-              title: const Text('Export encrypted backup'),
-              subtitle: const Text('Protect the backup with a password'),
-              onTap: () => _exportEncryptedData(context, ref),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.restore_outlined),
-              title: const Text('Restore local data'),
-              subtitle: const Text('Replace this device data from a JSON backup'),
-              onTap: () => _restoreData(context, ref),
-            ),
-          ),
-          const SizedBox(height: 24),
-          Text('App', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 8),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: const Text('LifeOS'),
-              subtitle: const Text(AppBuildInfo.label),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.lock_open_outlined),
-              title: const Text('Restore encrypted backup'),
-              subtitle: const Text('Password-protected JSON backup'),
-              onTap: () => _restoreEncryptedData(context, ref),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
   Future<void> _exportData(BuildContext context, WidgetRef ref) async {
     try {
-      final result = await DataExportService(ref.read(databaseProvider)).share();
+      final result = await DataExportService(
+        ref.read(databaseProvider),
+      ).share();
       if (!context.mounted || result.status == ShareResultStatus.dismissed) {
         return;
       }
@@ -203,10 +272,18 @@ class SettingsScreen extends ConsumerWidget {
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: const Text('Replace local data?'),
-        content: const Text('This replaces all Life data on this device. Export a backup first if you might need the current data.'),
+        content: const Text(
+          'This replaces all Life data on this device. Export a backup first if you might need the current data.',
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('Cancel')),
-          FilledButton(onPressed: () => Navigator.pop(dialogContext, true), child: const Text('Choose backup')),
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('Choose backup'),
+          ),
         ],
       ),
     );
@@ -214,9 +291,9 @@ class SettingsScreen extends ConsumerWidget {
     try {
       await DataExportService(ref.read(databaseProvider)).pickAndRestore();
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Local data restored.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Local data restored.')));
     } catch (_) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -229,9 +306,12 @@ class SettingsScreen extends ConsumerWidget {
     final password = await _passwordDialog(context, confirm: true);
     if (password == null) return;
     try {
-      final result = await DataExportService(ref.read(databaseProvider))
-          .shareEncrypted(password);
-      if (!context.mounted || result.status == ShareResultStatus.dismissed) return;
+      final result = await DataExportService(
+        ref.read(databaseProvider),
+      ).shareEncrypted(password);
+      if (!context.mounted || result.status == ShareResultStatus.dismissed) {
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Encrypted backup ready to share.')),
       );
@@ -243,7 +323,10 @@ class SettingsScreen extends ConsumerWidget {
     }
   }
 
-  Future<void> _restoreEncryptedData(BuildContext context, WidgetRef ref) async {
+  Future<void> _restoreEncryptedData(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     final password = await _passwordDialog(context);
     if (password == null) return;
     if (!context.mounted) return;
@@ -253,15 +336,22 @@ class SettingsScreen extends ConsumerWidget {
         title: const Text('Replace local data?'),
         content: const Text('This replaces all Life data on this device.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Cancel')),
-          FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('Restore')),
+          TextButton(
+            onPressed: () => Navigator.pop(c, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(c, true),
+            child: const Text('Restore'),
+          ),
         ],
       ),
     );
     if (confirmed != true) return;
     try {
-      await DataExportService(ref.read(databaseProvider))
-          .pickAndRestoreEncrypted(password);
+      await DataExportService(
+        ref.read(databaseProvider),
+      ).pickAndRestoreEncrypted(password);
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Encrypted backup restored.')),
@@ -274,8 +364,10 @@ class SettingsScreen extends ConsumerWidget {
     }
   }
 
-  Future<String?> _passwordDialog(BuildContext context,
-      {bool confirm = false}) async {
+  Future<String?> _passwordDialog(
+    BuildContext context, {
+    bool confirm = false,
+  }) async {
     final password = TextEditingController();
     final repeated = TextEditingController();
     return showDialog<String>(
@@ -289,7 +381,9 @@ class SettingsScreen extends ConsumerWidget {
               controller: password,
               obscureText: true,
               autofocus: true,
-              decoration: const InputDecoration(labelText: 'Password (8+ characters)'),
+              decoration: const InputDecoration(
+                labelText: 'Password (8+ characters)',
+              ),
             ),
             if (confirm)
               TextField(
@@ -300,10 +394,16 @@ class SettingsScreen extends ConsumerWidget {
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(c), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(c),
+            child: const Text('Cancel'),
+          ),
           FilledButton(
             onPressed: () {
-              if (password.text.length < 8 || (confirm && password.text != repeated.text)) return;
+              if (password.text.length < 8 ||
+                  (confirm && password.text != repeated.text)) {
+                return;
+              }
               Navigator.pop(c, password.text);
             },
             child: const Text('Continue'),
@@ -313,19 +413,27 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _numTile(BuildContext context, WidgetRef ref, String label,
-      double? value, void Function(double) onSave) {
+  Widget _numTile(
+    BuildContext context,
+    WidgetRef ref,
+    String label,
+    double? value,
+    void Function(double) onSave,
+  ) {
     return ListTile(
       title: Text(label),
-      subtitle: Text(value == null
-          ? 'Not set'
-          : (value == value.roundToDouble()
-              ? value.round().toString()
-              : value.toStringAsFixed(1))),
+      subtitle: Text(
+        value == null
+            ? 'Not set'
+            : (value == value.roundToDouble()
+                  ? value.round().toString()
+                  : value.toStringAsFixed(1)),
+      ),
       trailing: const Icon(Icons.chevron_right),
       onTap: () async {
         final controller = TextEditingController(
-            text: value == null ? '' : value.toString());
+          text: value == null ? '' : value.toString(),
+        );
         final result = await showDialog<double>(
           context: context,
           builder: (c) => AlertDialog(
@@ -333,13 +441,15 @@ class SettingsScreen extends ConsumerWidget {
             content: TextField(
               controller: controller,
               autofocus: true,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
             ),
             actions: [
               TextButton(
-                  onPressed: () => Navigator.pop(c),
-                  child: const Text('Cancel')),
+                onPressed: () => Navigator.pop(c),
+                child: const Text('Cancel'),
+              ),
               FilledButton(
                 onPressed: () =>
                     Navigator.pop(c, double.tryParse(controller.text)),
@@ -359,7 +469,7 @@ class SettingsScreen extends ConsumerWidget {
       'Build muscle',
       'Recomposition',
       'Maintain',
-      'General health'
+      'General health',
     ];
     final picked = await showModalBottomSheet<String>(
       context: context,
@@ -391,11 +501,15 @@ class _PrivacyPoint extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.lock_outline,
-              size: 16, color: Theme.of(context).colorScheme.primary),
+          Icon(
+            Icons.lock_outline,
+            size: 16,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           const SizedBox(width: 8),
           Expanded(
-              child: Text(text, style: Theme.of(context).textTheme.bodySmall)),
+            child: Text(text, style: Theme.of(context).textTheme.bodySmall),
+          ),
         ],
       ),
     );
