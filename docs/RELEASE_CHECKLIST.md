@@ -18,6 +18,10 @@ physical devices are not stored in source control.
 ## Physical Android checks
 
 - [ ] Fresh install opens on Today and shows all five tabs.
+- [ ] Verify the first-launch Build 4 release notes, dismiss them, and confirm
+  Settings -> What's new can reopen them.
+- [ ] On a wide browser/tablet window, verify the navigation rail and centered
+  content; on a phone width, verify the bottom navigation remains usable.
 - [ ] Create, complete, restore, reorder, and reminder-test a task.
 - [ ] Add a habit, set its schedule/reminder, log each completion state, and
   review it.
@@ -25,9 +29,15 @@ physical devices are not stored in source control.
 - [ ] Log a strength session, finish it, reopen history, and verify progression.
 - [ ] Run a Zone 2 session manually; with Health Connect permission, sync heart
   rate and verify average/time-in-range; deny permission and verify fallback.
+- [ ] In Settings -> Health Connect, verify availability, request/manage access,
+  pause/resume sync, disconnect, last-sync status, and unsupported-device copy.
 - [ ] Sync steps, set/clear a walking target, and verify manual walking still
   works without Health Connect.
 - [ ] Log nutrition manually and exercise Photo, Voice, and Barcode paths.
+  For Barcode, verify a known Open Food Facts product, editable fields, cached
+  retry, unknown-code fallback, and offline manual fallback.
+- [ ] Open Settings -> Diagnostics, verify Build 4/platform/local counts, and
+  export a report that contains no user-entered content.
 - [ ] Export JSON, restore it, export encrypted backup, and restore with the
   correct password; verify a wrong password does not alter data.
 - [ ] Toggle notifications off and verify no newly scheduled reminder is sent.

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'release_notes.dart';
 import 'style.dart';
 
 import '../features/equipment/equipment_screen.dart';
@@ -9,6 +10,8 @@ import '../features/nutrition/nutrition_screen.dart';
 import '../features/nutrition/food_library_screen.dart';
 import '../features/nutrition/recipes_screen.dart';
 import '../features/settings/settings_screen.dart';
+import '../features/settings/diagnostics_screen.dart';
+import '../features/settings/health_connect_screen.dart';
 import '../features/tasks/tasks_screen.dart';
 import '../features/today/today_screen.dart';
 import '../features/training/cardio/mobility_screen.dart';
@@ -126,7 +129,24 @@ final appRouter = GoRouter(
         ),
       ],
     ),
-    GoRoute(path: '/settings', builder: (c, s) => const SettingsScreen()),
+    GoRoute(
+      path: '/settings',
+      builder: (c, s) => const SettingsScreen(),
+      routes: [
+        GoRoute(
+          path: 'diagnostics',
+          builder: (c, s) => const DiagnosticsScreen(),
+        ),
+        GoRoute(
+          path: 'health-connect',
+          builder: (c, s) => const HealthConnectScreen(),
+        ),
+        GoRoute(
+          path: 'release-notes',
+          builder: (c, s) => const ReleaseNotesScreen(),
+        ),
+      ],
+    ),
   ],
 );
 
@@ -146,36 +166,94 @@ class _AppShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return Scaffold(
-      body: shell,
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: scheme.surfaceContainerLow,
-          border: Border(top: BorderSide(color: scheme.outline)),
-        ),
-        child: SafeArea(
-          child: SizedBox(
-            height: 72,
-            child: Row(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth >= 900) {
+          final extended = constraints.maxWidth >= 1200;
+          return Scaffold(
+            body: Row(
               children: [
-                for (var i = 0; i < _tabs.length; i++)
-                  Expanded(
-                    child: _NavItem(
-                      icon: _tabs[i].$1,
-                      label: _tabs[i].$2,
-                      selected: shell.currentIndex == i,
-                      onTap: () => shell.goBranch(
-                        i,
-                        initialLocation: i == shell.currentIndex,
+                SafeArea(
+                  child: NavigationRail(
+                    extended: extended,
+                    labelType: extended
+                        ? NavigationRailLabelType.none
+                        : NavigationRailLabelType.all,
+                    minExtendedWidth: 190,
+                    selectedIndex: shell.currentIndex,
+                    backgroundColor: scheme.surfaceContainerLow,
+                    indicatorColor: scheme.surfaceContainerHighest,
+                    selectedIconTheme: IconThemeData(
+                      color: scheme.brightness == Brightness.dark
+                          ? AppColors.accent
+                          : AppColors.accentDeep,
+                    ),
+                    selectedLabelTextStyle: TextStyle(
+                      color: scheme.brightness == Brightness.dark
+                          ? AppColors.accent
+                          : AppColors.accentDeep,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    onDestinationSelected: _selectBranch,
+                    destinations: [
+                      for (final tab in _tabs)
+                        NavigationRailDestination(
+                          icon: Icon(tab.$1),
+                          label: Text(tab.$2),
+                        ),
+                    ],
+                  ),
+                ),
+                VerticalDivider(width: 1, color: scheme.outline),
+                Expanded(
+                  child: ColoredBox(
+                    color: scheme.surface,
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 1100),
+                        child: shell,
                       ),
                     ),
                   ),
+                ),
               ],
             ),
+          );
+        }
+        return Scaffold(
+          body: shell,
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerLow,
+              border: Border(top: BorderSide(color: scheme.outline)),
+            ),
+            child: SafeArea(
+              child: SizedBox(
+                height: 72,
+                child: Row(
+                  children: [
+                    for (var i = 0; i < _tabs.length; i++)
+                      Expanded(
+                        child: _NavItem(
+                          icon: _tabs[i].$1,
+                          label: _tabs[i].$2,
+                          selected: shell.currentIndex == i,
+                          onTap: () => _selectBranch(i),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
+  }
+
+  void _selectBranch(int index) {
+    shell.goBranch(index, initialLocation: index == shell.currentIndex);
   }
 }
 
@@ -198,8 +276,8 @@ class _NavItem extends StatelessWidget {
     // Mint reads poorly on light paper — use deep green there, mint on ink.
     final color = selected
         ? (scheme.brightness == Brightness.dark
-            ? AppColors.accent
-            : AppColors.accentDeep)
+              ? AppColors.accent
+              : AppColors.accentDeep)
         : scheme.onSurfaceVariant;
     return Semantics(
       selected: selected,

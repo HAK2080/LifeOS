@@ -266,12 +266,23 @@ class NutritionScreen extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref, {
     String initialName = '',
+    FoodEstimate? initialEstimate,
   }) async {
-    final name = TextEditingController(text: initialName);
-    final cal = TextEditingController();
-    final protein = TextEditingController();
-    final carbs = TextEditingController();
-    final fat = TextEditingController();
+    final name = TextEditingController(
+      text: initialEstimate?.name ?? initialName,
+    );
+    final cal = TextEditingController(
+      text: _estimateField(initialEstimate?.calories),
+    );
+    final protein = TextEditingController(
+      text: _estimateField(initialEstimate?.proteinG),
+    );
+    final carbs = TextEditingController(
+      text: _estimateField(initialEstimate?.carbsG),
+    );
+    final fat = TextEditingController(
+      text: _estimateField(initialEstimate?.fatG),
+    );
     var save = false;
     final ok = await showDialog<bool>(
       context: context,
@@ -384,6 +395,7 @@ class NutritionScreen extends ConsumerWidget {
           context,
           ref,
           initialName: estimate?.name ?? 'Photo estimate - edit this meal',
+          initialEstimate: estimate,
         );
       }
     } finally {
@@ -437,14 +449,27 @@ class NutritionScreen extends ConsumerWidget {
       ),
     );
     if (code != null && context.mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Looking up barcode…')));
       final product = await ref
           .read(barcodeProductServiceProvider)
           .lookup(code);
       if (!context.mounted) return;
+      if (product == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Product not found. You can still enter it manually.',
+            ),
+          ),
+        );
+      }
       await _logMealDialog(
         context,
         ref,
         initialName: product?.name ?? 'Barcode $code',
+        initialEstimate: product,
       );
     }
   }
@@ -1117,6 +1142,13 @@ class _VoiceMealDialogState extends State<_VoiceMealDialog> {
       ],
     );
   }
+}
+
+String _estimateField(double? value) {
+  if (value == null) return '';
+  return value == value.roundToDouble()
+      ? value.round().toString()
+      : value.toStringAsFixed(1);
 }
 
 class _MacroRow extends StatelessWidget {

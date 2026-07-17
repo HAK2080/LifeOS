@@ -3,6 +3,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app/router.dart';
+import 'app/release_notes.dart';
 import 'app/theme.dart';
 
 void main() {
@@ -24,6 +25,8 @@ class LifeApp extends StatelessWidget {
       darkTheme: buildTheme(Brightness.dark),
       themeMode: ThemeMode.system,
       routerConfig: appRouter,
+      builder: (context, child) =>
+          ReleaseNotesGate(child: child ?? const SizedBox.shrink()),
     );
   }
 }

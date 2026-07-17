@@ -47,16 +47,21 @@ class Zone2Screen extends ConsumerWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('$week',
-                        style: const TextStyle(
-                            fontFamily: 'Serif',
-                            fontSize: 42,
-                            fontWeight: FontWeight.w600)),
+                    Text(
+                      '$week',
+                      style: const TextStyle(
+                        fontFamily: 'Serif',
+                        fontSize: 42,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     const SizedBox(width: 6),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8),
-                      child: Text('of ${prefs.weeklyTargetMin} min',
-                          style: Theme.of(context).textTheme.bodyMedium),
+                      child: Text(
+                        'of ${prefs.weeklyTargetMin} min',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     ),
                     const Spacer(),
                     TextButton(
@@ -72,8 +77,9 @@ class Zone2Screen extends ConsumerWidget {
                         ? 0
                         : (week / prefs.weeklyTargetMin).clamp(0, 1),
                     minHeight: 8,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
                   ),
                 ),
               ],
@@ -126,24 +132,31 @@ class Zone2Screen extends ConsumerWidget {
   }
 
   Future<void> _editTarget(
-      BuildContext context, WidgetRef ref, Zone2Prefs prefs) async {
-    final controller =
-        TextEditingController(text: prefs.weeklyTargetMin.toString());
+    BuildContext context,
+    WidgetRef ref,
+    Zone2Prefs prefs,
+  ) async {
+    final controller = TextEditingController(
+      text: prefs.weeklyTargetMin.toString(),
+    );
     final v = await showDialog<int>(
       context: context,
       builder: (c) => AlertDialog(
         title: const Text('Weekly Zone 2 target (minutes)'),
         content: TextField(
-            controller: controller,
-            autofocus: true,
-            keyboardType: TextInputType.number),
+          controller: controller,
+          autofocus: true,
+          keyboardType: TextInputType.number,
+        ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(c), child: const Text('Cancel')),
+            onPressed: () => Navigator.pop(c),
+            child: const Text('Cancel'),
+          ),
           FilledButton(
-              onPressed: () =>
-                  Navigator.pop(c, int.tryParse(controller.text)),
-              child: const Text('Save')),
+            onPressed: () => Navigator.pop(c, int.tryParse(controller.text)),
+            child: const Text('Save'),
+          ),
         ],
       ),
     );
@@ -153,10 +166,14 @@ class Zone2Screen extends ConsumerWidget {
   }
 
   Future<void> _manualLog(
-      BuildContext context, WidgetRef ref, Zone2Prefs prefs) async {
+    BuildContext context,
+    WidgetRef ref,
+    Zone2Prefs prefs,
+  ) async {
     var activity = prefs.lastActivity;
-    final duration =
-        TextEditingController(text: prefs.lastDurationMin.toString());
+    final duration = TextEditingController(
+      text: prefs.lastDurationMin.toString(),
+    );
     final hr = TextEditingController();
     final ok = await showDialog<bool>(
       context: context,
@@ -180,32 +197,38 @@ class Zone2Screen extends ConsumerWidget {
               ),
               const SizedBox(height: 10),
               TextField(
-                  controller: duration,
-                  keyboardType: TextInputType.number,
-                  decoration:
-                      const InputDecoration(labelText: 'Minutes')),
+                controller: duration,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Minutes'),
+              ),
               const SizedBox(height: 8),
               TextField(
-                  controller: hr,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                      labelText: 'Avg heart rate (optional)')),
+                controller: hr,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Avg heart rate (optional)',
+                ),
+              ),
             ],
           ),
           actions: [
             TextButton(
-                onPressed: () => Navigator.pop(c, false),
-                child: const Text('Cancel')),
+              onPressed: () => Navigator.pop(c, false),
+              child: const Text('Cancel'),
+            ),
             FilledButton(
-                onPressed: () => Navigator.pop(c, true),
-                child: const Text('Log')),
+              onPressed: () => Navigator.pop(c, true),
+              child: const Text('Log'),
+            ),
           ],
         ),
       ),
     );
     if (ok == true) {
       final mins = int.tryParse(duration.text) ?? prefs.lastDurationMin;
-      await ref.read(cardioRepositoryProvider).log(
+      await ref
+          .read(cardioRepositoryProvider)
+          .log(
             kind: 'zone2',
             activity: activity,
             durationMin: mins,
@@ -294,8 +317,10 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
             const SizedBox(height: 12),
             Row(
               children: [
-                Text('Planned: $targetMin min',
-                    style: Theme.of(context).textTheme.bodyMedium),
+                Text(
+                  'Planned: $targetMin min',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
                 Expanded(
                   child: Slider(
                     value: targetMin.toDouble(),
@@ -329,21 +354,28 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
             ),
           ] else ...[
             Center(
-              child: Text('$m:$s',
-                  style: const TextStyle(
-                      fontFamily: 'Serif',
-                      fontSize: 64,
-                      fontWeight: FontWeight.w600)),
+              child: Text(
+                '$m:$s',
+                style: const TextStyle(
+                  fontFamily: 'Serif',
+                  fontSize: 64,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
             Center(
-              child: Text('$activity · planned $targetMin min',
-                  style: Theme.of(context).textTheme.bodyMedium),
+              child: Text(
+                '$activity · planned $targetMin min',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
             const SizedBox(height: 8),
             Center(
-              child: Text(averageHr == null
-                  ? 'Average HR: not synced'
-                  : 'Average HR: $averageHr bpm'),
+              child: Text(
+                averageHr == null
+                    ? 'Average HR: not synced'
+                    : 'Average HR: $averageHr bpm',
+              ),
             ),
             if (averageHr != null)
               Center(
@@ -356,9 +388,11 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
                 IconButton(
                   iconSize: 36,
                   tooltip: running ? 'Pause' : 'Resume',
-                  icon: Icon(running
-                      ? Icons.pause_circle_outline
-                      : Icons.play_circle_outline),
+                  icon: Icon(
+                    running
+                        ? Icons.pause_circle_outline
+                        : Icons.play_circle_outline,
+                  ),
                   onPressed: () => setState(() => running = !running),
                 ),
                 const SizedBox(width: 12),
@@ -374,11 +408,26 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
                   icon: const Icon(Icons.favorite_outline),
                   onPressed: () async {
                     try {
+                      final connection = ref
+                          .read(healthConnectionProvider)
+                          .value;
+                      if (connection?.syncEnabled == false) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Health Connect sync is paused in Settings.',
+                            ),
+                          ),
+                        );
+                        return;
+                      }
                       final gateway = ref.read(healthGatewayProvider);
                       if (!await gateway.requestReadPermissions()) return;
                       final now = DateTime.now();
                       final samples = await gateway.readHeartRate(
-                          now.subtract(Duration(seconds: elapsedSec)), now);
+                        now.subtract(Duration(seconds: elapsedSec)),
+                        now,
+                      );
                       if (samples.isNotEmpty && mounted) {
                         final summary = summarizeHeartRate(
                           samples,
@@ -389,11 +438,17 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
                           averageHr = summary.averageBpm;
                           inZoneMin = summary.inZoneMin;
                         });
+                        await ref
+                            .read(healthConnectionProvider.notifier)
+                            .recordSuccessfulSync();
                       }
                     } catch (_) {
                       if (!context.mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Heart-rate data is unavailable.')));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Heart-rate data is unavailable.'),
+                        ),
+                      );
                     }
                   },
                 ),
@@ -405,15 +460,21 @@ class _LiveSessionSheetState extends ConsumerState<_LiveSessionSheet> {
                     _ticker?.cancel();
                     final mins = (elapsedSec / 60).round();
                     if (mins > 0) {
-                      await ref.read(cardioRepositoryProvider).log(
+                      await ref
+                          .read(cardioRepositoryProvider)
+                          .log(
                             kind: 'zone2',
                             activity: activity,
                             durationMin: mins,
                             inZoneMin: inZoneMin,
                             avgHr: averageHr,
                           );
-                      await ref.read(zone2PrefsProvider.notifier).save(
-                          lastActivity: activity, lastDurationMin: targetMin);
+                      await ref
+                          .read(zone2PrefsProvider.notifier)
+                          .save(
+                            lastActivity: activity,
+                            lastDurationMin: targetMin,
+                          );
                       ref.invalidate(zone2WeekMinutesProvider);
                     }
                     if (context.mounted) Navigator.pop(context);
