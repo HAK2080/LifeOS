@@ -140,9 +140,11 @@ For a release APK, provide `LIFE_KEYSTORE_PATH`, `LIFE_KEYSTORE_PASSWORD`,
 stored in the repository. Without those variables, local release builds use
 the debug key as an explicit development fallback and are not publishable.
 
-For web preview, use `run-web.bat` or the `life_app` launch configuration on
-port 5180. Drift web support depends on the checked-in
-`web/sqlite3.wasm` and `web/drift_worker.js` files.
+For a stable web preview, run `run-web.bat`, then open
+`http://127.0.0.1:5180`. It builds the release web bundle and serves it with a
+plain local HTTP server, avoiding the Flutter debug browser bridge. Drift web
+support depends on the checked-in `web/sqlite3.wasm` and `web/drift_worker.js`
+files. Stop the server with `Ctrl+C`.
 
 Android debug builds require `JAVA_HOME` to point to the Android Studio JBR and
 target Android API 26+ because Health Connect requires that minimum.
