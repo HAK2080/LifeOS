@@ -157,8 +157,9 @@ target Android API 26+ because Health Connect requires that minimum.
 
 ### Build identity
 
-The current installable build is `Version 1.0.0 · Build 2`. The same identity
-is visible in Settings → App on the device. Increment the `+N` build number in
+The current installable build is `Version 1.0.0 · Build 2`. `BUILD 2` is shown
+in the Today app-bar and the full identity is visible in Settings → App on the
+device. Increment the `+N` build number in
 `pubspec.yaml` and update `lib/app/build_info.dart` together for every new APK;
 the build number is what distinguishes a newly installed APK from an older
 one.
