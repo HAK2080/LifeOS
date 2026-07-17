@@ -34,6 +34,8 @@ class NutritionScreen extends ConsumerWidget {
     final targets =
         ref.watch(approvedTargetsProvider).value ?? const ApprovedTargets();
     final frequent = ref.watch(_frequentMealsProvider).value ?? [];
+    final foods = ref.watch(foodsProvider).value ?? [];
+    final recipes = ref.watch(recipesProvider).value ?? [];
 
     return Scaffold(
       appBar: AppBar(
@@ -104,6 +106,47 @@ class NutritionScreen extends ConsumerWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          AppCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SectionTitle('Your food system'),
+                const SizedBox(height: 4),
+                Text(
+                  '${foods.length} saved foods · ${recipes.length} recipes · all stored locally',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.search),
+                      label: const Text('Food library'),
+                      onPressed: () => context.go('/nutrition/foods'),
+                    ),
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.receipt_long_outlined),
+                      label: const Text('Recipes'),
+                      onPressed: () => context.go('/nutrition/recipes'),
+                    ),
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.flag_outlined),
+                      label: const Text('Goals'),
+                      onPressed: () => _goalsSheet(context, ref),
+                    ),
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.trending_up),
+                      label: const Text('Progress'),
+                      onPressed: () => _progressSheet(context, ref),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

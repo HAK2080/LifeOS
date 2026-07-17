@@ -127,6 +127,19 @@ The app opens on Today. Main navigation order is Tasks, Today, Training,
 Nutrition, Growth. There is no account, cloud sync, team functionality, or
 mandatory AI.
 
+## External project integration boundary
+
+The referenced projects are capability references, not runtime dependencies.
+Their original applications are not copied into this Flutter app because they
+use different stacks and have different distribution terms: Progressive
+Overload App is React/Node, FoodYou is Kotlin/Compose under GPL-3.0, and
+Longevity Master is SwiftUI/iOS under CC BY-NC 4.0. LifeOS ports the useful
+offline behaviors into its own Dart/Riverpod/Drift modules with local data and
+attribution links. The ported capabilities are visible in the app: Training →
+Strength → Progressive overload now reports the live exercise/plan libraries,
+and Nutrition shows the local food and recipe libraries directly on its main
+screen.
+
 ## Build and test
 
 The bundled Flutter SDK is at `C:\flutter`; if `flutter` is not on PATH, use
@@ -157,7 +170,7 @@ target Android API 26+ because Health Connect requires that minimum.
 
 ### Build identity
 
-The current installable build is `Version 1.0.0 · Build 2`. `BUILD 2` is shown
+The current installable build is `Version 1.0.0 · Build 3`. `BUILD 3` is shown
 in the Today app-bar and the full identity is visible in Settings → App on the
 device. Increment the `+N` build number in
 `pubspec.yaml` and update `lib/app/build_info.dart` together for every new APK;
