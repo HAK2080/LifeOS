@@ -100,16 +100,22 @@ This folder is the shared source of truth for Claude and Codex. Before coding:
 
 ## UI/UX direction
 
-The shared visual system is inspired by Nominal's current editorial product
-language, without copying its brand assets or product copy:
+The shared visual system is based on the supplied archive
+`C:\Users\aeroh\Downloads\inspired by this website https_www.nominal.so_change the UI  ux OF THE appl.zip`,
+which contained replacement versions of `lib/app/style.dart`,
+`lib/app/theme.dart`, and `lib/app/router.dart`. It follows Nominal's current
+editorial product language without copying branded assets or product copy:
 
-- Ink/paper neutrals with an acid-lime accent replace the earlier terracotta
-  palette.
+- Ink/paper neutrals with a mint signal and deep green contrast replace the
+  earlier terracotta palette.
+- Light-mode primary actions use ink; dark-mode primary actions use mint, with
+  explicit high-contrast foregrounds.
 - Headings and navigation use strong sans-serif hierarchy; compact section
-  labels use tracking and muted contrast for an editorial rhythm.
-- Cards use tighter 14px geometry, hairline borders, and restrained shadows.
+  labels use uppercase tracking and muted contrast.
+- Cards are flat with 10px geometry and hairline borders; buttons and chips use
+  stadium shapes for a precise, product-like control language.
 - The five-tab shell uses a quiet selected surface, stronger selected weight,
-  and larger touch-safe spacing.
+  and light/dark-aware selected colors.
 - Life-specific principles remain unchanged: no red guilt states, no streak
   pressure, no mandatory AI, and manual entry always works.
 

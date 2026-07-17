@@ -195,7 +195,12 @@ class _NavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final color = selected ? AppColors.accent : scheme.onSurfaceVariant;
+    // Mint reads poorly on light paper — use deep green there, mint on ink.
+    final color = selected
+        ? (scheme.brightness == Brightness.dark
+            ? AppColors.accent
+            : AppColors.accentDeep)
+        : scheme.onSurfaceVariant;
     return Semantics(
       selected: selected,
       button: true,
