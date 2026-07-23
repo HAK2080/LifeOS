@@ -114,6 +114,118 @@ const starterTemplates = <StarterTemplate>[
       ]),
     ],
   ),
+  // Original adaptation of an openly posted 7chan /fit/ push/legs/pull split.
+  // The public post used heavy bench/OHP/trap-bar work; this version adds the
+  // vertical pull suggested in the thread and uses knee-friendlier leg options.
+  StarterTemplate(
+    name: 'Forum P/L/P · strength + size',
+    description:
+        'Six-workout rotation mixing heavy presses and trap-bar work with balanced hypertrophy. Adapted for your equipment and knees.',
+    workouts: [
+      TemplateWorkout('Push A · Bench strength', [
+        TemplateExercise('Smith Machine Bench Press', sets: 5, repMin: 3, repMax: 5),
+        TemplateExercise('Overhead Press', sets: 3, repMin: 8, repMax: 10),
+        TemplateExercise('Dip', sets: 3, repMin: 6, repMax: 12),
+        TemplateExercise('Lateral Raise', sets: 3, repMin: 12, repMax: 20),
+      ]),
+      TemplateWorkout('Legs A · Trap-bar strength', [
+        TemplateExercise('Trap Bar Deadlift', sets: 5, repMin: 3, repMax: 5),
+        TemplateExercise('Bulgarian Split Squat', sets: 3, repMin: 8, repMax: 12),
+        TemplateExercise('Leg Extension (band)', sets: 3, repMin: 12, repMax: 20),
+        TemplateExercise('Standing Calf Raise', sets: 3, repMin: 10, repMax: 15),
+      ]),
+      TemplateWorkout('Pull A · Vertical pull', [
+        TemplateExercise('Pull-Up', sets: 4, repMin: 5, repMax: 10),
+        TemplateExercise('Barbell Row', sets: 3, repMin: 8, repMax: 10),
+        TemplateExercise('Face Pull', sets: 3, repMin: 12, repMax: 20),
+        TemplateExercise('EZ-Bar Curl', sets: 3, repMin: 8, repMax: 12),
+      ]),
+      TemplateWorkout('Push B · Press strength', [
+        TemplateExercise('Overhead Press', sets: 5, repMin: 3, repMax: 5),
+        TemplateExercise('Dumbbell Bench Press', sets: 3, repMin: 8, repMax: 10),
+        TemplateExercise('Incline Dumbbell Press', sets: 3, repMin: 8, repMax: 12),
+        TemplateExercise('Triceps Pushdown', sets: 3, repMin: 10, repMax: 15),
+      ]),
+      TemplateWorkout('Legs B · Posterior chain', [
+        TemplateExercise('Romanian Deadlift', sets: 4, repMin: 6, repMax: 10),
+        TemplateExercise('Smith Machine Squat', sets: 3, repMin: 8, repMax: 12),
+        TemplateExercise('Step-Up', sets: 3, repMin: 8, repMax: 12),
+        TemplateExercise('Hip Thrust', sets: 3, repMin: 8, repMax: 12),
+      ]),
+      TemplateWorkout('Pull B · Back volume', [
+        TemplateExercise('Lat Pulldown', sets: 4, repMin: 8, repMax: 12),
+        TemplateExercise('Chest-Supported Row', sets: 4, repMin: 8, repMax: 12),
+        TemplateExercise('Cable Rear Delt Fly', sets: 3, repMin: 12, repMax: 20),
+        TemplateExercise('Hammer Curl', sets: 3, repMin: 8, repMax: 12),
+      ]),
+    ],
+  ),
+  // Street-lifting was repeatedly requested on the board. This is an original
+  // balanced template rather than a copy of any linked commercial program.
+  StarterTemplate(
+    name: 'Street lifting · 4 days',
+    description:
+        'Weighted pull-up and dip emphasis, with enough rowing and lower-body work to keep the program balanced.',
+    workouts: [
+      TemplateWorkout('Pull strength', [
+        TemplateExercise('Weighted Pull-Up', sets: 5, repMin: 3, repMax: 5),
+        TemplateExercise('Barbell Row', sets: 4, repMin: 6, repMax: 10),
+        TemplateExercise('EZ-Bar Curl', sets: 3, repMin: 8, repMax: 12),
+        TemplateExercise('Hanging Knee Raise', sets: 3, repMin: 8, repMax: 15),
+      ]),
+      TemplateWorkout('Push strength', [
+        TemplateExercise('Weighted Dip', sets: 5, repMin: 3, repMax: 5),
+        TemplateExercise('Overhead Press', sets: 4, repMin: 6, repMax: 10),
+        TemplateExercise('Close-Grip Bench Press', sets: 3, repMin: 6, repMax: 10),
+        TemplateExercise('Lateral Raise', sets: 3, repMin: 12, repMax: 20),
+      ]),
+      TemplateWorkout('Pull volume + hinge', [
+        TemplateExercise('Pull-Up', sets: 4, repMin: 6, repMax: 10),
+        TemplateExercise('Seated Cable Row', sets: 4, repMin: 8, repMax: 12),
+        TemplateExercise('Romanian Deadlift', sets: 3, repMin: 6, repMax: 10),
+        TemplateExercise('Hammer Curl', sets: 3, repMin: 10, repMax: 15),
+      ]),
+      TemplateWorkout('Push volume + legs', [
+        TemplateExercise('Dip', sets: 4, repMin: 6, repMax: 12),
+        TemplateExercise('Incline Dumbbell Press', sets: 3, repMin: 8, repMax: 12),
+        TemplateExercise('Step-Up', sets: 3, repMin: 8, repMax: 12),
+        TemplateExercise('Hip Thrust', sets: 3, repMin: 8, repMax: 12),
+      ]),
+    ],
+  ),
+  // Hybrid lifting and conditioning was another recurring board request. This
+  // plan is original and uses equipment already recorded in LifeOS.
+  StarterTemplate(
+    name: 'Hybrid strength + engine · 4 days',
+    description:
+        'Two strength sessions and two short conditioning sessions. Use the separate Zone 2 tracker for easy aerobic work.',
+    workouts: [
+      TemplateWorkout('Strength A', [
+        TemplateExercise('Trap Bar Deadlift', sets: 4, repMin: 4, repMax: 6),
+        TemplateExercise('Dumbbell Bench Press', sets: 4, repMin: 6, repMax: 10),
+        TemplateExercise('Pull-Up', sets: 4, repMin: 5, repMax: 10),
+        TemplateExercise('Farmer Carry', sets: 4, repMin: 20, repMax: 40),
+      ]),
+      TemplateWorkout('Engine A', [
+        TemplateExercise('Kettlebell Swing', sets: 5, repMin: 15, repMax: 20),
+        TemplateExercise('Push Press', sets: 4, repMin: 6, repMax: 10),
+        TemplateExercise('Row Sprint', sets: 6, repMin: 10, repMax: 20),
+        TemplateExercise('Dead Bug', sets: 3, repMin: 8, repMax: 12),
+      ]),
+      TemplateWorkout('Strength B', [
+        TemplateExercise('Smith Machine Squat', sets: 3, repMin: 8, repMax: 12),
+        TemplateExercise('Overhead Press', sets: 4, repMin: 6, repMax: 10),
+        TemplateExercise('Seated Cable Row', sets: 4, repMin: 8, repMax: 12),
+        TemplateExercise('Hip Thrust', sets: 3, repMin: 8, repMax: 12),
+      ]),
+      TemplateWorkout('Engine B', [
+        TemplateExercise('Dumbbell Snatch', sets: 5, repMin: 6, repMax: 10),
+        TemplateExercise('Battle Rope Wave', sets: 6, repMin: 20, repMax: 30),
+        TemplateExercise('Air Bike Sprint', sets: 6, repMin: 10, repMax: 20),
+        TemplateExercise('Pallof Press', sets: 3, repMin: 8, repMax: 12),
+      ]),
+    ],
+  ),
 ];
 
 class VolumeLandmark {
