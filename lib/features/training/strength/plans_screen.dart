@@ -92,10 +92,13 @@ class PlansScreen extends ConsumerWidget {
         shrinkWrap: true,
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
         children: [
-          Text('Starter templates', style: Theme.of(c).textTheme.titleLarge),
+          Text(
+            'Templates & public programs',
+            style: Theme.of(c).textTheme.titleLarge,
+          ),
           const SizedBox(height: 4),
           const Text(
-            'Use one as a starting point, then edit every exercise and target.',
+            'Choose one as a starting point, then edit any exercise or target.',
           ),
           const SizedBox(height: 12),
           for (final template in starterTemplates)
@@ -110,7 +113,17 @@ class PlansScreen extends ConsumerWidget {
       ),
     );
     if (template == null) return;
-    await repo.createStarterTemplate(template);
+
+    final planId = await repo.createStarterTemplate(template);
+    final notes = template.notes?.trim();
+    if (notes != null && notes.isNotEmpty) {
+      await (repo.db.update(
+        repo.db.workoutPlans,
+      )..where((t) => t.id.equals(planId))).write(
+        WorkoutPlansCompanion(notes: Value(notes)),
+      );
+    }
+
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('${template.name} added to your plans.')),
@@ -216,6 +229,7 @@ class _PlanCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final workouts = ref.watch(planWorkoutsProvider(plan.id)).value ?? [];
     final repo = ref.read(trainingRepositoryProvider);
+    final hasGuide = plan.notes?.trim().isNotEmpty ?? false;
 
     return AppCard(
       margin: const EdgeInsets.only(bottom: 14),
@@ -241,7 +255,18 @@ class _PlanCard extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          if (hasGuide)
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              icon: const Icon(Icons.menu_book_outlined, size: 18),
+              label: const Text('Program guide & progression'),
+              onPressed: () => _showProgramGuide(context, plan),
+            )
+          else
+            const SizedBox(height: 4),
           for (final w in workouts) _WorkoutTile(plan: plan, workout: w),
           Row(
             children: [
@@ -281,6 +306,29 @@ class _PlanCard extends ConsumerWidget {
     );
   }
 }
+
+Future<void> _showProgramGuide(
+  BuildContext context,
+  WorkoutPlan plan,
+) =>
+    showDialog<void>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text(plan.name),
+        content: SizedBox(
+          width: 560,
+          child: SingleChildScrollView(
+            child: SelectableText(plan.notes ?? ''),
+          ),
+        ),
+        actions: [
+          FilledButton(
+            onPressed: () => Navigator.pop(c),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
 
 class _WorkoutTile extends ConsumerWidget {
   const _WorkoutTile({required this.plan, required this.workout});
@@ -413,7 +461,8 @@ class _WorkoutTile extends ConsumerWidget {
                   ButtonSegment(value: 'progressive', label: Text('RIR')),
                 ],
                 selected: {mode},
-                onSelectionChanged: (s) => setDialogState(() => mode = s.first),
+                onSelectionChanged: (s) =>
+                    setDialogState(() => mode = s.first),
               ),
             ],
           ),
